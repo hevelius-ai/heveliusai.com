@@ -8,6 +8,28 @@ Plan for the next update of heveliusai.com, written 27 Oct 2026. Sources:
 - The approved mockup `hevelius-mockup-pages.html` (artifact "Hevelius AI Group site").
 - This repository as it stands at `78928e6`.
 
+## Status (27 Oct 2026)
+
+Built on the branch `claude/gallant-tesla-aavb67`; every check green. **Not merged**: a merge to `main` publishes, and the
+owner will first direct changes to the main page, so the site goes out in one piece with no mismatch between pages.
+
+Owner's answers, 27 Oct 2026:
+
+- All recommendations in section 3 accepted.
+- Advisory sentence: "fifteen years on those programs **with** global banks".
+- Founder's LinkedIn: https://www.linkedin.com/in/christopher-zaczek-34b95375/ (no company page yet, so the
+  Organization has no `sameAs` for now).
+- The main page will get further changes directed by the owner before publishing (replaces the parked list in FRD 3).
+
+What changed from the plan while building:
+
+- The three pull requests became commits on one branch, for the reason above.
+- The home-page screenshot comparison was run locally (before and after, five widths, both themes: only the header
+  differs, plus sub-pixel anti-aliasing) rather than committed as baseline images. Committed baselines would break on
+  CI's different font rendering.
+- `jobTitle` and the ProfilePage `name` were left out of the structured data, because neither appears as text on the page.
+- The validator config file was named `.htmlvalidaterc.json`, which html-validate never reads; renamed to `.htmlvalidate.json`.
+
 ## 1. Scope
 
 **Built in this update**

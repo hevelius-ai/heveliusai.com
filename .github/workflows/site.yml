@@ -70,8 +70,10 @@ jobs:
       - name: Tie the stylesheet and script to this release
         run: |
           v="${GITHUB_SHA::8}"
-          sed -i "s|href=\"styles.css\"|href=\"styles.css?v=$v\"|; s|src=\"site.js\"|src=\"site.js?v=$v\"|" site/index.html
-          grep -q "styles.css?v=$v" site/index.html && grep -q "site.js?v=$v" site/index.html
+          for f in site/*.html; do
+            sed -i "s|href=\"styles.css\"|href=\"styles.css?v=$v\"|; s|src=\"site.js\"|src=\"site.js?v=$v\"|" "$f"
+            grep -q "styles.css?v=$v" "$f" && grep -q "site.js?v=$v" "$f" || { echo "::error::$f was not tied to this release"; exit 1; }
+          done
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site

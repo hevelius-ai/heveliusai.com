@@ -1,5 +1,5 @@
 // Minimal static server for site/, used by the checks and for local preview: npm run serve
-// Serves text files gzip-compressed, as GitHub Pages does.
+// Serves text files gzip-compressed, and /advisory from advisory.html, as GitHub Pages does.
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
@@ -17,6 +17,7 @@ const compressible = new Set([".html", ".css", ".js", ".svg", ".txt", ".xml", ".
 createServer(async (req, res) => {
   let path = decodeURIComponent(new URL(req.url, "http://x").pathname);
   if (path.endsWith("/")) path += "index.html";
+  else if (!extname(path)) path += ".html";
   const file = normalize(join(root, path));
   if (!file.startsWith(root)) { res.writeHead(403).end(); return; }
   try {

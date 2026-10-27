@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; manifest-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Agile Dev Team: a software delivery team of AI agents, in one Claude Code plugin | Hevelius AI Group</title>
+<meta name="description" content="Agile Dev Team runs a manager, developers, a tester, an analyst and two expert roles as separate AI agents inside Claude Code, and delivers one pull request per change with evidence written by programs. In development; early access on request.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F5F6F8">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0B1F3A">
+<link rel="canonical" href="https://heveliusai.com/agile-dev-team">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Hevelius AI Group">
+<meta property="og:url" content="https://heveliusai.com/agile-dev-team">
+<meta property="og:title" content="Agile Dev Team">
+<meta property="og:description" content="Agile Dev Team runs a manager, developers, a tester, an analyst and two expert roles as separate AI agents inside Claude Code, and delivers one pull request per change with evidence written by programs. In development; early access on request.">
+<meta property="og:image" content="https://heveliusai.com/img/share-agile-dev-team.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Hevelius mark beside the words Agile Dev Team.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/montserrat-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script src="site.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://heveliusai.com/#organization",
+      "name": "Hevelius AI Group",
+      "url": "https://heveliusai.com/"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://heveliusai.com/agile-dev-team#software",
+      "name": "Agile Dev Team",
+      "description": "A Claude Code plugin that works as a complete software delivery team.",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Windows, macOS, Linux",
+      "url": "https://heveliusai.com/agile-dev-team",
+      "author": {
+        "@id": "https://heveliusai.com/#organization"
+      },
+      "publisher": {
+        "@id": "https://heveliusai.com/#organization"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Main",
+          "item": "https://heveliusai.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Agile Dev Team",
+          "item": "https://heveliusai.com/agile-dev-team"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Hevelius AI Group, main page"><svg width="900" height="240" viewBox="0 0 900 240" aria-hidden="true" focusable="false"><g transform="scale(0.3333333333333333)"><circle cx="360" cy="360" r="338" fill="none" stroke="currentColor" stroke-width="24"/><path d="M294.7,61.1A306,306 0 1 1 294.7,658.9A446.5,446.5 0 0 0 395,472.9L395,493L473,493L473,227L395,227L395,247.1A446.5,446.5 0 0 0 294.7,61.1Z" class="moon"/><path d="M252,242H300V337.0H410V242H458V478H410V383.0H300V478H252Z" fill="currentColor"/></g><path fill="currentColor" fill-rule="evenodd" transform="translate(292,70) scale(0.69)" d="M691.3,1.3 L691.3,60.7 L692.3,63.0 L692.3,65.7 L693.3,67.3 L693.3,69.0 L697.3,77.0 L699.3,79.7 L704.3,84.3 L708.7,87.0 L712.3,88.3 L712.7,89.0 L715.0,89.3 L717.3,90.3 L726.3,91.3 L732.0,91.0 L733.3,90.3 L736.3,90.3 L737.3,89.7 L739.3,89.3 L745.7,86.3 L751.0,82.3 L753.3,80.0 L757.3,73.7 L759.3,69.0 L759.3,67.7 L760.3,65.3 L760.3,62.7 L761.3,59.3 L761.3,1.3 L750.3,1.3 L750.3,60.0 L749.7,61.3 L749.3,65.0 L746.3,71.0 L741.7,76.3 L737.3,79.3 L730.7,81.3 L722.7,81.3 L721.3,80.7 L719.3,80.7 L713.7,78.3 L708.3,74.0 L704.3,68.0 L704.3,67.0 L703.3,65.3 L702.3,59.7 L702.3,1.3ZM616.3,1.3 L616.3,89.3 L627.7,89.3 L627.7,1.3ZM504.3,1.3 L504.3,89.3 L560.3,89.3 L560.3,80.0 L560.0,79.7 L516.7,79.7 L515.3,78.7 L515.3,1.3ZM384.3,1.3 L384.3,89.3 L443.0,89.3 L443.0,79.7 L396.7,79.7 L395.3,78.7 L395.3,51.0 L396.7,49.3 L437.3,49.3 L437.3,40.0 L437.0,39.7 L396.3,39.7 L395.3,38.7 L395.3,12.0 L396.3,10.7 L397.3,10.3 L443.0,10.3 L443.3,1.7 L443.0,1.3ZM246.0,1.3 L247.3,4.3 L247.7,6.3 L249.3,9.7 L249.3,10.7 L251.0,13.7 L252.3,18.0 L254.3,22.0 L254.3,23.0 L256.3,26.7 L256.3,27.7 L258.3,31.7 L258.3,33.0 L260.3,36.3 L260.3,37.3 L262.3,41.3 L262.3,42.3 L265.3,49.3 L265.3,50.3 L266.3,51.7 L266.3,53.0 L268.3,56.7 L268.3,57.7 L270.3,61.7 L271.3,65.3 L272.3,66.7 L272.3,67.7 L274.7,72.3 L275.3,75.0 L276.3,76.3 L276.3,77.3 L278.3,81.3 L278.3,82.7 L279.3,84.0 L279.3,85.0 L281.3,88.3 L281.3,89.3 L293.0,89.3 L293.0,88.3 L294.3,86.0 L295.3,82.3 L296.3,81.3 L296.3,80.3 L297.3,78.7 L297.3,77.3 L298.3,76.0 L298.3,75.0 L301.3,68.7 L301.3,67.7 L302.3,66.3 L302.3,65.3 L309.3,49.3 L309.3,48.3 L311.3,44.7 L311.3,43.7 L315.3,35.0 L316.0,32.3 L317.0,31.0 L318.0,27.7 L319.3,25.3 L319.3,24.3 L320.3,23.0 L323.7,14.3 L325.0,12.0 L325.3,10.3 L327.3,6.7 L329.0,1.3 L317.3,1.3 L305.7,29.0 L305.3,31.0 L304.3,32.3 L303.3,36.0 L302.3,37.3 L302.3,38.7 L301.3,40.0 L300.3,43.7 L299.3,45.0 L299.3,46.0 L297.3,50.0 L297.3,51.0 L296.3,52.3 L295.3,56.0 L294.3,57.0 L294.3,58.3 L293.3,59.7 L293.3,61.0 L292.3,62.3 L292.3,63.7 L291.3,65.0 L291.3,66.0 L289.3,71.3 L288.3,72.7 L288.3,74.0 L287.3,75.0 L286.0,74.3 L285.3,71.3 L284.3,70.0 L284.3,68.7 L283.3,67.3 L283.3,66.0 L282.3,64.7 L281.3,60.7 L279.3,56.3 L279.3,55.0 L278.3,53.7 L278.3,52.3 L277.3,51.3 L277.3,50.0 L275.3,46.0 L275.3,44.7 L273.3,41.0 L273.3,39.3 L272.3,38.0 L271.3,34.3 L269.3,30.3 L269.3,29.0 L267.3,25.3 L267.3,24.0 L265.3,20.0 L265.3,18.7 L264.3,17.3 L264.0,15.3 L262.3,12.0 L262.3,10.7 L261.3,9.3 L258.3,1.3ZM0.3,1.3 L0.3,89.3 L11.3,89.3 L11.3,50.3 L12.3,49.3 L51.0,49.3 L51.3,49.0 L55.7,49.0 L56.0,49.3 L58.7,49.0 L60.0,49.3 L61.0,50.3 L61.0,89.3 L71.7,89.3 L71.7,81.7 L72.0,81.3 L72.0,1.3 L61.0,1.3 L61.0,38.3 L60.0,39.7 L58.0,39.3 L57.0,39.7 L12.3,39.7 L11.3,38.7 L11.3,1.3ZM135.3,1.3 L135.3,89.3 L195.0,89.3 L195.0,82.3 L195.3,82.0 L195.0,79.7 L147.3,79.7 L146.3,78.7 L146.3,50.3 L147.0,49.3 L187.3,49.0 L187.3,39.7 L147.3,39.7 L146.3,38.7 L146.3,11.7 L147.7,10.3 L194.3,10.3 L194.3,1.3 L153.7,1.3 L153.3,1.0 L152.0,1.3ZM843.0,0.3 L836.0,2.3 L833.0,4.3 L831.7,4.7 L825.7,10.7 L825.7,11.7 L824.7,12.3 L822.3,18.0 L822.3,28.0 L823.3,30.0 L823.3,31.7 L824.0,32.3 L824.3,34.0 L826.3,36.3 L826.7,37.3 L829.7,40.3 L834.0,43.3 L847.0,48.3 L851.3,49.3 L853.3,50.3 L855.0,50.3 L856.3,51.3 L857.7,51.3 L862.3,53.7 L864.0,55.0 L866.7,58.0 L868.3,61.3 L868.3,63.0 L869.0,64.7 L868.3,69.7 L866.3,73.3 L862.0,77.7 L859.3,79.3 L852.3,81.3 L847.7,81.3 L839.3,79.3 L832.0,74.3 L829.3,71.3 L827.0,67.7 L826.3,67.7 L819.0,74.0 L819.0,75.0 L822.3,79.7 L824.7,82.0 L829.0,85.3 L832.7,87.3 L836.0,88.3 L837.7,89.3 L839.7,89.3 L841.7,90.3 L844.7,90.3 L846.7,91.0 L855.0,91.0 L856.3,90.3 L859.0,90.3 L867.0,87.3 L871.0,84.7 L874.7,81.0 L878.3,74.7 L879.7,70.3 L880.0,61.7 L879.3,60.3 L879.3,58.3 L877.3,53.7 L875.3,50.7 L871.0,46.7 L868.0,44.7 L858.0,40.3 L856.7,40.3 L855.0,39.3 L853.7,39.3 L852.7,38.7 L850.3,38.3 L848.7,37.3 L845.0,36.3 L840.7,34.3 L837.7,32.3 L835.3,30.0 L833.3,26.7 L833.0,25.0 L833.3,19.7 L835.3,16.0 L839.3,12.3 L843.3,10.3 L845.7,10.3 L847.3,9.7 L853.7,9.7 L857.3,10.3 L863.0,13.3 L867.0,17.3 L867.3,18.3 L869.3,20.7 L870.0,20.7 L873.3,17.3 L874.3,17.0 L877.0,14.3 L877.0,13.3 L875.0,10.3 L869.7,5.3 L864.3,2.3 L858.0,0.3 L854.7,0.3 L854.3,0.0Z"/><path fill="currentColor" opacity="0.72" fill-rule="evenodd" transform="translate(294,160) scale(0.69)" d="M356.0,0.7 L355.7,1.0 L355.7,24.3 L356.3,27.3 L358.3,31.7 L361.7,35.0 L365.3,36.7 L369.0,37.3 L373.0,37.3 L376.0,36.7 L380.7,34.3 L382.0,33.0 L384.3,29.0 L384.7,25.7 L385.3,24.7 L385.3,19.3 L385.0,19.0 L385.0,3.0 L385.3,1.7 L385.0,0.7 L381.3,0.7 L381.3,25.3 L380.3,28.3 L377.3,32.0 L374.3,33.7 L371.7,34.3 L369.7,34.3 L368.3,33.7 L365.7,33.3 L364.0,32.3 L360.3,28.3 L360.3,26.0 L359.3,23.7 L359.7,1.7 L359.0,0.7ZM69.7,0.7 L69.3,2.3 L69.7,4.3 L69.3,5.7 L69.3,37.0 L73.3,37.0 L73.3,1.0 L73.0,0.7ZM16.3,0.7 L15.3,1.7 L12.3,9.7 L7.3,19.7 L4.3,27.7 L1.3,33.3 L0.3,37.0 L4.3,37.0 L7.3,29.7 L7.3,28.7 L8.0,27.7 L9.3,27.0 L22.3,27.0 L22.7,27.3 L25.7,27.0 L27.3,28.3 L31.0,37.0 L34.3,37.0 L34.3,36.0 L33.3,34.3 L33.3,33.0 L32.3,32.0 L31.3,28.3 L27.3,19.7 L27.3,18.7 L25.3,14.7 L25.3,13.7 L24.3,12.3 L24.3,11.3 L22.3,7.3 L22.0,5.7 L21.3,5.0 L20.3,1.7 L19.7,0.7ZM17.3,5.3 L19.0,6.7 L20.3,11.0 L21.3,12.3 L21.3,13.3 L23.3,17.3 L23.3,18.3 L24.3,20.0 L24.3,21.3 L25.3,22.7 L25.3,23.7 L24.7,24.3 L10.7,24.3 L9.3,23.3 L11.3,20.0 L12.3,16.3 L14.0,13.3 L14.3,11.3ZM442.3,1.7 L438.0,0.3 L423.3,0.7 L423.0,1.7 L423.3,3.3 L423.3,37.0 L426.7,37.0 L426.7,23.3 L428.3,22.0 L428.7,22.3 L438.3,22.3 L442.7,21.3 L445.0,20.0 L447.0,18.0 L448.3,14.7 L448.3,8.3 L446.3,4.7ZM426.7,4.7 L428.0,3.3 L438.0,3.3 L438.7,4.0 L441.0,4.3 L444.3,8.3 L444.7,9.7 L444.3,15.3 L442.7,17.3 L439.3,19.3 L427.7,19.3 L427.0,19.0 L426.3,17.7 L426.7,17.3ZM221.7,0.7 L221.7,35.3 L221.3,35.7 L221.7,37.0 L225.3,37.3 L225.3,22.7 L226.3,21.7 L233.7,22.0 L238.3,28.3 L238.3,29.0 L241.3,33.0 L243.7,37.0 L247.7,37.0 L246.0,33.3 L242.3,28.3 L242.3,27.7 L239.0,22.7 L239.7,21.3 L243.3,19.3 L246.3,15.7 L246.3,14.7 L247.3,13.0 L247.3,9.0 L246.0,5.7 L242.7,2.3 L237.3,0.3ZM225.3,4.3 L226.3,3.3 L230.0,3.3 L230.3,3.7 L237.0,3.3 L237.3,4.0 L239.7,4.7 L242.3,7.0 L243.3,8.7 L243.3,12.7 L242.3,15.0 L239.7,17.7 L238.0,18.7 L233.3,19.3 L226.0,19.3 L225.3,18.3ZM303.0,-0.3 L295.3,0.3 L291.0,2.3 L286.0,6.7 L283.3,11.0 L283.3,12.3 L282.3,14.0 L282.3,22.7 L283.3,24.3 L283.3,26.0 L285.3,29.7 L289.7,34.3 L293.7,36.3 L298.0,37.3 L306.0,37.0 L312.0,34.0 L314.7,31.3 L317.3,27.7 L318.3,25.3 L318.3,23.7 L319.3,20.0 L319.3,17.0 L318.3,13.7 L318.3,11.7 L316.3,7.7 L314.0,5.0 L309.0,1.3 L307.3,1.3 L306.7,0.7ZM297.7,3.3 L304.0,3.3 L306.0,4.3 L307.0,4.3 L309.7,6.0 L313.3,10.0 L315.3,15.7 L315.3,22.0 L313.0,28.0 L311.0,30.3 L308.3,32.3 L303.3,34.3 L298.7,34.3 L295.3,33.3 L292.3,31.7 L289.3,29.0 L287.3,25.7 L287.3,24.7 L286.3,22.7 L286.3,15.0 L287.3,13.3 L287.3,12.0 L291.7,6.3ZM167.0,-0.3 L165.0,0.3 L163.0,0.3 L161.3,1.3 L159.7,1.3 L155.7,4.0 L152.7,7.0 L150.7,10.0 L149.3,13.3 L149.3,15.3 L148.7,16.7 L148.7,20.7 L149.3,22.3 L149.3,24.0 L150.7,27.0 L152.3,29.7 L155.7,33.3 L158.7,35.3 L163.3,37.0 L170.3,37.3 L175.3,36.3 L178.7,34.3 L182.0,31.0 L183.7,27.3 L183.7,18.7 L183.3,18.0 L179.0,18.0 L178.7,17.7 L168.3,18.0 L168.0,18.7 L168.3,20.3 L179.3,20.3 L180.3,21.3 L180.0,27.0 L178.3,30.0 L176.0,32.0 L173.3,33.3 L169.7,34.3 L166.0,34.3 L162.7,33.3 L156.7,29.3 L154.3,26.3 L152.3,19.7 L152.3,17.3 L153.3,15.0 L153.3,13.3 L155.0,10.0 L159.0,5.7 L162.0,4.0 L164.0,3.3 L169.3,3.3 L171.0,4.3 L172.3,4.3 L174.3,5.3 L178.3,8.7 L179.3,8.7 L180.3,7.7 L181.7,7.3 L181.7,6.3 L178.7,3.3 L176.0,1.7 L171.0,0.0Z"/></svg></a>
+    <button class="btn btn-quiet menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" hidden>Menu</button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="/">Main</a></li>
+        <li><a href="/agile-dev-team" aria-current="page">Agile Dev Team</a></li>
+        <li><a href="/advisory">Advisory</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="opening">
+    <div class="wrap">
+      <p class="eyebrow">In development · early access on request</p>
+      <h1>Agile Dev Team</h1>
+      <p class="lede">A Claude Code plugin that works as a complete software delivery team. You say what you need in plain English. The team plans it, builds it, tests it, checks it and hands you one pull request per change, with the evidence at the top. You stay in charge: you approve the plan once, and you decide how changes are merged.</p>
+      <div class="actions"><a class="btn btn-primary" href="#contact">Request early access</a></div>
+    </div>
+  </div>
+
+  <section aria-labelledby="why-h">
+    <div class="wrap">
+      <div class="section-head"><p class="label">Why</p><h2 id="why-h">Why a team, not a single assistant</h2></div>
+      <div class="prose">
+        <p>An AI assistant can write good code. What it cannot do is run a delivery. It has no team structure, no agile discipline, no governance, and none of the judgement that comes from years of running real programs. And it cannot vouch for its own work: "the tests passed" means nothing until something other than the author proves it.</p>
+        <p>Agile Dev Team gives AI agents the roles, the order and the controls of a professional delivery team. The agent that writes the code is not the one that writes the tests, and neither of them signs the work off. Every check is run by a program and recorded as a receipt. The practices are the ones used in regulated financial institutions, applied so that you never need to know them.</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="for-h">
+    <div class="wrap">
+      <div class="section-head"><p class="label">Who it is for</p><h2 id="for-h">Built for people who build with AI</h2></div>
+      <div class="prose">
+        <p>It is made for solo builders, product owners and founders who use Claude Code and have never run a development team. Nothing is reachable only by command. You describe what you want in your own words; the plugin confirms in one plain sentence what it understood, and only then acts. Every question comes with a sensible default, and "I don't know, you pick" is always a valid answer.</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="how-h">
+    <div class="wrap stack">
+      <div class="section-head flush"><p class="label">Early access</p><h2 id="how-h">How the team works today</h2>
+        <p class="muted">One user story in. One pull request out.</p></div>
+      <figure class="diagram diagram-orbit">
+<svg viewBox="0 150 960 750" role="img" aria-labelledby="orbit-t orbit-d">
+<title id="orbit-t">How a change travels through Agile Dev Team</title>
+<desc id="orbit-d">A ring of six stops. You write a user story; the manager plans it as small tasks; the developers build it one task at a time, tests first; programs check every task and write a receipt, and a failed check sends the task back; the manager audits the whole change; a pull request with its evidence on top returns to you, and you review and merge it. In the middle: agents decide, programs check, you merge.</desc>
+<defs><marker id="orbit-ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="dg-ah" d="M0,0 L10,5 L0,10 z"/></marker>
+<clipPath id="orbit-disc"><circle cx="480" cy="490" r="155"/></clipPath></defs>
+<circle class="dg-core" cx="480" cy="490" r="155"/>
+<circle class="dg-crescent" cx="420" cy="490" r="155" clip-path="url(#orbit-disc)"/>
+<path class="dg-line" d="M554.6,246.1 A255,255 0 0 1 653.9,303.5" marker-end="url(#orbit-ah)"/>
+<path class="dg-line" d="M728.5,432.6 A255,255 0 0 1 728.5,547.4" marker-end="url(#orbit-ah)"/>
+<path class="dg-line" d="M653.9,676.5 A255,255 0 0 1 554.6,733.9" marker-end="url(#orbit-ah)"/>
+<path class="dg-line" d="M405.4,733.9 A255,255 0 0 1 306.1,676.5" marker-end="url(#orbit-ah)"/>
+<path class="dg-line" d="M231.5,547.4 A255,255 0 0 1 231.5,432.6" marker-end="url(#orbit-ah)"/>
+<path class="dg-line" d="M306.1,303.5 A255,255 0 0 1 405.4,246.1" marker-end="url(#orbit-ah)"/>
+<path class="dg-loop" d="M514.6,628.8 A143,143 0 0 0 579.3,592.9" marker-end="url(#orbit-ah)"/>
+<text x="566" y="652" text-anchor="middle" class="dg-cap" font-style="italic">a failed check</text><text x="566" y="668" text-anchor="middle" class="dg-cap" font-style="italic">sends it back</text>
+<text x="480" y="468" text-anchor="middle" class="dg-mid">Agents decide.</text>
+<text x="480" y="502" text-anchor="middle" class="dg-mid">Programs check.</text>
+<text x="480" y="536" text-anchor="middle" class="dg-mid">You merge.</text>
+<circle class="dg-you" cx="480" cy="235" r="64"/>
+<text x="480" y="211" text-anchor="middle" class="dg-num dg-on-soft">01</text>
+<text x="480" y="233" text-anchor="middle" class="dg-role dg-on">You</text>
+<text x="480" y="251" text-anchor="middle" class="dg-act dg-on-soft">say what you need,</text>
+<text x="480" y="266" text-anchor="middle" class="dg-act dg-on-soft">as one user story</text>
+<circle class="dg-agent" cx="700.8" cy="362.5" r="64"/>
+<text x="700.8" y="338.5" text-anchor="middle" class="dg-num">02</text>
+<text x="700.8" y="360.5" text-anchor="middle" class="dg-role">Manager</text>
+<text x="700.8" y="378.5" text-anchor="middle" class="dg-act">plans it as</text>
+<text x="700.8" y="393.5" text-anchor="middle" class="dg-act">small tasks</text>
+<circle class="dg-agent" cx="700.8" cy="617.5" r="64"/>
+<text x="700.8" y="593.5" text-anchor="middle" class="dg-num">03</text>
+<text x="700.8" y="615.5" text-anchor="middle" class="dg-role">Developers</text>
+<text x="700.8" y="633.5" text-anchor="middle" class="dg-act">build it, one task</text>
+<text x="700.8" y="648.5" text-anchor="middle" class="dg-act">at a time, tests first</text>
+<circle class="dg-prog" cx="480" cy="745" r="64"/>
+<text x="480" y="721" text-anchor="middle" class="dg-num">04</text>
+<text x="480" y="743" text-anchor="middle" class="dg-role">Programs</text>
+<text x="480" y="761" text-anchor="middle" class="dg-act">check every task</text>
+<text x="480" y="776" text-anchor="middle" class="dg-act">and write a receipt</text>
+<circle class="dg-agent" cx="259.2" cy="617.5" r="64"/>
+<text x="259.2" y="593.5" text-anchor="middle" class="dg-num">05</text>
+<text x="259.2" y="615.5" text-anchor="middle" class="dg-role">Manager</text>
+<text x="259.2" y="633.5" text-anchor="middle" class="dg-act">audits the whole</text>
+<text x="259.2" y="648.5" text-anchor="middle" class="dg-act">change</text>
+<circle class="dg-you" cx="259.2" cy="362.5" r="64"/>
+<text x="259.2" y="338.5" text-anchor="middle" class="dg-num dg-on-soft">06</text>
+<text x="259.2" y="360.5" text-anchor="middle" class="dg-role dg-on">Pull request</text>
+<text x="259.2" y="378.5" text-anchor="middle" class="dg-act dg-on-soft">one change, with</text>
+<text x="259.2" y="393.5" text-anchor="middle" class="dg-act dg-on-soft">its evidence on top</text>
+<text x="331" y="233" text-anchor="middle" class="dg-cap" font-style="italic">you review and merge</text>
+<circle class="dg-you dg-key" cx="60" cy="838" r="8"/><text x="76" y="842" class="dg-cap">you, and what comes back to you</text>
+<circle class="dg-agent dg-key" cx="330" cy="838" r="8"/><text x="346" y="842" class="dg-cap">an agent: it decides and builds</text>
+<circle class="dg-prog dg-key" cx="600" cy="838" r="8"/><text x="616" y="842" class="dg-cap">a program: it checks and records</text>
+<text x="48" y="876" class="dg-cap">At most two fix rounds; then the team stops and asks you. Every check runs again, independently, on GitHub.</text>
+</svg>
+        <figcaption>Agents decide. Programs check. You merge. The detail of every check is in the six steps below; the whole of it is in the evidence on each pull request.</figcaption>
+      </figure>
+      <ol class="steps steps-2">
+        <li><strong>You write what you want</strong><p class="muted">as a short user story (one change, described from the user's point of view) with acceptance criteria, and start the run.</p></li>
+        <li><strong>The manager plans it</strong><p class="muted">as small tasks and assigns each to a developer. A program refuses a plan that is vague.</p></li>
+        <li><strong>The developers build it</strong><p class="muted">one task at a time, writing the test first. They may not touch test files, and a program checks that from git.</p></li>
+        <li><strong>Programs check every task</strong><p class="muted">the tests are seen failing before the change and passing after it; the project's own quality gate runs in a clean copy; nothing the step started is left running; a receipt is written for each task.</p></li>
+        <li><strong>The manager audits the whole story</strong><p class="muted">at most two fix rounds; after that the pull request is marked NOT APPROVED and waits for you.</p></li>
+        <li><strong>A program writes the evidence block</strong><p class="muted">and opens the pull request (a proposed change on GitHub that you can read and approve). You read it and merge it. An independent check on GitHub runs the same proofs again on every pull request.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section aria-labelledby="full-h">
+    <div class="wrap stack">
+      <div class="section-head flush"><p class="label">Full release</p><h2 id="full-h">The full team at full release</h2>
+        <p class="muted">Eight roles. The moon grows as the work is proven: new moon when you ask, full moon when you hold the evidence.</p></div>
+      <figure class="diagram">
+        <div class="diagram-wide">
+<svg viewBox="0 120 1280 710" role="img" aria-labelledby="moon-t moon-d">
+<title id="moon-t">Agile Dev Team at full release: three phases</title>
+<desc id="moon-d">A rising path of five moons joined by arrows, from a new moon to a full moon. The new moon is you, saying what you need. A crescent for Understand and plan: the analyst turns your words into user stories; an optional architect learns your systems; the manager sizes the work, team and cost, and you approve once. A half moon for Build: the tester locks the tests before any code; senior and junior developers build; programs check every task and the manager audits; an optional security expert proposes features. A gibbous moon for Learn and hand over: a retrospective improves the playbook; the governance expert maps the evidence; everything still owed by you is listed. The full moon is you again, receiving the evidence pack.</desc>
+<defs><marker id="moon-ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="dg-ah" d="M0,0 L10,5 L0,10 z"/></marker>
+<clipPath id="moon-c1"><circle cx="300" cy="338" r="82"/></clipPath>
+<clipPath id="moon-c2"><circle cx="640" cy="290" r="82"/></clipPath>
+<clipPath id="moon-c3"><circle cx="980" cy="242" r="82"/></clipPath></defs>
+<line class="dg-line" x1="166.5" y1="365.5" x2="206.0" y2="357.4" marker-end="url(#moon-ah)"/>
+<line class="dg-line" x1="393.1" y1="324.9" x2="544.9" y2="303.4" marker-end="url(#moon-ah)"/>
+<line class="dg-line" x1="733.1" y1="276.9" x2="884.9" y2="255.4" marker-end="url(#moon-ah)"/>
+<line class="dg-line" x1="1072.1" y1="223.0" x2="1111.5" y2="214.9" marker-end="url(#moon-ah)"/>
+<circle class="dg-halo" cx="96" cy="380" r="66"/>
+<circle class="dg-shadow" cx="96" cy="380" r="60"/>
+<circle class="dg-halo" cx="300" cy="338" r="88"/>
+<circle class="dg-shadow" cx="300" cy="338" r="82"/>
+<rect class="dg-lit" x="300" y="256" width="82" height="164" clip-path="url(#moon-c1)"/>
+<ellipse class="dg-shadow" cx="300" cy="338" rx="41" ry="82"/>
+<circle class="dg-halo" cx="640" cy="290" r="88"/>
+<circle class="dg-shadow" cx="640" cy="290" r="82"/>
+<rect class="dg-lit" x="640" y="208" width="82" height="164" clip-path="url(#moon-c2)"/>
+<circle class="dg-halo" cx="980" cy="242" r="88"/>
+<circle class="dg-shadow" cx="980" cy="242" r="82"/>
+<rect class="dg-lit" x="980" y="160" width="82" height="164" clip-path="url(#moon-c3)"/>
+<ellipse class="dg-lit" cx="980" cy="242" rx="41" ry="82"/>
+<circle class="dg-halo" cx="1184" cy="200" r="66"/>
+<circle class="dg-lit" cx="1184" cy="200" r="60"/>
+<text x="96" y="374" text-anchor="middle" class="dg-you-t dg-on">You</text>
+<text x="96" y="392" text-anchor="middle" class="dg-you-s dg-on-soft">say what</text>
+<text x="96" y="407" text-anchor="middle" class="dg-you-s dg-on-soft">you need</text>
+<text x="1184" y="194" text-anchor="middle" class="dg-you-t dg-on-lit">You</text>
+<text x="1184" y="212" text-anchor="middle" class="dg-you-s dg-on-lit">receive the</text>
+<text x="1184" y="227" text-anchor="middle" class="dg-you-s dg-on-lit">evidence pack</text>
+<line class="dg-guide" x1="300" y1="434" x2="300" y2="460"/>
+<text x="300" y="500" text-anchor="middle" class="dg-eye">1 · UNDERSTAND AND PLAN</text>
+<text x="300" y="538" text-anchor="middle" class="dg-ph">A plan you approve once</text>
+<text x="300" y="581" text-anchor="middle" class="dg-li">Analyst turns your words into user stories</text>
+<text x="300" y="611" text-anchor="middle" class="dg-li" font-style="italic">Architect learns your systems (optional)</text>
+<text x="300" y="641" text-anchor="middle" class="dg-li">Manager sizes the work, team and cost</text>
+<line class="dg-guide" x1="640" y1="386" x2="640" y2="460"/>
+<text x="640" y="500" text-anchor="middle" class="dg-eye">2 · BUILD</text>
+<text x="640" y="538" text-anchor="middle" class="dg-ph">Tests first, one change at a time</text>
+<text x="640" y="581" text-anchor="middle" class="dg-li">Tester locks the tests before any code</text>
+<text x="640" y="611" text-anchor="middle" class="dg-li">Senior and junior developers build</text>
+<text x="640" y="641" text-anchor="middle" class="dg-li">Programs check every task; manager audits</text>
+<text x="640" y="671" text-anchor="middle" class="dg-li" font-style="italic">Security expert proposes features (optional)</text>
+<line class="dg-guide" x1="980" y1="338" x2="980" y2="460"/>
+<text x="980" y="500" text-anchor="middle" class="dg-eye">3 · LEARN AND HAND OVER</text>
+<text x="980" y="538" text-anchor="middle" class="dg-ph">Evidence, not promises</text>
+<text x="980" y="581" text-anchor="middle" class="dg-li">Retrospective improves the playbook</text>
+<text x="980" y="611" text-anchor="middle" class="dg-li">Governance expert maps the evidence</text>
+<text x="980" y="641" text-anchor="middle" class="dg-li">Everything still owed by you is listed</text>
+<text x="48" y="774" class="dg-li">Standing rules in every release: programs check, agents do not vouch · tests fail first · every loop has a cap · a program merges · evidence.</text>
+<text x="48" y="804" class="dg-li" font-style="italic">In early access today: the manager and the developers, with every check. The full release adds the rest. The product is in development.</text>
+</svg>
+        </div>
+        <div class="diagram-tall">
+<svg viewBox="0 0 430 860" role="img" aria-labelledby="moon-tall-t moon-tall-d">
+<title id="moon-tall-t">Agile Dev Team at full release: three phases</title>
+<desc id="moon-tall-d">A rising path of five moons joined by arrows, from a new moon to a full moon. The new moon is you, saying what you need. A crescent for Understand and plan: the analyst turns your words into user stories; an optional architect learns your systems; the manager sizes the work, team and cost, and you approve once. A half moon for Build: the tester locks the tests before any code; senior and junior developers build; programs check every task and the manager audits; an optional security expert proposes features. A gibbous moon for Learn and hand over: a retrospective improves the playbook; the governance expert maps the evidence; everything still owed by you is listed. The full moon is you again, receiving the evidence pack.</desc>
+<defs><marker id="moon-tall-ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="dg-ah" d="M0,0 L10,5 L0,10 z"/></marker>
+<clipPath id="moon-tall-c1"><circle cx="62" cy="220" r="44"/></clipPath>
+<clipPath id="moon-tall-c2"><circle cx="62" cy="397" r="44"/></clipPath>
+<clipPath id="moon-tall-c3"><circle cx="62" cy="593" r="44"/></clipPath></defs>
+<circle class="dg-halo" cx="62" cy="70" r="47"/>
+<circle class="dg-shadow" cx="62" cy="70" r="41"/>
+<text x="62" y="66" text-anchor="middle" class="dg-you-t dg-on">You</text>
+<text x="62" y="83" text-anchor="middle" class="dg-you-s dg-on-soft">say what</text>
+<text x="62" y="97" text-anchor="middle" class="dg-you-s dg-on-soft">you need</text>
+<circle class="dg-halo" cx="62" cy="220" r="50"/>
+<circle class="dg-shadow" cx="62" cy="220" r="44"/>
+<rect class="dg-lit" x="62" y="176" width="44" height="88" clip-path="url(#moon-tall-c1)"/>
+<ellipse class="dg-shadow" cx="62" cy="220" rx="22" ry="44"/>
+<text x="130" y="190" class="dg-eye">1 · UNDERSTAND AND PLAN</text>
+<text x="130" y="214" class="dg-ph">A plan you approve once</text>
+<text x="130" y="236" class="dg-li">Analyst turns your words into user stories</text>
+<text x="130" y="255" class="dg-li" font-style="italic">Architect learns your systems (optional)</text>
+<text x="130" y="274" class="dg-li">Manager sizes the work, team and cost</text>
+<circle class="dg-halo" cx="62" cy="397" r="50"/>
+<circle class="dg-shadow" cx="62" cy="397" r="44"/>
+<rect class="dg-lit" x="62" y="353" width="44" height="88" clip-path="url(#moon-tall-c2)"/>
+<text x="130" y="367" class="dg-eye">2 · BUILD</text>
+<text x="130" y="391" class="dg-ph">Tests first, one change at a time</text>
+<text x="130" y="413" class="dg-li">Tester locks the tests before any code</text>
+<text x="130" y="432" class="dg-li">Senior and junior developers build</text>
+<text x="130" y="451" class="dg-li">Programs check every task; manager audits</text>
+<text x="130" y="470" class="dg-li" font-style="italic">Security expert proposes features (optional)</text>
+<circle class="dg-halo" cx="62" cy="593" r="50"/>
+<circle class="dg-shadow" cx="62" cy="593" r="44"/>
+<rect class="dg-lit" x="62" y="549" width="44" height="88" clip-path="url(#moon-tall-c3)"/>
+<ellipse class="dg-lit" cx="62" cy="593" rx="22" ry="44"/>
+<text x="130" y="563" class="dg-eye">3 · LEARN AND HAND OVER</text>
+<text x="130" y="587" class="dg-ph">Evidence, not promises</text>
+<text x="130" y="609" class="dg-li">Retrospective improves the playbook</text>
+<text x="130" y="628" class="dg-li">Governance expert maps the evidence</text>
+<text x="130" y="647" class="dg-li">Everything still owed by you is listed</text>
+<circle class="dg-halo" cx="62" cy="770" r="47"/>
+<circle class="dg-lit" cx="62" cy="770" r="41"/>
+<text x="62" y="766" text-anchor="middle" class="dg-you-t dg-on-lit">You</text>
+<text x="62" y="783" text-anchor="middle" class="dg-you-s dg-on-lit">receive the</text>
+<text x="62" y="797" text-anchor="middle" class="dg-you-s dg-on-lit">evidence pack</text>
+<line class="dg-line" x1="62" y1="123" x2="62" y2="162" marker-end="url(#moon-tall-ah)"/>
+<line class="dg-line" x1="62" y1="276" x2="62" y2="339" marker-end="url(#moon-tall-ah)"/>
+<line class="dg-line" x1="62" y1="453" x2="62" y2="535" marker-end="url(#moon-tall-ah)"/>
+<line class="dg-line" x1="62" y1="649" x2="62" y2="715" marker-end="url(#moon-tall-ah)"/>
+</svg>
+        </div>
+        <figcaption>You approve once at the start and receive the evidence at the end. The role details are presented in the table; if you would like to understand more about the mechanics of the build, contact us.</figcaption>
+      </figure>
+      <section class="scroll" tabindex="0" aria-label="The eight roles, a table">
+        <table class="roles">
+          <caption>The eight roles</caption>
+          <thead>
+            <tr><th scope="col">Role</th><th scope="col">What it does</th><th scope="col">Status</th></tr>
+          </thead>
+          <tbody>
+              <tr><th scope="row">Manager</th><td>Knows the project, plans each user story as small tasks, assigns them, and audits the finished work. Never writes code.</td><td class="when"><span class="chip chip-now">Early access</span></td></tr>
+              <tr><th scope="row">Senior developer</th><td>Builds tasks that need judgement or span several files.</td><td class="when"><span class="chip chip-now">Early access</span></td></tr>
+              <tr><th scope="row">Junior developer</th><td>Builds small, tightly specified tasks. Stops and asks rather than guesses.</td><td class="when"><span class="chip chip-now">Early access</span></td></tr>
+              <tr><th scope="row">Top-model developer</th><td>Takes the hardest tasks, and tasks the senior could not bring to standard.</td><td class="when"><span class="chip chip-soon">Coming</span></td></tr>
+              <tr><th scope="row">Tester</th><td>Writes each task's tests before the code exists, locks them, then reviews the code after.</td><td class="when"><span class="chip chip-soon">Coming</span></td></tr>
+              <tr><th scope="row">Analyst</th><td>Turns what you say in plain English into user stories with acceptance criteria that can be tested. Handles change requests the same way.</td><td class="when"><span class="chip chip-soon">Coming</span></td></tr>
+              <tr><th scope="row">Cybersecurity and governance expert</th><td>Proposes security features if you want them, and always writes the end-of-project findings, governance mapping and evidence pack.</td><td class="when"><span class="chip chip-soon">Coming</span></td></tr>
+              <tr><th scope="row">Solution architect</th><td>Optional, for builds that must fit systems you already have: learns your setup before the build and checks the fit at the end.</td><td class="when"><span class="chip chip-soon">Coming</span></td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </section>
+
+  <section aria-labelledby="rules-h">
+    <div class="wrap stack">
+      <div class="section-head flush"><p class="label">Rules</p><h2 id="rules-h">The rules it works by</h2></div>
+      <div class="split">
+        <ul class="points">
+          <li><strong>Programs check. Agents do not vouch.</strong> Running the tests, the quality gate and the readiness checks, and recording the results, is done by programs. No agent is ever the source of "the tests passed".</li>
+          <li><strong>Tests fail first, then pass.</strong> Code is never accepted on a pass alone.</li>
+          <li><strong>Nobody checks their own work.</strong> The agent that writes the code does not write its tests, and neither signs the work off.</li>
+          <li><strong>Every loop has a limit.</strong> Two fix rounds, then the team stops and reports to you.</li>
+        </ul>
+        <ul class="points">
+          <li><strong>A program merges, never an agent.</strong> And only in the way you chose at setup: automatically once every check passes, or you merge each change yourself on GitHub.</li>
+          <li><strong>Evidence based.</strong> The plugin provides full audit and test evidence; the final results are always owed by you.</li>
+          <li><strong>Your systems stay yours.</strong> The plugin never connects to your systems. Where it needs to know your setup, you describe it in a form and share exported files.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="eff-h">
+    <div class="wrap stack">
+      <div class="section-head flush"><p class="label">Design</p><h2 id="eff-h">Built to be fast, economical and right the first time</h2>
+        <p class="muted">Agile Dev Team follows how well-run delivery teams work and how current AI agent systems are designed. These choices keep a build quick, light on tokens (the units AI models charge by) and high in quality.</p></div>
+      <div class="split">
+        <ul class="points">
+          <li><strong>Agile, from the first word.</strong> Work is written as user stories with acceptance criteria that can be tested, kept in a prioritised backlog, built in small steps and closed with a retrospective that improves the team's playbook for the next story.</li>
+          <li><strong>The whole software lifecycle.</strong> Requirements, design decisions, build, test, release readiness and change requests each have an owner, and the end-of-project record refers to ISO/IEC standards for the lifecycle and for testing.</li>
+          <li><strong>Quality built in.</strong> Tests are written before the code, and the whole test suite runs again after every task, so a regression is caught where it starts.</li>
+        </ul>
+        <ul class="points">
+          <li><strong>The right model for each job.</strong> Judgement roles use the strongest model; routine building uses smaller, cheaper ones. You choose the models at setup; none is fixed in the plugin.</li>
+          <li><strong>Programs do the checking.</strong> Tests, quality gates and scans use no tokens and give the same answer every time.</li>
+          <li><strong>Each agent reads only what it needs.</strong> Hand-offs are short written plans, not long conversations, so no agent pays to re-read the whole history.</li>
+          <li><strong>Plan, then spend.</strong> In the full release a quick sizing pass gives you a cost estimate before a large run, planning is done story by story so no plan goes stale, and independent work runs in parallel. Security proposals are opt-in, so you pay only for the review you want.</li>
+        </ul>
+      </div>
+      <p class="muted">The design follows patterns that have become standard for AI agent systems: specialised roles, written hand-offs, programs around the model, a human decision at the gates, and a limit on every loop. Early access has the written plans, the model tiers and programs checking every task; the cost estimate, parallel work and security proposals arrive with the full release.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="get-h">
+    <div class="wrap">
+      <div class="split">
+        <div class="block">
+          <div class="section-head flush"><p class="label">Outcome</p><h2 id="get-h">What you get at the end</h2></div>
+          <ul class="points">
+            <li>One pull request per change, each opening with the evidence: every requirement, the test that covers it, and the result. You choose at setup whether you merge each one yourself or a program merges it once every check passes.</li>
+            <li>A traceability record from requirement to story to test to commit to pull request, written by a program.</li>
+            <li>At full release: a plain-language record of how the team worked, the cybersecurity findings, a mapping to published frameworks (NIST AI RMF and the EU AI Act where there is an AI component; ISO/IEC references for the process), and a list of what is still owed by you, such as a penetration test.</li>
+          </ul>
+        </div>
+        <div class="block">
+          <div class="section-head flush"><p class="label">Requirements</p><h2 id="need-h">What you need</h2></div>
+          <p>Claude Code, git, and a project on GitHub with tests that a command can run. It runs on Windows, macOS and Linux. The plugin brings everything else it needs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="contact" aria-labelledby="contact-h">
+    <div class="wrap">
+      <div class="band-inner">
+        <div class="prose">
+          <p class="label">Contact</p>
+          <h2 id="contact-h">Early access</h2>
+          <p>Agile Dev Team is in development. The manager and the two developers, with every check, are available now to a small number of early users. Write to us with a line about what you are building and we will reply by email.</p>
+        </div>
+        <div class="contact-card">
+          <p class="email"><a class="tap" href="mailto:contact@heveliusai.com">contact@heveliusai.com</a></p>
+          <div class="copy-row" id="copy-row" hidden>
+            <button class="btn btn-quiet" type="button" id="copy-email">Copy address</button>
+            <span id="copy-status" role="status"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <h2>Company</h2>
+      <p>Hevelius AI Group LLC, Florida, USA.</p>
+      <p>Named for Johannes Hevelius, who published the first atlas of the Moon from his own observations. We hold AI work to the same standard: trust what is proven and recorded.</p>
+    </div>
+    <div>
+      <h2>Privacy</h2>
+      <p>This site sets no cookies and runs no analytics. If you email us, we use your address only to reply.</p>
+    </div>
+    <div>
+      <h2>Accessibility</h2>
+      <p>This site aims to meet WCAG 2.2 level AA. If something does not work for you, write to <a class="tap-inline" href="mailto:contact@heveliusai.com">contact@heveliusai.com</a> and we will fix it.</p>
+    </div>
+    <p class="fineprint">© 2026 Hevelius AI Group LLC. Claude and Claude Code are trademarks of Anthropic, PBC. Hevelius AI Group is an independent company and is not affiliated with Anthropic.</p>
+  </div>
+</footer>
+</body>
+</html>
