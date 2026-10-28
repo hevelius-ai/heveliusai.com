@@ -19,6 +19,7 @@ Owner's answers, 27 Oct 2026:
 - Advisory sentence: "fifteen years on those programs **with** global banks".
 - Founder's LinkedIn: https://www.linkedin.com/in/christopher-zaczek-34b95375/ (the Person's `sameAs`, and the link on `/about`).
 - Product page sentence (FRD section 9, 28 Oct 2026): "The practices come from how regulated financial institutions and top consulting firms manage change and transformation: nobody checks their own work, tests come before code, and every change leaves a record. The plugin applies them for you."
+- "top consulting firms" kept as written (owner, decision 3-2A, 28 Oct 2026), knowingly against FRD rule 11.5 (numbers over adjectives).
 - Company LinkedIn (28 Oct 2026): https://www.linkedin.com/company/hevelius-ai-group-llc/ (the Organization's `sameAs`
   on the main page and `/about`; not yet a visible link, since the footer is part of the main-page changes still to come).
 - The main page will get further changes directed by the owner before publishing (replaces the parked list in FRD 3).
