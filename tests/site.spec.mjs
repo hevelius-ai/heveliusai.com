@@ -445,6 +445,22 @@ test("E5-S2-2: header and footer are the same on every page", async ({ page }) =
   for (const p of parts.slice(1)) expect(p).toEqual(parts[0]);
 });
 
+// The header does not follow the reader down, so the footer offers the way back up (owner, 28 Oct 2026).
+for (const path of PAGES) {
+  test(`E5-S2-2: "Back to top" at the bottom of ${path} returns to the header on a phone`, async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await open(page, path);
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    const link = page.getByRole("link", { name: "Back to top" });
+    await expect(link).toBeInViewport();
+    const box = await link.boundingBox();
+    expect(box.height).toBeGreaterThanOrEqual(44);
+    await link.click();
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+    await expect(page.getByRole("button", { name: "Menu" })).toBeInViewport();
+  });
+}
+
 // ---------------------------------------------------------------- the main page
 test("E2-S1-1 and E2-S1-2: the opening names both offers and its buttons lead on", async ({ page }) => {
   await open(page);
