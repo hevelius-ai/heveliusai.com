@@ -650,6 +650,8 @@ test("E5-S2-5: the product page has no version, release code or install command,
   expect(text).not.toMatch(/\b\d+\.\d+(\.\d+)?\b/);
   expect(text).not.toMatch(/\/dev:|install|marketplace add|\bv\d/i);
   await expect(page.locator(".opening .eyebrow")).toHaveText("In development · early access on request");
+  // FRD section 9, settled by the owner on 28 Oct 2026.
+  expect(text.replace(/\s+/g, " ")).toContain("The practices come from how regulated financial institutions and top consulting firms manage change and transformation: nobody checks their own work, tests come before code, and every change leaves a record. The plugin applies them for you.");
 });
 
 test("E5-S2-6: the orbit's text alternative and the six steps give the same steps in the same order", async ({ page }) => {

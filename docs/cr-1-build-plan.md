@@ -18,6 +18,7 @@ Owner's answers, 27 Oct 2026:
 - All recommendations in section 3 accepted.
 - Advisory sentence: "fifteen years on those programs **with** global banks".
 - Founder's LinkedIn: https://www.linkedin.com/in/christopher-zaczek-34b95375/ (the Person's `sameAs`, and the link on `/about`).
+- Product page sentence (FRD section 9, 28 Oct 2026): "The practices come from how regulated financial institutions and top consulting firms manage change and transformation: nobody checks their own work, tests come before code, and every change leaves a record. The plugin applies them for you."
 - Company LinkedIn (28 Oct 2026): https://www.linkedin.com/company/hevelius-ai-group-llc/ (the Organization's `sameAs`
   on the main page and `/about`; not yet a visible link, since the footer is part of the main-page changes still to come).
 - The main page will get further changes directed by the owner before publishing (replaces the parked list in FRD 3).
