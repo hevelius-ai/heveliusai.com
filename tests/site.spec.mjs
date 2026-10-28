@@ -5,8 +5,13 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 const EMAIL = "contact@heveliusai.com";
-// Must match the latest release of Agile Dev Team on the day the site goes live (main page only).
-const VERSION = "0.1.0";
+// Each role's release, from the plan on the Notion page "Agile Dev Team: requirements" (owner, 28 Oct 2026).
+// The main page and the product page show the same.
+const RELEASE = {
+  Manager: "Early access", "Senior developer": "Early access", "Junior developer": "Early access", "Top-model developer": "Early access",
+  Tester: "Planned, 0.2", Analyst: "Planned, 0.2",
+  "Cybersecurity and governance expert": "Planned, 0.3", "Solution architect": "Planned, 0.3",
+};
 // The four pages. Every check of section 6 runs on each of them.
 const PAGES = ["/", "/agile-dev-team", "/advisory", "/about"];
 
@@ -447,10 +452,18 @@ test("E2-S1-1 and E2-S1-2: the opening names both offers and its buttons lead on
   const lede = page.locator(".lede");
   await expect(lede).toContainText("We build tools that make AI prove its work.");
   await expect(lede).toContainText("We help organizations adopt AI");
-  await page.getByRole("link", { name: "See Agile Dev Team" }).click();
-  await expect(page).toHaveURL(/#product$/);
   await page.getByRole("link", { name: "Get in touch" }).click();
   await expect(page).toHaveURL(/#contact$/);
+  await page.getByRole("link", { name: "See Agile Dev Team" }).click();
+  await expect(page).toHaveURL(/\/agile-dev-team$/);
+  await expect(page.locator("h1")).toHaveText("Agile Dev Team");
+});
+
+test("E5-S2-2: each main-page section leads to its own page", async ({ page }) => {
+  await open(page);
+  for (const [name, href] of [["How the team works", "/agile-dev-team"], ["See the three offers in detail", "/advisory"], ["More about Christopher", "/about"]]) {
+    await expect(page.getByRole("link", { name: new RegExp(`^${name}`) })).toHaveAttribute("href", href);
+  }
 });
 
 test("E2-S1-1: on a small phone the headline and its sentence come before the emblem", async ({ page }) => {
@@ -462,86 +475,64 @@ test("E2-S1-1: on a small phone the headline and its sentence come before the em
   expect(emblem.y).toBeGreaterThan(lede.y + lede.height);
 });
 
-test("E2-S2-1 to E2-S2-3: product status, planned roles and the illustration caption", async ({ page }) => {
+test("E2-S2-1 to E2-S2-3: product status, each role's release, and the illustration caption", async ({ page }) => {
   await open(page);
-  const status = page.locator('[data-test="status"]');
-  await expect(status).toContainText(`Version ${VERSION}`);
-  await expect(status).toContainText("early access");
-
+  await expect(page.locator('[data-test="status"]')).toHaveText("In development · early access on request");
   const rows = await page.locator("#product table tbody tr").evaluateAll((trs) =>
     trs.map((tr) => [tr.querySelector("th").textContent.trim(), tr.querySelector("td.when").textContent.trim()]),
   );
-  expect(rows.length).toBe(5);
-  for (const [role, when] of rows) {
-    expect(when, role).toMatch(new RegExp(`^(In ${VERSION.replace(/\./g, "\\.")}|Planned, \\d+\\.\\d+)$`));
-  }
+  expect(Object.fromEntries(rows)).toEqual(RELEASE);
   await expect(page.locator(".evidence figcaption")).toContainText("Illustration");
+  // No released version and no commands on the main page (owner, 28 Oct 2026): only the planned releases of roles.
+  const text = await page.locator("#product").textContent();
+  expect(text).not.toMatch(/Version|\b0\.1\b|\/dev:/);
 });
 
 test("E2-S2-2: the team picture fits the screen, has a text alternative and marks planned roles", async ({ page }) => {
-  for (const [width, shown, hidden] of [[1440, ".orbit-wide", ".orbit-narrow"], [390, ".orbit-narrow", ".orbit-wide"]]) {
+  for (const [width, shown, hidden] of [[1440, ".orbit-wide", ".orbit-narrow"], [720, ".orbit-wide", ".orbit-narrow"], [719, ".orbit-narrow", ".orbit-wide"], [390, ".orbit-narrow", ".orbit-wide"]]) {
     await page.setViewportSize({ width, height: 900 });
     await open(page);
     const picture = page.locator(`.team-visual ${shown}`);
     await expect(picture).toBeVisible();
     await expect(page.locator(`.team-visual ${hidden}`)).toBeHidden();
     await expect(picture).toHaveAttribute("role", "img");
-    await expect(picture).toHaveAccessibleName(/Tester and an Analyst are planned for version 0\.2/);
+    await expect(picture).toHaveAccessibleName(/top-model developer, all in early access\. A Tester and an Analyst are planned for 0\.2\. A Cybersecurity and governance expert and an optional Solution architect are planned for 0\.3\./);
+    // Planned roles are dashed and the key says so; the table above gives each role's release in words.
+    await expect(page.locator(".team-visual figcaption")).toHaveText("Dashed: planned for 0.2 & 0.3");
+    await expect(page.locator(".team-visual figcaption")).toBeVisible();
   }
-  // Planned roles are shown by a dashed outline and in words, never by colour alone: the table
-  // and the text alternative say "planned", and the phone picture has a key under it.
-  await expect(page.locator(".team-visual figcaption")).toHaveText("Dashed: planned for 0.2");
-  await expect(page.locator(".team-visual figcaption")).toBeVisible();
-  await expect(page.locator(".orbit-wide .tv-node-planned")).toHaveCount(2);
+  for (const svg of [".orbit-wide", ".orbit-narrow"]) {
+    await expect(page.locator(`${svg} .tv-node`)).toHaveCount(3);
+    await expect(page.locator(`${svg} .tv-node-planned`)).toHaveCount(2);
+    await expect(page.locator(`${svg} .tv-node-later`)).toHaveCount(2);
+  }
 });
 
-test("E2-S2-2: beside the table, the whole team picture sits between the headings and the last line of text", async ({ page }) => {
-  // Top edge: just under the column-heading text. Bottom edge: the top of the lowercase letters
-  // (the x-height) on the table's last line of text.
-  // Extra lines are added to the first and last rows, as a browser that wraps text differently would.
-  for (const [width, extra] of [[1280, null], [1440, null], [1920, null], [1280, "first"], [1440, "last"]]) {
+test("E2-S2-2: the team picture sits under the table, inside the screen, with names at 16px or more", async ({ page }) => {
+  for (const width of [720, 768, 1024, 1280, 1440, 1920]) {
     await page.setViewportSize({ width, height: 900 });
     await open(page);
-    if (extra) await page.evaluate((which) => {
-      const rows = document.querySelectorAll("#product tbody tr");
-      (which === "first" ? rows[0] : rows[rows.length - 1]).querySelector("td").innerHTML += "<br>one more line";
-    }, extra);
     const m = await page.evaluate(() => {
-      const table = document.querySelector("#product table");
-      const rects = (el) => { const r = document.createRange(); r.selectNodeContents(el); return [...r.getClientRects()]; };
-      const lastRow = [...table.querySelectorAll("tbody tr")].pop();
       const svg = document.querySelector(".team-visual .orbit-wide");
       const box = svg.getBoundingClientRect();
-      const parts = [...svg.querySelectorAll("rect, circle, text, path")].map((el) => el.getBoundingClientRect()).filter((r) => r.width && r.height);
+      const vb = svg.viewBox.baseVal;
+      const scale = Math.min(box.width / vb.width, box.height / vb.height);
+      const outside = [...svg.querySelectorAll("text")].filter((t) => {
+        const r = t.getBoundingClientRect();
+        return r.left < box.left - 1 || r.right > box.right + 1 || r.top < box.top - 1 || r.bottom > box.bottom + 1;
+      }).map((t) => t.textContent);
       return {
-        top: box.top, bottom: box.bottom, left: box.left, right: box.right,
-        headBottom: rects(table.querySelector("thead th"))[0].bottom,
-        lastLine: (() => {
-          const td = lastRow.querySelector("td");
-          const mark = document.createElement("span");
-          mark.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
-          td.append(mark);
-          const baseline = mark.getBoundingClientRect().bottom;
-          mark.remove();
-          const cs = getComputedStyle(td);
-          const ctx = document.createElement("canvas").getContext("2d");
-          ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
-          return baseline - ctx.measureText("x").actualBoundingBoxAscent;
-        })(),
-        drawnTop: Math.min(...parts.map((r) => r.top)), drawnBottom: Math.max(...parts.map((r) => r.bottom)),
-        label: parseFloat(getComputedStyle(svg.querySelector(".tv-label")).fontSize) * box.height / svg.viewBox.baseVal.height,
+        tableBottom: document.querySelector("#product table").getBoundingClientRect().bottom,
+        top: box.top, left: box.left, right: box.right, outside,
+        label: Math.min(...[...svg.querySelectorAll(".tv-label")].map((t) => parseFloat(getComputedStyle(t).fontSize))) * scale,
         viewport: document.documentElement.clientWidth,
       };
     });
-    const tag = `${width}${extra ? ` with an extra line in the ${extra} row` : ""}`;
-    expect(Math.abs(m.top - m.headBottom), `${tag}: top under the heading text`).toBeLessThanOrEqual(2);
-    expect(Math.abs(m.bottom - m.lastLine), `${tag}: bottom at the top of the last line's lowercase letters`).toBeLessThanOrEqual(2);
-    expect(m.drawnTop, `${tag}: nothing above the box`).toBeGreaterThanOrEqual(m.top - 1);
-    expect(m.drawnBottom, `${tag}: nothing below the box`).toBeLessThanOrEqual(m.bottom + 1);
-    expect(m.label, `${tag}: names at least 16px`).toBeGreaterThanOrEqual(16);
+    expect(m.top, `${width}: under the table`).toBeGreaterThan(m.tableBottom);
+    expect(m.label, `${width}: names at least 16px`).toBeGreaterThanOrEqual(16);
+    expect(m.outside, `${width}: every name inside the picture`).toEqual([]);
     expect(m.left).toBeGreaterThanOrEqual(0);
     expect(m.right).toBeLessThanOrEqual(m.viewport);
-    await expect(page.locator(".team-visual figcaption")).toBeHidden();
   }
 });
 
@@ -643,11 +634,12 @@ test("E5-S2-1: each new page has its own title, main heading, description and sh
   }
 });
 
-test("E5-S2-5: the product page has no version, release code or install command, and the agreed status line", async ({ page }) => {
+test("E5-S2-5: the product page shows no released version, release code or install command; planned roles name their release", async ({ page }) => {
   await open(page, "/agile-dev-team");
-  // The page's own content; the shared footer names WCAG 2.2.
+  // The page's own content; the shared footer names WCAG 2.2. Planned roles name their release (owner, 28 Oct 2026),
+  // and the requirements name Python 3.11; nothing else carries a version.
   const text = await page.locator("main").textContent();
-  expect(text).not.toMatch(/\b\d+\.\d+(\.\d+)?\b/);
+  expect(text.replace(/Planned, 0\.[23]/g, "").replace(/Python 3\.11/g, "")).not.toMatch(/\b\d+\.\d+(\.\d+)?\b/);
   expect(text).not.toMatch(/\/dev:|install|marketplace add|\bv\d/i);
   await expect(page.locator(".opening .eyebrow")).toHaveText("In development · early access on request");
   // FRD section 9, settled by the owner on 28 Oct 2026.
@@ -688,9 +680,7 @@ test("E5-S2-7: every role in the full-release picture is in the eight-role table
   }
   // The picture says early access has the manager and the developers; the table says the same.
   expect(drawn).toContain("In early access today: the manager and the developers");
-  for (const [role, status] of Object.entries(rows)) {
-    expect(status, role).toBe(["Manager", "Senior developer", "Junior developer"].includes(role) ? "Early access" : "Coming");
-  }
+  expect(rows).toEqual(RELEASE);
   // The phone picture carries the same words as the wide one.
   const tall = await page.locator(".diagram-tall svg").textContent();
   for (const word of Object.keys(roles)) expect(tall, word).toContain(word);

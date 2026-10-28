@@ -16,8 +16,8 @@ themes, touch targets, text size, keyboard order, headings, requests, weight, sp
 | E1-S2-5 | Largest phone text size | 200% text at 320 and 390 portrait and in landscape: nothing outside the screen or clipped |
 | E1-S2-6 | 44 px touch targets, nothing needs hover | Every link and button measured; hover rules may only restyle |
 | E2-S1-1, E2-S1-2 | Opening names both offers; buttons lead on | Headline and sentence text; buttons go to `#product` and `#contact` |
-| E2-S2-1 | Latest version and "early access" | Status line against `VERSION`; the release itself is checked by hand before going live |
-| E2-S2-2 | Roles not yet released are "Planned" with a release | Every status reads "In 0.1.0" or "Planned, x.y" |
+| E2-S2-1 | Status and "early access" | Status line reads "In development · early access on request" (owner, 28 Oct 2026: no released version and no commands on the main page) |
+| E2-S2-2 | Roles not yet released are "Planned" with a release | The eight roles and their releases match the plan on both pages (`RELEASE` in the checks); the team picture (version 2: early access solid, 0.2 and 0.3 dashed) sits under the table with names at 16px or more from 720px, and a phone version without names below that |
 | E2-S2-3 | Evidence example is labelled an illustration | Caption text |
 | E2-S2-4 | Roles table scrolls in its own area, by keyboard | Focusable labelled area; Arrow Right scrolls it at 320 with 200% text |
 | E2-S3-1 | Three offers, no certification claim | Three offer headings; no "certified", "compliant" or "secure" on the page |

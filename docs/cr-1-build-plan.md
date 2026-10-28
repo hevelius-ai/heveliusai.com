@@ -24,6 +24,15 @@ Owner's answers, 27 Oct 2026:
   on the main page and `/about`; not yet a visible link, since the footer is part of the main-page changes still to come).
 - The main page will get further changes directed by the owner before publishing (replaces the parked list in FRD 3).
 
+Main page agreed by the owner on 28 Oct 2026 ("main page final"), reviewed in the mockup artifact and built on the branch:
+
+- No released version and no commands on the main page: status "In development · early access on request"; steps 1 and 3 in words; "The analyst arrives in 0.2".
+- Both pages list eight roles with the same releases: early access (manager, senior, junior, top-model developer), Planned 0.2 (tester, analyst), Planned 0.3 (cybersecurity and governance expert, solution architect). Version numbers for planned roles reverse the 26 Oct "no version numbers" rule for the product page (owner, 28 Oct 2026).
+- Team picture version 2 (three rings; version 1 kept in `docs/design/team-picture-v1`), under the table at every width.
+- "What you need" on both pages: "Claude Code, GitHub and Python 3.11 or newer. It runs on Windows, macOS and Linux." (M-2, M-3A).
+- "See Agile Dev Team" opens `/agile-dev-team`; the product, advisory and founder sections each link to their page (M-6A).
+- Product page: one benefit sentence in the opening (ADT-1C); heading "Created for people who build with AI"; "The manager and the developers" (M-5A).
+
 What changed from the plan while building:
 
 - The three pull requests became commits on one branch, for the reason above.
