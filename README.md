@@ -58,12 +58,4 @@ npm run serve    # preview at http://localhost:4173/
 ## Before publishing the four-page update (CR-1)
 
 The update is built on its own branch and is not merged until the owner's changes to the main page are in,
-because a merge to `main` publishes. Then:
-
-1. Set `lastmod` in `site/sitemap.xml` to the day of publishing.
-2. Run the Rich Results Test and validator.schema.org on the four addresses, and LinkedIn Post Inspector on the three new ones.
-3. PageSpeed Insights, mobile, on `/agile-dev-team` and `/about`.
-4. Real iPhone (portrait and landscape, light and dark), keyboard only and 200% zoom on the three new pages.
-5. Search Console: submit the sitemap and request indexing for the four addresses; register the IndexNow key in Bing
-   Webmaster Tools and send the four addresses once. Check the Page indexing report after 14 days (E5-S4-1).
-
+because a merge to `main` publishes. The steps, in order, are in [`docs/publish-checklist.md`](docs/publish-checklist.md).

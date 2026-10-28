@@ -742,6 +742,9 @@ test("E5-S2-3: the about page carries the founder text, the photo, the company a
   const person = data["@graph"].find((n) => n["@type"] === "Person");
   expect(profile.mainEntity["@id"]).toBe(person["@id"]);
   expect(person.sameAs).toEqual(["https://www.linkedin.com/in/christopher-zaczek-34b95375/"]);
+  const org = data["@graph"].find((n) => n["@type"] === "Organization");
+  expect(org.sameAs).toEqual(["https://www.linkedin.com/company/hevelius-ai-group-llc/"]);
+  expect(org.founder["@id"]).toBe(person["@id"]);
 });
 
 test("E5-S2-4: the Southwest Florida sentence appears once on the advisory page, and there are no city pages", async ({ page }) => {

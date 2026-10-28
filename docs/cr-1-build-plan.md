@@ -17,8 +17,9 @@ Owner's answers, 27 Oct 2026:
 
 - All recommendations in section 3 accepted.
 - Advisory sentence: "fifteen years on those programs **with** global banks".
-- Founder's LinkedIn: https://www.linkedin.com/in/christopher-zaczek-34b95375/ (no company page yet, so the
-  Organization has no `sameAs` for now).
+- Founder's LinkedIn: https://www.linkedin.com/in/christopher-zaczek-34b95375/ (the Person's `sameAs`, and the link on `/about`).
+- Company LinkedIn (28 Oct 2026): https://www.linkedin.com/company/hevelius-ai-group-llc/ (the Organization's `sameAs`
+  on the main page and `/about`; not yet a visible link, since the footer is part of the main-page changes still to come).
 - The main page will get further changes directed by the owner before publishing (replaces the parked list in FRD 3).
 
 What changed from the plan while building:
