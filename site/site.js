@@ -54,3 +54,26 @@
     window.addEventListener("resize", update);
   }
 })();
+
+// On phones the header links fold behind a "Menu" button. Without a script the button stays
+// hidden and the links stay on screen as a list.
+(function () {
+  var header = document.querySelector(".site-header");
+  var btn = header && header.querySelector(".menu-btn");
+  var nav = document.getElementById("site-nav");
+  if (!btn || !nav) return;
+
+  header.classList.add("js-menu");
+  btn.hidden = false;
+  btn.addEventListener("click", function () {
+    var open = nav.classList.toggle("open");
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  // A link inside the page (Contact) closes the list again.
+  nav.addEventListener("click", function (e) {
+    if (e.target.closest("a")) {
+      nav.classList.remove("open");
+      btn.setAttribute("aria-expanded", "false");
+    }
+  });
+})();

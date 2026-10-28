@@ -4,7 +4,7 @@
   "description": "Checks and asset tools for heveliusai.com. Visitors never depend on any of this.",
   "scripts": {
     "serve": "node tools/serve.mjs",
-    "validate": "html-validate site/index.html",
+    "validate": "html-validate site/*.html",
     "test": "playwright test",
     "check": "npm run validate && npm test",
     "fonts": "node tools/copy-fonts.mjs",

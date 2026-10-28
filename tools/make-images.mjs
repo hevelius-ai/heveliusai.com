@@ -35,5 +35,21 @@ h1{font:600 52px/1.12 M;letter-spacing:-.02em;margin:0 0 32px}
 await page.evaluate(() => document.fonts.ready);
 await page.screenshot({ path: new URL("img/share.png", site).pathname });
 
+// One share image per page beside the main one: navy, the simplified mark, the page's name.
+for (const [name, title] of [["agile-dev-team", "Agile Dev Team"], ["advisory", "AI advisory"], ["about", "About Hevelius AI Group"]]) {
+  await page.setContent(`<style>
+@font-face{font-family:M;font-weight:600;src:url(${montserrat}) format("woff2")}
+@font-face{font-family:P;font-weight:500;src:url(${plexMono}) format("woff2")}
+html,body{margin:0;width:1200px;height:630px;background:#0B1F3A;color:#F2F4F7;overflow:hidden}
+.c{display:flex;align-items:center;gap:72px;height:100%;padding:0 96px;box-sizing:border-box}
+img{width:360px;height:360px;flex:none}
+.name{font:600 30px/1 M;letter-spacing:.32em;color:#C0C6CF;margin:0 0 28px}
+h1{font:600 64px/1.1 M;letter-spacing:-.02em;margin:0 0 32px}
+.url{font:500 24px/1 P;color:#C0C6CF;margin:0}
+</style><div class="c"><img src="${favicon}"><div><p class="name">HEVELIUS AI GROUP</p><h1>${title}</h1><p class="url">heveliusai.com/${name}</p></div></div>`);
+  await page.evaluate(() => document.fonts.ready);
+  await page.screenshot({ path: new URL(`img/share-${name}.png`, site).pathname });
+}
+
 await browser.close();
 console.log("Images written to site/img");

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team picture, version 1</title>
+<!-- The main page's team picture as live on 28 Oct 2026 (one ring for early access, a dashed ring for 0.2),
+     saved before version 2 was drawn. Markup and styles copied unchanged from site/index.html and site/styles.css. -->
+<style>
+:root {
+  --bg: #F5F6F8;
+  --surface: #FFFFFF;
+  --fg: #0B1F3A;
+  --muted: #44546B;
+  --rule: #D3D8E0;
+  --accent: #0B1F3A;
+  --accent-fg: #FFFFFF;
+  --link: #1B4B8F;
+  --silver: #C0C6CF;
+  --orbit: #B9C1CC; /* decorative rings in the team picture */
+  --focus: #1B4B8F;
+  --display: "Montserrat", "Avenir Next", "Century Gothic", "Segoe UI", Arial, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --step--1: 1rem; /* smallest text on the page: 16px (section 6); the footer uses 13px */
+  --step-0: 1.0625rem;
+  --step-1: 1.25rem;
+  --step-3: clamp(min(1.75rem, 8vw), 1.35rem + 1.7vw, 2.375rem);
+  /* Headings are capped by screen width on very narrow phones, so large system text never splits a word. */
+  --step-4: clamp(min(2.25rem, 10.5vw), 1.5rem + 3.6vw, 3.75rem);
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --tap: max(44px, 2.75rem); /* touch target, never under 44px */
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0B1F3A;
+    --surface: #12294A;
+    --fg: #F2F4F7;
+    --muted: #C0C6CF;
+    --rule: #2A4062;
+    --accent: #FFFFFF;
+    --accent-fg: #0B1F3A;
+    --link: #AFC6F2;
+    --focus: #FFD479;
+    --orbit: #3A5478;
+    color-scheme: dark;
+  }
+}
+
+
+body { margin: 0; padding: 2rem; background: var(--bg); color: var(--fg); font-family: var(--body); }
+.team-visual figcaption { font-family: var(--mono); }
+/* Team picture. Rings and stars are decoration; planned roles are dashed, and the table beside it and
+   the text alternative say so in words (the phone picture also has a caption).
+   Lines, outlines and text use --fg and --muted, which pass 3:1 (graphics) and 4.5:1 (text) in both themes. */
+.team-visual { margin: 0; display: grid; gap: 0.75rem; min-width: 0; width: 100%; max-width: 45rem; justify-self: center; }
+.team-visual svg { display: block; width: 100%; height: auto; }
+.team-visual .orbit-narrow { display: none; max-width: 358px; margin-inline: auto; }
+@media (max-width: 37.49rem) {
+  .team-visual .orbit-wide { display: none; }
+  .team-visual .orbit-narrow { display: block; }
+  figure.team-visual figcaption { display: block; } /* the phone picture has no tags, so the key explains the dashes */
+}
+.team-visual figcaption { display: none; font-family: var(--mono); font-size: var(--step--1); color: var(--muted); }
+.team-visual .tv-orbit-now { fill: none; stroke: var(--orbit); stroke-width: 1.25; }
+.team-visual .tv-orbit-planned { fill: none; stroke: var(--orbit); stroke-width: 1.25; stroke-dasharray: 3 6; }
+.team-visual .tv-you { fill: var(--surface); stroke: var(--fg); stroke-width: 1.5; }
+.team-visual .tv-label { font-family: var(--body); font-weight: 600; font-size: 18px; fill: var(--fg); }
+.team-visual .orbit-wide .tv-label { font-size: 24px; }
+.team-visual .tv-link { fill: none; stroke: var(--fg); stroke-width: 1.5; }
+.team-visual .tv-link-planned { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.team-visual .tv-arrow { fill: var(--fg); }
+.team-visual .tv-hub { fill: #0B1F3A; }
+.team-visual .tv-hub-ring { fill: none; stroke: var(--orbit); stroke-width: 1.5; }
+.team-visual .tv-node { fill: var(--fg); }
+.team-visual .tv-icon { fill: none; stroke: var(--bg); stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
+.team-visual .tv-node-planned { fill: var(--bg); stroke: var(--muted); stroke-width: 1.75; stroke-dasharray: 5 4; }
+.team-visual .tv-icon-planned { fill: none; stroke: var(--muted); stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
+.team-visual .tv-st path { fill: none; stroke: var(--silver); stroke-width: 1; stroke-linecap: round; }
+.team-visual .tv-st .tv-st2 { stroke-width: 0.75; }
+.team-visual .tv-st circle, .team-visual .tv-dot { fill: var(--silver); }
+@media (prefers-color-scheme: dark) {
+  /* The Manager's navy disc would vanish on the navy page; a silver ring keeps it at 9.6:1. */
+  .team-visual .tv-hub-ring { stroke: var(--silver); }
+}
+
+
+.team-visual .orbit-narrow { display: block; margin-top: 3rem; }
+.team-visual figcaption { display: block; }
+</style>
+</head>
+<body>
+<figure class="team-visual">
+  <svg class="orbit-wide" viewBox="4 7 712 499" role="img" aria-labelledby="team-visual-wide">
+    <title id="team-visual-wide">The team: you work with the Manager, who directs a senior and a junior developer. A Tester and an Analyst are planned for version 0.2.</title>
+    <g class="tv-st" transform="translate(70 150)"><path d="M0 -9V9M-9 0H9"/><path class="tv-st2" d="M-4.05 -4.05L4.05 4.05M-4.05 4.05L4.05 -4.05"/><circle r="1.3"/></g><g class="tv-st" transform="translate(640 130)"><path d="M0 -6V6M-6 0H6"/><path class="tv-st2" d="M-2.7 -2.7L2.7 2.7M-2.7 2.7L2.7 -2.7"/><circle r="1.3"/></g><g class="tv-st" transform="translate(640 470)"><path d="M0 -8V8M-8 0H8"/><path class="tv-st2" d="M-3.6 -3.6L3.6 3.6M-3.6 3.6L3.6 -3.6"/><circle r="1.3"/></g><g class="tv-st" transform="translate(80 470)"><path d="M0 -5V5M-5 0H5"/><path class="tv-st2" d="M-2.25 -2.25L2.25 2.25M-2.25 2.25L2.25 -2.25"/><circle r="1.3"/></g>
+    <circle class="tv-dot" cx="170" cy="190" r="1.4"/><circle class="tv-dot" cx="560" cy="200" r="1.2"/><circle class="tv-dot" cx="600" cy="356" r="1.6"/><circle class="tv-dot" cx="115" cy="356" r="1.1"/><circle class="tv-dot" cx="40" cy="250" r="1"/><circle class="tv-dot" cx="680" cy="260" r="1"/><circle class="tv-dot" cx="300" cy="490" r="1"/><circle class="tv-dot" cx="450" cy="490" r="1.3"/><circle class="tv-dot" cx="205" cy="70" r="1.1"/><circle class="tv-dot" cx="520" cy="60" r="1"/><circle class="tv-dot" cx="660" cy="420" r="1.1"/><circle class="tv-dot" cx="60" cy="430" r="1.3"/>
+    <circle class="tv-orbit-planned" cx="360" cy="300" r="205"/>
+    <circle class="tv-orbit-now" cx="360" cy="300" r="125"/>
+    <rect class="tv-you" x="280" y="8" width="160" height="48" rx="24"/>
+    <text class="tv-label" x="360" y="40" text-anchor="middle">You</text>
+    <path class="tv-link" d="M360 66V238"/><path class="tv-arrow" d="M360 58l-5 9h10z"/><path class="tv-arrow" d="M360 246l-5-9h10z"/>
+    <path class="tv-link" d="M312 281L266 262"/><path class="tv-link" d="M408 281L454 262"/>
+    <path class="tv-link-planned" d="M324 336L232 428"/><path class="tv-link-planned" d="M396 336L488 428"/>
+    <circle class="tv-hub" cx="360" cy="300" r="52"/><circle class="tv-hub-ring" cx="360" cy="300" r="52"/>
+    <g transform="translate(320 260) scale(0.1111)">
+      <circle cx="360" cy="360" r="338" fill="none" stroke="#FFFFFF" stroke-width="24"/>
+      <path d="M294.7,61.1A306,306 0 1 1 294.7,658.9A446.5,446.5 0 0 0 395,472.9L395,493L473,493L473,227L395,227L395,247.1A446.5,446.5 0 0 0 294.7,61.1Z" fill="#C0C6CF"/>
+      <path d="M252,242H300V337.0H410V242H458V478H410V383.0H300V478H252Z" fill="#FFFFFF"/>
+    </g>
+    <text class="tv-label" x="360" y="382" text-anchor="middle">Manager</text>
+    <g transform="translate(244 253)"><circle class="tv-node" r="24"/><path class="tv-icon" d="M-5 -7l-7 7 7 7M5 -7l7 7-7 7"/></g>
+    <text class="tv-label" x="210" y="261" text-anchor="end">Senior developer</text>
+    <g transform="translate(476 253)"><circle class="tv-node" r="24"/><path class="tv-icon" d="M-3 -8l-6 8 6 8M3 -8l6 8-6 8"/></g>
+    <text class="tv-label" x="510" y="261">Junior developer</text>
+    <g transform="translate(215 445)"><circle class="tv-node-planned" r="24"/><path class="tv-icon-planned" d="M-9 0l6 6 12-12"/></g>
+    <text class="tv-label" x="181" y="453" text-anchor="end">Tester</text>
+    <g transform="translate(505 445)"><circle class="tv-node-planned" r="24"/><path class="tv-icon-planned" d="M-9 -8h18M-9 0h18M-9 8h11"/></g>
+    <text class="tv-label" x="539" y="453">Analyst</text>
+  </svg>
+  <svg class="orbit-narrow" viewBox="0 0 358 370" role="img" aria-labelledby="team-visual-narrow">
+    <title id="team-visual-narrow">The team: you work with the Manager, who directs a senior and a junior developer. A Tester and an Analyst are planned for version 0.2.</title>
+    <g class="tv-st" transform="translate(26 40)"><path d="M0 -7V7M-7 0H7"/><path class="tv-st2" d="M-3.15 -3.15L3.15 3.15M-3.15 3.15L3.15 -3.15"/><circle r="1.3"/></g><g class="tv-st" transform="translate(334 70)"><path d="M0 -5V5M-5 0H5"/><path class="tv-st2" d="M-2.25 -2.25L2.25 2.25M-2.25 2.25L2.25 -2.25"/><circle r="1.3"/></g><g class="tv-st" transform="translate(330 352)"><path d="M0 -6V6M-6 0H6"/><path class="tv-st2" d="M-2.7 -2.7L2.7 2.7M-2.7 2.7L2.7 -2.7"/><circle r="1.3"/></g><g class="tv-st" transform="translate(22 300)"><path d="M0 -4V4M-4 0H4"/><path class="tv-st2" d="M-1.8 -1.8L1.8 1.8M-1.8 1.8L1.8 -1.8"/><circle r="1.3"/></g>
+    <circle class="tv-dot" cx="60" cy="95" r="1.1"/><circle class="tv-dot" cx="300" cy="130" r="1.2"/><circle class="tv-dot" cx="18" cy="190" r="1"/><circle class="tv-dot" cx="345" cy="220" r="1.1"/><circle class="tv-dot" cx="180" cy="362" r="1"/><circle class="tv-dot" cx="70" cy="360" r="1.2"/><circle class="tv-dot" cx="290" cy="20" r="1"/>
+    <circle class="tv-orbit-planned" cx="179" cy="200" r="150"/>
+    <circle class="tv-orbit-now" cx="179" cy="200" r="90"/>
+    <rect class="tv-you" x="124" y="4" width="110" height="40" rx="20"/>
+    <text class="tv-label" x="179" y="30" text-anchor="middle">You</text>
+    <path class="tv-link" d="M179 55V146"/><path class="tv-arrow" d="M179 47l-5 9h10z"/><path class="tv-arrow" d="M179 154l-5-9h10z"/>
+    <path class="tv-link" d="M138 185L116 177"/><path class="tv-link" d="M220 185L242 177"/>
+    <path class="tv-link-planned" d="M154 236L107 303"/><path class="tv-link-planned" d="M204 236L251 303"/>
+    <circle class="tv-hub" cx="179" cy="200" r="44"/><circle class="tv-hub-ring" cx="179" cy="200" r="44"/>
+    <g transform="translate(143 164) scale(0.1)">
+      <circle cx="360" cy="360" r="338" fill="none" stroke="#FFFFFF" stroke-width="24"/>
+      <path d="M294.7,61.1A306,306 0 1 1 294.7,658.9A446.5,446.5 0 0 0 395,472.9L395,493L473,493L473,227L395,227L395,247.1A446.5,446.5 0 0 0 294.7,61.1Z" fill="#C0C6CF"/>
+      <path d="M252,242H300V337.0H410V242H458V478H410V383.0H300V478H252Z" fill="#FFFFFF"/>
+    </g>
+    <g transform="translate(94 169)"><circle class="tv-node" r="22"/><path class="tv-icon" d="M-5 -6l-6 6 6 6M5 -6l6 6-6 6"/></g>
+    <g transform="translate(264 169)"><circle class="tv-node" r="22"/><path class="tv-icon" d="M-3 -7l-5 7 5 7M3 -7l5 7-5 7"/></g>
+    <g transform="translate(93 323)"><circle class="tv-node-planned" r="22"/><path class="tv-icon-planned" d="M-8 0l5 5 11-11"/></g>
+    <g transform="translate(265 323)"><circle class="tv-node-planned" r="22"/><path class="tv-icon-planned" d="M-8 -7h16M-8 0h16M-8 7h10"/></g>
+  </svg>
+          <figcaption>Dashed: planned for 0.2</figcaption>
+        </figure>
+</body>
+</html>
