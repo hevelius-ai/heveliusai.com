@@ -156,7 +156,9 @@ h1 {
 
 /* Sections */
 main > section { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
-.section-head { display: grid; gap: 0.75rem; margin-bottom: 2rem; max-width: 44rem; }
+.section-head { display: grid; gap: 0.75rem; margin-bottom: 2.5rem; max-width: 44rem; }
+/* In a paired column the heading block sits in a 1rem grid gap; together they make the same 2.5rem as everywhere else. */
+.block > .section-head.flush { margin-bottom: 1.5rem; }
 .section-head.flush { margin-bottom: 0; }
 /* Product, Advisory and Contact: the hairline runs the full column; the text keeps its reading width. */
 .section-head-full { max-width: none; }
@@ -308,10 +310,10 @@ td.when { font-family: var(--mono); font-size: var(--step--1); white-space: nowr
 
 /* The three pages beside the main one: Agile Dev Team, Advisory, About (CR-1).
    They reuse everything above; the rules below are for their own parts only. */
-.opening .wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; padding-block: clamp(3rem, 8vw, 6rem); }
+.opening .wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; padding-block: clamp(2rem, 6vw, 4.5rem); } /* the same as the main page's opening */
 .opening .lede { max-width: 40rem; }
 .eyebrow {
-  font-family: var(--mono); font-size: var(--step--1); font-weight: 500; letter-spacing: 0.14em;
+  font-family: var(--mono); font-size: var(--step--1); font-weight: 500; letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--muted);
 }
 .arrow { font-family: var(--display); font-weight: 600; text-decoration: none; }
@@ -323,14 +325,14 @@ td.when { font-family: var(--mono); font-size: var(--step--1); white-space: nowr
 }
 
 /* Numbered steps in two columns, read down the first column, then the second. */
-.steps-2 li { border-left: 1px solid var(--rule); padding-left: 1.25rem; }
-.steps-2 li::before { font-size: 1.5rem; line-height: 1.2; }
-.steps-2 strong { font-weight: 600; }
+.steps li { border-left: 1px solid var(--rule); padding-left: 1.25rem; }
+.steps li::before { font-size: 1.5rem; line-height: 1.2; }
+.steps strong { font-weight: 600; }
 
 /* Status chips: the word is always there, never colour alone. */
 .chip {
-  display: inline-block; font-family: var(--mono); font-size: var(--step--1); letter-spacing: 0.06em;
-  text-transform: uppercase; border: 1px solid currentColor; border-radius: 999px; padding: 0.15rem 0.7rem; white-space: nowrap;
+  display: inline-block; font-family: var(--body); font-size: var(--step--1); line-height: 1.5;
+  border: 1px solid currentColor; border-radius: 999px; padding: 0.05rem 0.65rem; white-space: nowrap;
 }
 .chip-now { color: var(--fg); }
 .chip-soon { color: var(--muted); }
@@ -405,7 +407,6 @@ td.when { font-family: var(--mono); font-size: var(--step--1); white-space: nowr
   background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: clamp(1.25rem, 3vw, 2rem);
   box-shadow: 0 1px 2px rgba(11, 31, 58, 0.06);
 }
-.offer h3 { font-family: var(--display); }
 .offer dl { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.9rem; }
 .offer dt {
   font-family: var(--mono); font-size: var(--step--1); letter-spacing: 0.1em; text-transform: uppercase;
@@ -417,7 +418,7 @@ td.when { font-family: var(--mono); font-size: var(--step--1); white-space: nowr
 
 /* The owner's own words: body size, a navy rule on the left, no quotation marks. */
 .quote { margin: 0; border-left: 2px solid var(--fg); padding-left: 1.25rem; max-width: 40rem; }
-.quote-lead { font-size: var(--step-1); line-height: 1.55; }
+.quote-lead { font-size: var(--step-1); line-height: 1.5; color: var(--muted); } /* set like the other pages' introductions */
 .founder { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem 3rem; align-items: start; }
 .portrait { max-width: 20rem; }
 .portrait img { display: block; width: 100%; height: auto; border-radius: 6px; }
@@ -442,8 +443,8 @@ td.when { font-family: var(--mono); font-size: var(--step--1); white-space: nowr
 @media (min-width: 52rem) {
   .steps-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: column; grid-template-rows: repeat(3, auto); }
   .offers { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .founder { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
-  .band-inner { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
+  .founder { grid-template-columns: repeat(2, minmax(0, 1fr)); } /* the text starts on the same line as every other right-hand column */
+  .band-inner { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (prefers-color-scheme: dark) {
   .diagram { --dg-agent: #1B355C; }
@@ -452,3 +453,31 @@ td.when { font-family: var(--mono); font-size: var(--step--1); white-space: nowr
 }
 .dg-key { stroke-width: 1.5; }
 .dg-prog.dg-key { stroke-dasharray: 3 2; }
+
+/* Wide screens: the openings of the three pages put the title on the left and the introduction on the right,
+   and the sections that are only text put the heading on the left and the text on the right, with the hairline
+   across both. Lines keep their reading length and the width is used evenly, as in the other sections. */
+@media (min-width: 64rem) {
+  .opening .wrap:has(.lede) {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 3rem;
+    grid-template-areas: "eye lede" "h1 lede" "act lede"; align-items: start;
+  }
+  .opening .wrap:has(.lede) .eyebrow { grid-area: eye; }
+  .opening .wrap:has(.lede) h1 { grid-area: h1; }
+  .opening .wrap:has(.lede) .lede { grid-area: lede; align-self: center; }
+  .opening .wrap:has(.lede) .actions { grid-area: act; }
+  .side { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 3rem; align-items: start; }
+  /* The main page's "Who you work with": the heading on the left, the text on the right. */
+  .prose-wide { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 3rem; max-width: none; }
+  .prose-wide > h3 { grid-column: 1; grid-row: 1 / span 2; }
+  .prose-wide > p { grid-column: 2; }
+  .side::before { content: ""; grid-column: 1 / -1; border-top: 1px solid var(--rule); }
+  .side .label { border-top: 0; padding-top: 0; }
+  .side .section-head { margin-bottom: 0; }
+  .side .prose, .side .facts { margin-top: 2.35rem; }
+}
+
+/* On the three pages every section's hairline runs the full width; headings and text keep their reading width. */
+main:has(.opening) .section-head { max-width: none; }
+main:has(.opening) .section-head > :not(.label) { max-width: 44rem; }
+/* Every two-column layout uses the same two equal columns and 3rem gap, so right-hand columns line up on every page. */

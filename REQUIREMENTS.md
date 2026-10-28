@@ -62,3 +62,13 @@ Recorded exceptions (owner, 27 Oct 2026, accepting the build plan):
 - Labels inside the two product diagrams may be smaller than 16 px; the steps and the role table under them carry the same words as text.
 - The title tags of `/agile-dev-team` and `/advisory` are the FRD's wording, longer than 70 characters; search results show the start of them.
 
+## One look across the four pages (owner, 28 Oct 2026)
+
+| Check | What it compares | How |
+| --- | --- | --- |
+| Consistency | Every kind of element looks the same on every page: headings, labels, introductions, body and secondary text, steps, lists, tables, chips, buttons, arrow links, the contact band, header links | Computed font, size, weight, line height, letter spacing, case and colour, compared across all four pages at 1440, 1024 and 390 px, light and dark |
+| Consistency | Spacing | Section and opening padding, label-to-heading and heading-to-content gaps |
+| Consistency | Layout | Hairlines run the width of their section (or column, in a paired section); every two-column layout starts its right-hand column on the same line |
+
+Intended differences the check allows: "Early access" and "Planned" chips differ in colour; the main page opens with the emblem, the other pages with text.
+

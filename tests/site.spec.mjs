@@ -785,3 +785,97 @@ test("E5-S3-3: the IndexNow key file is at the site root", async ({ page }) => {
   expect(res.status()).toBe(200);
   expect((await res.text()).trim()).toBe(key);
 });
+
+// ---------------------------------------------------------------- one look across the four pages (owner, 28 Oct 2026)
+// The same kind of element looks the same on every page: font, size, weight, line height, letter spacing, case and
+// colour; sections have the same spacing; hairlines run the width of their section or column; and every two-column
+// layout starts its right-hand column on the same line.
+function lookOfEveryElement() {
+  const sig = (el, pseudo) => { const c = getComputedStyle(el, pseudo); return [c.fontFamily.split(",")[0], c.fontSize, c.fontWeight, c.lineHeight, c.letterSpacing, c.textTransform, c.color].join(" | "); };
+  const out = [];
+  const q = (s) => [...document.querySelectorAll(s)];
+  const shown = (el) => el.getClientRects().length && !el.closest(".visually-hidden") && getComputedStyle(el).clip === "auto";
+  const outsideBands = (els) => els.filter((e) => !e.closest(".band, .site-footer, figure, table"));
+  const add = (group, els, fn = sig, pseudo) => { for (const el of els) if (shown(el)) out.push([group, fn(el, pseudo), (el.textContent || "").trim().slice(0, 30)]); };
+  add("main heading", q("main h1"));
+  add("section heading", outsideBands(q("main h2")));
+  add("sub-heading", outsideBands(q("main h3")));
+  add("section label", outsideBands(q("main .label, main .eyebrow")));
+  add("introduction", q("main .lede, main .quote-lead"));
+  add("body text", outsideBands(q("main p")).filter((p) => !p.matches(".muted, .lede, .label, .eyebrow, .email, .status") && !p.closest(".copy-row, .offer, .quote-lead") && !p.querySelector(".arrow, .tap")));
+  add("secondary text", outsideBands(q("main p.muted")));
+  add("step title", q("main .steps li > strong"));
+  add("step number", q("main .steps li"), sig, "::before");
+  add("list item", outsideBands(q("main .points li, main .facts li")));
+  add("table header", q("main thead th"));
+  add("table role", q("main tbody th"));
+  add("table text", q("main tbody td:not(.when)"));
+  add("chip, early access", q("main .chip-now"));
+  add("chip, planned", q("main .chip-soon"));
+  add("primary button", q("main .btn-primary"));
+  add("arrow link", q("main .arrow"));
+  add("contact heading", q("main .band h2"));
+  add("contact address", q("main .email"));
+  add("header link", q(".site-nav a"));
+  add("section spacing", outsideBands(q("main > section")), (el) => { const c = getComputedStyle(el); return `${c.paddingTop} ${c.paddingBottom}`; });
+  add("opening spacing", q(".hero .wrap, .opening .wrap"), (el) => { const c = getComputedStyle(el); return `${c.paddingTop} ${c.paddingBottom}`; });
+  add("contact band", q("main > section#contact"), (el) => { const c = getComputedStyle(el); return `${c.backgroundColor} ${c.paddingTop} ${c.paddingBottom}`; });
+  for (const h of outsideBands(q("main > section .section-head h2"))) {
+    const l = h.previousElementSibling;
+    if (l && l.matches(".label")) out.push(["gap from label to heading", Math.round(h.getBoundingClientRect().top - l.getBoundingClientRect().bottom) + "px", h.textContent.trim()]);
+  }
+  for (const head of outsideBands(q("main > section .section-head"))) {
+    if (head.closest(".side")) continue;
+    const next = head.nextElementSibling || head.parentElement.nextElementSibling;
+    if (next && next.getClientRects().length) out.push(["gap from heading to content", Math.round(next.getBoundingClientRect().top - head.getBoundingClientRect().bottom) + "px", head.textContent.trim().slice(0, 30)]);
+  }
+  // Hairlines: a section's line runs the width of its section, or of its column in a paired section.
+  for (const s of outsideBands(q("main > section"))) {
+    const wrap = s.querySelector(".wrap");
+    if (!wrap) continue;
+    const content = (el) => { const c = getComputedStyle(el); return el.clientWidth - parseFloat(c.paddingLeft) - parseFloat(c.paddingRight); };
+    if (wrap.classList.contains("side") && getComputedStyle(wrap).display === "grid") {
+      out.push(["hairline", "spans its section", s.querySelector("h2").textContent.trim()]);
+      continue;
+    }
+    for (const l of s.querySelectorAll(".section-head > .label")) {
+      if (!shown(l)) continue;
+      const column = l.closest(".block") || wrap;
+      const full = Math.abs(l.getBoundingClientRect().width - (column === wrap ? content(wrap) : column.getBoundingClientRect().width)) <= 1;
+      out.push(["hairline", full ? "spans its section" : `stops at ${Math.round(l.getBoundingClientRect().width)}px`, l.textContent.trim()]);
+    }
+  }
+  for (const el of q("main .side, main .split, main .founder, main .opening .wrap, main .band-inner, main .prose-wide")) {
+    const cs = getComputedStyle(el);
+    const cols = cs.gridTemplateColumns.split(" ").filter(Boolean);
+    if (cs.display !== "grid" || cols.length !== 2) continue;
+    const left = el.getBoundingClientRect().left + parseFloat(cs.paddingLeft);
+    out.push(["right-hand column starts at", Math.round(left + parseFloat(cols[0]) + parseFloat(cs.columnGap)) + "px", el.className]);
+  }
+  return out;
+}
+
+test.describe("Consistency: one look across the four pages", () => {
+  for (const [width, height] of [[1440, 900], [1024, 800], [390, 844]]) {
+    for (const scheme of ["light", "dark"]) {
+      test(`${width} ${scheme}`, async ({ page }) => {
+        await page.setViewportSize({ width, height });
+        await page.emulateMedia({ colorScheme: scheme });
+        const groups = {};
+        for (const path of PAGES) {
+          await open(page, path);
+          // On phones the header links sit behind the Menu button; open it as a visitor would.
+          const menu = page.getByRole("button", { name: "Menu" });
+          if (await menu.isVisible()) await menu.click();
+          for (const [group, look, text] of await page.evaluate(lookOfEveryElement)) ((groups[group] ??= {})[look] ??= []).push(`${path} "${text}"`);
+        }
+        const differences = Object.entries(groups)
+          .filter(([, looks]) => Object.keys(looks).length > 1)
+          .map(([group, looks]) => `${group}: ${Object.entries(looks).map(([look, where]) => `${look} at ${where.slice(0, 3).join(", ")}`).join("  VERSUS  ")}`);
+        expect(differences).toEqual([]);
+        // The check must actually see the elements it compares.
+        for (const group of ["main heading", "section heading", "section label", "body text", "list item", "header link", "hairline"]) expect(groups[group], group).toBeDefined();
+      });
+    }
+  }
+});
