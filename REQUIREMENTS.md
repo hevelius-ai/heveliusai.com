@@ -68,7 +68,7 @@ Recorded exceptions (owner, 27 Oct 2026, accepting the build plan):
 | --- | --- | --- |
 | Consistency | Every kind of element looks the same on every page: headings, labels, introductions, body and secondary text, steps, lists, tables, chips, buttons, arrow links, the contact band, header links | Computed font, size, weight, line height, letter spacing, case and colour, compared across all four pages at 1440, 1024 and 390 px, light and dark |
 | Consistency | Spacing | Section and opening padding, label-to-heading and heading-to-content gaps |
-| Consistency | Layout | Hairlines run the width of their section (or column, in a paired section); every two-column layout starts its right-hand column on the same line |
+| Consistency | Layout | Hairlines run the width of their section (or column, in a paired section); every two-column layout starts its right-hand column on the same line; text beside a heading (an opening's introduction, a section's text) starts level with it |
 
 Intended differences the check allows: "Early access" and "Planned" chips differ in colour; the main page opens with the emblem, the other pages with text.
 

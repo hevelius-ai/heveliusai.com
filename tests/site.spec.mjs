@@ -845,6 +845,14 @@ function lookOfEveryElement() {
       out.push(["hairline", full ? "spans its section" : `stops at ${Math.round(l.getBoundingClientRect().width)}px`, l.textContent.trim()]);
     }
   }
+  // Text beside a heading starts level with it: the introduction with the page title, a section's text with its heading.
+  for (const [text, heading] of [...q("main .opening .lede").map((l) => [l, l.parentElement.querySelector("h1")]), ...q("main .side").map((s) => [s.querySelector(".prose, .facts"), s.querySelector("h2")])]) {
+    if (!text || !heading || getComputedStyle(text.parentElement.closest(".wrap")).display !== "grid") continue;
+    const beside = text.getBoundingClientRect().left > heading.getBoundingClientRect().right;
+    if (!beside) continue;
+    const off = Math.round(text.getBoundingClientRect().top - heading.getBoundingClientRect().top);
+    out.push(["text beside a heading starts level with it", Math.abs(off) <= 1 ? "level" : `off by ${off}px`, heading.textContent.trim().slice(0, 30)]);
+  }
   for (const el of q("main .side, main .split, main .founder, main .opening .wrap, main .band-inner, main .prose-wide")) {
     const cs = getComputedStyle(el);
     const cols = cs.gridTemplateColumns.split(" ").filter(Boolean);
