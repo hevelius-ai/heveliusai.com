@@ -250,6 +250,11 @@ td.when { font-family: var(--mono); font-size: var(--step--1); white-space: nowr
 .site-footer h2 { font-family: var(--mono); font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg); margin-bottom: 0.5rem; }
 .site-footer div { display: grid; gap: 0.5rem; align-content: start; min-width: 0; }
 .fineprint { grid-column: 1 / -1; border-top: 1px solid var(--rule); padding-top: 1.25rem; }
+/* The way back up after a long scroll (owner, 28 Oct 2026); text size as the rest of the page, not the footer's 13px. */
+.to-top { grid-column: 1 / -1; margin-top: -0.75rem; }
+.to-top a { font-family: var(--display); font-weight: 600; font-size: var(--step--1); color: var(--fg); text-decoration: none; }
+.to-top a::after { content: "\00a0\2191"; }
+.to-top a:hover { text-decoration: underline; }
 
 [id] { scroll-margin-top: 1rem; }
 
