@@ -460,21 +460,23 @@ td.when { font-family: var(--mono); font-size: var(--step--1); white-space: nowr
 @media (min-width: 64rem) {
   .opening .wrap:has(.lede) {
     grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 3rem;
-    grid-template-areas: "eye lede" "h1 lede" "act lede"; align-items: start;
+    grid-template-areas: "eye ." "h1 lede" "act lede"; align-items: start;
   }
   .opening .wrap:has(.lede) .eyebrow { grid-area: eye; }
   .opening .wrap:has(.lede) h1 { grid-area: h1; }
-  .opening .wrap:has(.lede) .lede { grid-area: lede; align-self: center; }
+  .opening .wrap:has(.lede) .lede { grid-area: lede; } /* starts level with the title */
   .opening .wrap:has(.lede) .actions { grid-area: act; }
-  .side { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 3rem; align-items: start; }
+  /* The heading and the text share one grid row, so the text starts level with the heading. */
+  .side { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem 3rem; align-items: start; }
   /* The main page's "Who you work with": the heading on the left, the text on the right. */
   .prose-wide { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 3rem; max-width: none; }
   .prose-wide > h3 { grid-column: 1; grid-row: 1 / span 2; }
   .prose-wide > p { grid-column: 2; }
-  .side::before { content: ""; grid-column: 1 / -1; border-top: 1px solid var(--rule); }
-  .side .label { border-top: 0; padding-top: 0; }
-  .side .section-head { margin-bottom: 0; }
-  .side .prose, .side .facts { margin-top: 2.35rem; }
+  .side::before { content: ""; grid-row: 1; grid-column: 1 / -1; border-top: 1px solid var(--rule); margin-bottom: 0.25rem; }
+  .side .section-head { display: contents; }
+  .side .label { grid-row: 2; grid-column: 1; border-top: 0; padding-top: 0; }
+  .side h2 { grid-row: 3; grid-column: 1; }
+  .side .prose, .side .facts { grid-row: 3; grid-column: 2; }
 }
 
 /* On the three pages every section's hairline runs the full width; headings and text keep their reading width. */
