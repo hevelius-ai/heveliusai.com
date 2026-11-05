@@ -53,7 +53,7 @@ From section 14 of the Notion page and the sub-page "Website FRD (CR-1): pages, 
 | E5-S2-6 | Diagram text alternative and steps in the same order | Six steps against the orbit's description; pictures fit the screen, swap to the phone drawing under 720px, follow the dark theme |
 | E5-S2-7 | Diagram roles match the eight-role table | Each role word in the picture maps to a table row; statuses match "In early access today" |
 | E5-S2-8 | Owner texts word for word | On every page where they appear; "inside global banks" replaced by "with global banks" (owner, 27 Oct 2026) |
-| E5-S3-1 | robots.txt as in 14.5 | Every named crawler allowed, nothing disallowed, sitemap line last |
+| E5-S3-1 | robots.txt as in 14.5 | Every named crawler allowed, nothing disallowed, sitemap line last; Content Signals `search=yes, ai-input=yes, ai-train=no` (owner, 5 Nov 2026) |
 | E5-S3-2 | Sitemap: four URLs with `lastmod` | Exactly the four addresses, each with a date |
 | E5-S3-3 | IndexNow key file | Served from the site root with the key |
 | E5-S4-1 | Indexing checked after 14 days | By the owner after publishing (README) |
