@@ -802,6 +802,8 @@ test("E5-S3-1: robots.txt names the search crawlers and the sitemap", async ({ p
     expect(robots).toContain(`User-agent: ${bot}\nAllow: /\n`);
   }
   expect(robots).not.toMatch(/Disallow/);
+  // Content Signals (contentsignals.org): search and answers yes, model training no (owner, 5 Nov 2026).
+  expect(robots).toContain("User-agent: *\nAllow: /\nContent-Signal: search=yes, ai-input=yes, ai-train=no\n");
   expect(robots.trim().endsWith("Sitemap: https://heveliusai.com/sitemap.xml")).toBe(true);
 });
 
