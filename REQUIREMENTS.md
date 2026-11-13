@@ -42,7 +42,7 @@ From section 14 of the Notion page and the sub-page "Website FRD (CR-1): pages, 
 
 | Code | Criterion (short) | How it is checked |
 | --- | --- | --- |
-| E5-S1-1 | Main page keeps its title and description | Title, description and share image unchanged (owner, 26 Oct 2026: the main page changes only in the header) |
+| E5-S1-1 | Main page keeps its title and description | Title and share image unchanged; the description names AsBuild and Agile Dev Team (owner, 13 Nov 2026, N2) |
 | E5-S1-2 | Structured data valid, every value visible | Each JSON-LD block parses; types per page; every name, legal name, email, description and town in it appears in the page's text; no ratings, prices or version |
 | E5-S1-3 | Naples line, footer block, outbound links on the main page | Parked by the owner (FRD section 3); not built |
 | E5-S2-1 | Each page: own title, H1, description, canonical, Open Graph, share image | Checked per page; share images are 1200 by 630 |
@@ -91,6 +91,7 @@ top and in [`docs/cr-2-build-plan.md`](docs/cr-2-build-plan.md). `/asbuild` also
 | T1 | "Request early access" removed | Gone from the main page and `/agile-dev-team`; the status line stays |
 | M1 | The real receipt under the verdicts table | Word for word from demo pull request #3, placed under the table |
 | C | The orbit is readable at 360px | Under 720px the phone drawing shows; every word in it at 13px or more |
+| N2 | The main page covers both products | Mission, meta and share descriptions and contact text word for word, AsBuild first; the opening sentence unchanged |
 
 Recorded exceptions (owner, 13 Nov 2026):
 - "No certification claim" (E2-S3-1) leaves out one sentence on `/asbuild`: "It does not make code bug-free, secure or compliant.", which names the words to deny them.

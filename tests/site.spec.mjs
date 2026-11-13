@@ -636,8 +636,22 @@ test("E3-S1-1: the logo is in the header and is the browser icon, with a text al
 test("E5-S1-1: the main page keeps its title and description", async ({ page }) => {
   await open(page);
   await expect(page).toHaveTitle("Hevelius AI Group");
-  await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /Agile Dev Team/);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /AsBuild.*Agile Dev Team/);
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", "https://heveliusai.com/img/share.png");
+});
+
+// N2 (owner, 13 Nov 2026): the mission, the descriptions and the contact text name both products, AsBuild first.
+// The opening sentence under the headline stays as it is.
+test("N2: the main page's mission, descriptions and contact text cover both products", async ({ page }) => {
+  await open(page);
+  await expect(page.locator(".hero .lede")).toHaveText("We build tools that make AI prove its work. We help organizations adopt AI with structure, governance and evidence.");
+  const mission = (await page.locator("#mission .prose").innerText()).replace(/\s+/g, " ");
+  expect(mission).toContain('And it cannot vouch for its own work: "the tests passed" means nothing until a program has checked it and recorded the result.');
+  expect(mission).toContain("Hevelius closes both gaps. AsBuild, free and open source, checks each change an AI agent makes against the tests you approved, and records the result on the pull request. Agile Dev Team, in development, gives AI agents the roles, the order and the controls of a professional delivery team, and records evidence at every step.");
+  expect(mission).not.toMatch(/records proof|until a program proves it/);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", "Hevelius AI Group builds AsBuild, a free check for AI-written code, and Agile Dev Team, a Claude Code delivery team in development, and helps organizations adopt AI with structure, governance and evidence.");
+  await expect(page.locator('meta[property="og:description"]')).toHaveAttribute("content", "AI you can trust, because you can verify it. AsBuild and Agile Dev Team, tools that check what AI builds and keep the record, and advisory on AI adoption.");
+  await expect(page.locator("#contact")).toContainText("Write to us about AsBuild, for early access to Agile Dev Team, or to discuss an assessment or advisory work.");
 });
 
 // ---------------------------------------------------------------- the three new pages (CR-1)
