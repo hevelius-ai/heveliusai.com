@@ -75,4 +75,8 @@ addresses (part D).
 
 - The receipt gains the demo's "Good to know" line, which states what the check does not cover.
 - "More languages": "Support for other languages is planned, and no date is set." becomes "Support for other languages is planned."
+- After publishing: the main page's second opening button "Get in touch" (`#contact`) becomes "See AsBuild" (`/asbuild`).
+  Contact stays in the header and the closing band.
+- After publishing: every off-site link (GitHub, LinkedIn) opens in a new tab, as the LinkedIn link on `/about` already did
+  (`target="_blank" rel="noopener"`). Links within the site and the email address open in the same tab. A check holds both.
 

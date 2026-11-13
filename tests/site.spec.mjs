@@ -470,8 +470,12 @@ test("E2-S1-1 and E2-S1-2: the opening names both offers and its buttons lead on
   const lede = page.locator(".lede");
   await expect(lede).toContainText("We build tools that make AI prove its work.");
   await expect(lede).toContainText("We help organizations adopt AI");
-  await page.getByRole("link", { name: "Get in touch" }).click();
-  await expect(page).toHaveURL(/#contact$/);
+  // The second button opens /asbuild (owner, 13 Nov 2026); Contact stays in the header.
+  await expect(page.locator(".hero .actions a")).toHaveText(["See Agile Dev Team", "See AsBuild"]);
+  await page.getByRole("link", { name: "See AsBuild" }).click();
+  await expect(page).toHaveURL(/\/asbuild$/);
+  await expect(page.locator("h1")).toHaveText("AsBuild");
+  await open(page);
   await page.getByRole("link", { name: "See Agile Dev Team" }).click();
   await expect(page).toHaveURL(/\/agile-dev-team$/);
   await expect(page.locator("h1")).toHaveText("Agile Dev Team");
@@ -1083,4 +1087,18 @@ test("CR-2 M1: the real receipt sits under the verdicts table, word for word fro
   const table = await section.locator("table").boundingBox();
   const box = await section.locator(".receipt").boundingBox();
   expect(box.y).toBeGreaterThan(table.y + table.height);
+});
+
+test("Off-site links open in a new tab; links within the site and the email address open in the same tab (owner, 13 Nov 2026)", async ({ page }) => {
+  for (const path of PAGES) {
+    await open(page, path);
+    const links = await page.locator("body a[href]").evaluateAll((as) => as.map((a) => [a.getAttribute("href"), a.getAttribute("target"), a.getAttribute("rel")]));
+    for (const [href, target, rel] of links) {
+      if (/^https?:\/\//.test(href)) {
+        expect([target, rel], `${path} ${href}`).toEqual(["_blank", "noopener"]);
+      } else {
+        expect(target, `${path} ${href}`).toBeNull();
+      }
+    }
+  }
 });
