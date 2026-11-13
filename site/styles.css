@@ -459,6 +459,21 @@ td.when { font-family: var(--mono); font-size: var(--step--1); white-space: nowr
 .dg-key { stroke-width: 1.5; }
 .dg-prog.dg-key { stroke-dasharray: 3 2; }
 
+/* AsBuild page (CR-2). Four steps sit as two columns of two; the verdict names stay on one line; the receipt
+   is set in the evidence box. Under 720px the orbit becomes a column of three stops whose words stay readable at 360px. */
+@media (min-width: 52rem) {
+  .steps-2.steps-four { grid-template-rows: repeat(2, auto); }
+  .verdicts tbody th { white-space: nowrap; }
+}
+.receipt { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.75rem; padding: 1rem; }
+.receipt ul { display: grid; gap: 0.4rem; }
+.receipt strong { font-weight: 600; }
+.diagram-orbit .diagram-tall .dg-num { font-size: 15px; }
+.diagram-orbit .diagram-tall .dg-role { font-size: 19px; }
+.diagram-orbit .diagram-tall .dg-act { font-size: 16px; }
+.diagram-orbit .diagram-tall .dg-cap { font-size: 15px; }
+.diagram-orbit .diagram-tall .dg-mid { font-size: 18px; }
+
 /* Wide screens: the openings of the three pages put the title on the left and the introduction on the right,
    and the sections that are only text put the heading on the left and the text on the right, with the hairline
    across both. Lines keep their reading length and the width is used evenly, as in the other sections. */

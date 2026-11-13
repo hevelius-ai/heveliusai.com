@@ -2,11 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://heveliusai.com/</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-11-13</lastmod>
   </url>
   <url>
     <loc>https://heveliusai.com/agile-dev-team</loc>
-    <lastmod>2026-10-28</lastmod>
+    <lastmod>2026-11-13</lastmod>
+  </url>
+  <url>
+    <loc>https://heveliusai.com/asbuild</loc>
+    <lastmod>2026-11-13</lastmod>
   </url>
   <url>
     <loc>https://heveliusai.com/advisory</loc>

@@ -12,8 +12,8 @@ const RELEASE = {
   Tester: "Planned, 0.2", Analyst: "Planned, 0.2",
   "Cybersecurity and governance expert": "Planned, 0.3", "Solution architect": "Planned, 0.3",
 };
-// The four pages. Every check of section 6 runs on each of them.
-const PAGES = ["/", "/agile-dev-team", "/advisory", "/about"];
+// The five pages, in the header's order. Every check of section 6 runs on each of them.
+const PAGES = ["/", "/agile-dev-team", "/asbuild", "/advisory", "/about"];
 
 // Phones in portrait, the same phones in landscape, then tablet and desktop (section 6).
 const PHONES = [[320, 568], [360, 740], [375, 667], [390, 844], [412, 915], [430, 932]];
@@ -100,7 +100,7 @@ for (const path of PAGES) {
       await expect(skip).toBeInViewport();
 
       const nav = page.getByRole("navigation", { name: "Main" }).getByRole("link");
-      await expect(nav).toHaveText(["Main", "Agile Dev Team", "Advisory", "About", "Contact"]);
+      await expect(nav).toHaveText(["Main", "Agile Dev Team", "AsBuild", "Advisory", "About", "Contact"]);
       await page.locator('nav a[href="#contact"]').click();
       await expect(page).toHaveURL(/#contact$/);
       await expect(page.locator("#contact")).toBeInViewport();
@@ -292,7 +292,8 @@ for (const path of PAGES) {
 
     test("E2-S3-1: no certification claim", async ({ page }) => {
       await open(page, path);
-      const text = await page.locator("body").innerText();
+      // The one exception: the AsBuild page's "What AsBuild does not do" line names these words to deny them (CR-2, D).
+      const text = (await page.locator("body").innerText()).replace("It does not make code bug-free, secure or compliant.", "");
       expect(text).not.toMatch(/\b(certified|compliant|secure)\b/i);
     });
 
@@ -381,17 +382,18 @@ for (const path of PAGES) {
       const expected = {
         "/": ["WebSite", "Organization"],
         "/agile-dev-team": ["Organization", "SoftwareApplication", "BreadcrumbList"],
+        "/asbuild": ["Organization", "SoftwareApplication", "BreadcrumbList"],
         "/advisory": ["Organization", "Service", "Service", "Service", "BreadcrumbList"],
         "/about": ["ProfilePage", "Person", "Organization", "BreadcrumbList"],
       }[path];
       expect(types).toEqual(expected);
     });
 
-    test("E5-S2-2: the header reaches the four pages and Contact, and marks the current page", async ({ page }) => {
+    test("E5-S2-2: the header reaches the five pages and Contact, and marks the current page", async ({ page }) => {
       await open(page, path);
       const nav = page.getByRole("navigation", { name: "Main" });
       const links = nav.getByRole("link");
-      expect(await links.evaluateAll((as) => as.map((a) => a.getAttribute("href")))).toEqual(["/", "/agile-dev-team", "/advisory", "/about", "#contact"]);
+      expect(await links.evaluateAll((as) => as.map((a) => a.getAttribute("href")))).toEqual(["/", "/agile-dev-team", "/asbuild", "/advisory", "/about", "#contact"]);
       await expect(nav.locator('[aria-current="page"]')).toHaveCount(1);
       await expect(nav.locator('[aria-current="page"]')).toHaveAttribute("href", path);
       for (const target of PAGES) expect((await page.request.get(target)).status(), target).toBe(200);
@@ -477,7 +479,7 @@ test("E2-S1-1 and E2-S1-2: the opening names both offers and its buttons lead on
 
 test("E5-S2-2: each main-page section leads to its own page", async ({ page }) => {
   await open(page);
-  for (const [name, href] of [["How the team works", "/agile-dev-team"], ["See the three offers in detail", "/advisory"], ["More about Christopher", "/about"]]) {
+  for (const [name, href] of [["How AsBuild works", "/asbuild"], ["How the team works", "/agile-dev-team"], ["See the three offers in detail", "/advisory"], ["More about Christopher", "/about"]]) {
     await expect(page.getByRole("link", { name: new RegExp(`^${name}`) })).toHaveAttribute("href", href);
   }
 });
@@ -639,6 +641,7 @@ test("E5-S1-1: the main page keeps its title and description", async ({ page }) 
 test("E5-S2-1: each new page has its own title, main heading, description and share image", async ({ page }) => {
   const pages = {
     "/agile-dev-team": ["Agile Dev Team: a software delivery team of AI agents, in one Claude Code plugin | Hevelius AI Group", "Agile Dev Team", "share-agile-dev-team.png"],
+    "/asbuild": ["AsBuild: AI-written code, checked against tests you approved | Hevelius AI Group", "AsBuild", "share-asbuild.png"],
     "/advisory": ["AI readiness, transformation and governance advisory | Hevelius AI Group, Naples FL", "AI adoption, from first assessment to working practice.", "share-advisory.png"],
     "/about": ["About Christopher Zaczek and Hevelius AI Group", "Who you work with", "share-about.png"],
   };
@@ -807,11 +810,11 @@ test("E5-S3-1: robots.txt names the search crawlers and the sitemap", async ({ p
   expect(robots.trim().endsWith("Sitemap: https://heveliusai.com/sitemap.xml")).toBe(true);
 });
 
-test("E5-S3-2: the sitemap lists exactly the four pages, each with a date", async ({ page }) => {
+test("E5-S3-2: the sitemap lists exactly the five pages, each with a date", async ({ page }) => {
   const sitemap = await (await page.request.get("/sitemap.xml")).text();
   const urls = [...sitemap.matchAll(/<url>\s*<loc>([^<]+)<\/loc>\s*<lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>\s*<\/url>/g)];
   expect(urls.map((m) => m[1])).toEqual(PAGES.map((p) => `https://heveliusai.com${p}`));
-  expect((sitemap.match(/<url>/g) || []).length).toBe(4);
+  expect((sitemap.match(/<url>/g) || []).length).toBe(PAGES.length);
 });
 
 test("E5-S3-3: the IndexNow key file is at the site root", async ({ page }) => {
@@ -821,7 +824,7 @@ test("E5-S3-3: the IndexNow key file is at the site root", async ({ page }) => {
   expect((await res.text()).trim()).toBe(key);
 });
 
-// ---------------------------------------------------------------- one look across the four pages (owner, 28 Oct 2026)
+// ---------------------------------------------------------------- one look across all pages (owner, 28 Oct 2026)
 // The same kind of element looks the same on every page: font, size, weight, line height, letter spacing, case and
 // colour; sections have the same spacing; hairlines run the width of their section or column; and every two-column
 // layout starts its right-hand column on the same line.
@@ -898,7 +901,7 @@ function lookOfEveryElement() {
   return out;
 }
 
-test.describe("Consistency: one look across the four pages", () => {
+test.describe("Consistency: one look across all pages", () => {
   for (const [width, height] of [[1440, 900], [1024, 800], [390, 844]]) {
     for (const scheme of ["light", "dark"]) {
       test(`${width} ${scheme}`, async ({ page }) => {
@@ -921,4 +924,162 @@ test.describe("Consistency: one look across the four pages", () => {
       });
     }
   }
+});
+
+// ---------------------------------------------------------------- AsBuild (CR-2, 13 Nov 2026)
+// Codes CR2-1 to CR2-10 refer to section 8 of the Notion page "Website change request CR-2"; the owner's decisions
+// of 13 Nov 2026 (T1, M1, N1, N2, A to E) are recorded at the top of that page and in docs/cr-2-build-plan.md.
+// CR2-1 (the other pages unchanged) was checked once against main when this was built; CR2-5 is every check above.
+
+const REPO = "https://github.com/hevelius-ai/asbuild";
+const DEMO = "https://github.com/hevelius-ai/asbuild-demo";
+
+// The AsBuild text: the page's main content and the main page's AsBuild section.
+async function asbuildTexts(page) {
+  await open(page, "/asbuild");
+  const pageText = (await page.locator("main").innerText()).replace(/\s+/g, " ");
+  const pageLinks = await page.locator("main a").evaluateAll((as) => as.map((a) => a.getAttribute("href")));
+  await open(page, "/");
+  const sectionText = (await page.locator("#asbuild").innerText()).replace(/\s+/g, " ");
+  const sectionLinks = await page.locator("#asbuild a").evaluateAll((as) => as.map((a) => a.getAttribute("href")));
+  return { "/asbuild": [pageText, pageLinks], "main page section": [sectionText, sectionLinks] };
+}
+
+test("CR2-3: the AsBuild text links to the repository, shows no version or install command, and claims nothing", async ({ page }) => {
+  for (const [where, [text, links]] of Object.entries(await asbuildTexts(page))) {
+    expect(links, where).toContain(REPO);
+    expect(text, where).not.toMatch(/\bv?\d+\.\d+(\.\d+)?\b/);
+    expect(text, where).not.toMatch(/\/asbuild:|pip install|plugin install|marketplace add|gh auth|git clone/i);
+    // The words appear only in the "What AsBuild does not do" line, which denies them.
+    const rest = text.replace("It does not make code bug-free, secure or compliant.", "");
+    expect(rest, where).not.toMatch(/bug-free|\bsecure\b|\bcompliant\b|\bcertified\b|\bguaranteed?\b/i);
+  }
+});
+
+test("CR2-6: the AsBuild text never says it makes AI prove its work", async ({ page }) => {
+  for (const [where, [text]] of Object.entries(await asbuildTexts(page))) {
+    for (const phrase of ["proof of done", "prove its work", "prove their work", "makes it prove", "do not read every line of code"]) {
+      expect(text.toLowerCase(), `${where}: "${phrase}"`).not.toContain(phrase);
+    }
+  }
+});
+
+test("CR2-7: the AsBuild text speaks of what exists today", async ({ page }) => {
+  // v0.3.0 is released, so the setup line is the one-command line and "in development" appears nowhere (decision A).
+  for (const [where, [text]] of Object.entries(await asbuildTexts(page))) {
+    expect(text, where).not.toMatch(/in development|at release|when it is out|hear when/i);
+  }
+  await open(page, "/asbuild");
+  await expect(page.locator("main")).toContainText("Setup in your project is one command in Claude Code and one pull request to merge.");
+  await expect(page.locator(".opening .eyebrow")).toHaveText("Free and open source · MIT licence");
+  await open(page, "/");
+  await expect(page.locator("#asbuild .status")).toHaveText("Free and open source · MIT licence");
+});
+
+test("CR2-8: the GitHub links go to the repository, its install steps, the demo and the four demo pull requests", async ({ page }) => {
+  const texts = await asbuildTexts(page);
+  const github = (links) => links.filter((h) => h.startsWith("https://github.com/"));
+  expect(github(texts["main page section"][1])).toEqual([REPO]);
+  expect(new Set(github(texts["/asbuild"][1]))).toEqual(new Set([
+    REPO, `${REPO}#install`, `${DEMO}#readme`, `${DEMO}/pull/3`, `${DEMO}/pull/4`, `${DEMO}/pull/5`, `${DEMO}/pull/6`,
+  ]));
+  await open(page, "/asbuild");
+  const status = page.locator("section", { has: page.locator("#status-h") });
+  for (const [name, n] of [["PROVEN", 3], ["NOT PROVEN", 4], ["WAITING FOR YOU", 5], ["UNRESOLVED", 6]]) {
+    await expect(status.getByRole("link", { name, exact: true })).toHaveAttribute("href", `${DEMO}/pull/${n}`);
+  }
+  await expect(page.getByRole("link", { name: "Get it on GitHub" })).toHaveAttribute("href", REPO);
+  await expect(page.getByRole("link", { name: "See real pull requests" })).toHaveAttribute("href", `${DEMO}#readme`);
+});
+
+test("CR2-9: the AsBuild text names Claude Code as the only agent and Python as the only language today", async ({ page }) => {
+  for (const [where, [text]] of Object.entries(await asbuildTexts(page))) {
+    expect(text, where).not.toMatch(/\b(Cursor|Copilot|Codex|Gemini|Aider|Windsurf|Cline|Devin)\b|another (coding )?agent|any (coding )?agent/i);
+    expect(text, where).not.toMatch(/\b(JavaScript|TypeScript|Java|Go|Rust|Ruby|PHP|Kotlin|Swift|C#|C\+\+|Node)\b/);
+    expect(text, where).toContain("Python");
+    expect(text, where).toContain("Claude Code");
+  }
+});
+
+test("CR2-2 and CR2-10: AsBuild is in the header after Agile Dev Team, and on the main page after the mission", async ({ page }) => {
+  await open(page, "/");
+  const sections = await page.locator("main > section").evaluateAll((ss) => ss.map((s) => s.id));
+  expect(sections).toEqual(["mission", "asbuild", "product", "advisory", "contact"]);
+  await page.locator("#asbuild").getByRole("link", { name: /^How AsBuild works/ }).click();
+  await expect(page).toHaveURL(/\/asbuild$/);
+  await expect(page.locator("h1")).toHaveText("AsBuild");
+});
+
+test("T1: the early-access request link and button are gone; the status lines stay", async ({ page }) => {
+  for (const path of ["/", "/agile-dev-team"]) {
+    await open(page, path);
+    await expect(page.getByText("Request early access")).toHaveCount(0);
+  }
+  await expect(page.locator(".opening .eyebrow")).toHaveText("In development · early access on request");
+  await expect(page.locator(".opening .actions")).toHaveCount(0);
+});
+
+test("CR2-4: the orbit's text alternative and the four steps give the same stops in the same order", async ({ page }) => {
+  for (const width of [1280, 360]) {
+    await page.setViewportSize({ width, height: 900 });
+    await open(page, "/asbuild");
+    const svg = page.locator(".diagram-orbit svg:visible");
+    await expect(svg).toHaveCount(1);
+    await expect(svg).toHaveAttribute("role", "img");
+    await expect(svg).toHaveAccessibleName(/^How a change travels through AsBuild A ring of three stops/);
+    const desc = await svg.locator("desc").textContent();
+    const keys = ["agree", "build", "check", "merge"];
+    const inDesc = keys.map((k) => desc.toLowerCase().indexOf(k));
+    for (let i = 1; i < inDesc.length; i++) expect(inDesc[i], keys[i]).toBeGreaterThan(inDesc[i - 1]);
+    const steps = await page.locator(".steps-four > li > strong").allTextContents();
+    expect(steps).toHaveLength(4);
+    steps.forEach((s, i) => expect(s.toLowerCase(), `step ${i + 1}`).toContain(keys[i]));
+    // The drawing names the three stops in the order the steps give them.
+    expect(await svg.locator(".dg-role").allTextContents()).toEqual(["You", "Your agent", "AsBuild"]);
+  }
+});
+
+test("CR-2 C: the orbit fits the screen, swaps to its phone drawing under 720px, and its words are readable at 360px", async ({ page }) => {
+  for (const [width, shown, hidden] of [[1280, ".diagram-wide", ".diagram-tall"], [360, ".diagram-tall", ".diagram-wide"]]) {
+    await page.setViewportSize({ width, height: 900 });
+    await open(page, "/asbuild");
+    await expect(page.locator(`.diagram-orbit ${shown} svg`)).toBeVisible();
+    await expect(page.locator(`.diagram-orbit ${hidden} svg`)).toBeHidden();
+    const box = await page.locator(`.diagram-orbit ${shown} svg`).boundingBox();
+    expect(box.x).toBeGreaterThanOrEqual(0);
+    expect(box.x + box.width).toBeLessThanOrEqual(width);
+  }
+  // At 360px every word in the drawing shows at 13px or more, the site's smallest text (the ring's would be about 6px).
+  const small = await page.evaluate(() => {
+    const svg = document.querySelector(".diagram-orbit .diagram-tall svg");
+    const scale = svg.getBoundingClientRect().width / svg.viewBox.baseVal.width;
+    return [...svg.querySelectorAll("text")]
+      .map((t) => [t.textContent, parseFloat(getComputedStyle(t).fontSize) * scale])
+      .filter(([, px]) => Math.round(px * 10) / 10 < 13).map(([t, px]) => `${t}: ${px.toFixed(1)}px`);
+  });
+  expect(small).toEqual([]);
+  // Both drawings carry the same words.
+  const words = ["You", "agree the checks,", "then merge", "Your agent", "builds the change,", "in your own setup", "AsBuild", "checks it and",
+    "writes the receipt", "NOT PROVEN", "the receipt comes to you", "you, and what comes back to you", "an agent: it builds", "a program: it checks and records"];
+  const wide = (await page.locator(".diagram-orbit .diagram-wide svg").textContent()).replace(/\s+/g, " ");
+  const tall = (await page.locator(".diagram-orbit .diagram-tall svg").textContent()).replace(/\s+/g, " ");
+  for (const w of words) { expect(wide, w).toContain(w); expect(tall, w).toContain(w); }
+});
+
+test("CR-2 M1: the real receipt sits under the verdicts table, word for word from the demo", async ({ page }) => {
+  await open(page, "/asbuild");
+  const section = page.locator("section", { has: page.locator("#verdicts-h") });
+  const rows = await section.locator("table tbody th").allTextContents();
+  expect(rows).toEqual(["PROVEN", "NOT PROVEN", "WAITING FOR YOU", "UNRESOLVED"]);
+  const receipt = (await section.locator(".receipt").innerText()).replace(/\s+/g, " ");
+  for (const line of [
+    "Done. Every line on your list works. Everything that worked before still works.",
+    "The list you agreed with the AI before it started:",
+    '✓ works: When you name a text file, the app shows how many words it has, like "words: 3".',
+    "✓ works: If the file you name doesn't exist, the app tells you so instead of crashing.",
+    "Do you need to do anything? Yes, one last step to add it to your app. Open this change on GitHub. Press the green button there (Merge pull request). It's safe to press, because every line on your list works.",
+  ]) expect(receipt).toContain(line);
+  const table = await section.locator("table").boundingBox();
+  const box = await section.locator(".receipt").boundingBox();
+  expect(box.y).toBeGreaterThan(table.y + table.height);
 });

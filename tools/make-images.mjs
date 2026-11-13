@@ -36,7 +36,7 @@ await page.evaluate(() => document.fonts.ready);
 await page.screenshot({ path: new URL("img/share.png", site).pathname });
 
 // One share image per page beside the main one: navy, the simplified mark, the page's name.
-for (const [name, title] of [["agile-dev-team", "Agile Dev Team"], ["advisory", "AI advisory"], ["about", "About Hevelius AI Group"]]) {
+for (const [name, title] of [["agile-dev-team", "Agile Dev Team"], ["asbuild", "AsBuild"], ["advisory", "AI advisory"], ["about", "About Hevelius AI Group"]]) {
   await page.setContent(`<style>
 @font-face{font-family:M;font-weight:600;src:url(${montserrat}) format("woff2")}
 @font-face{font-family:P;font-weight:500;src:url(${plexMono}) format("woff2")}
