@@ -1,6 +1,6 @@
 # heveliusai.com
 
-The public website of Hevelius AI Group LLC: four static pages, plain HTML and CSS, no framework,
+The public website of Hevelius AI Group LLC: five static pages, plain HTML and CSS, no framework,
 and no build step a visitor depends on. The requirements are locked in the Notion page
 "Hevelius website: proposal and requirements"; [`REQUIREMENTS.md`](REQUIREMENTS.md) maps each story to its check.
 
@@ -10,7 +10,7 @@ and no build step a visitor depends on. The requirements are locked in the Notio
 | --- | --- |
 | `site/` | Everything that is published, and nothing else. |
 | `site/index.html` | The main page and all its text. |
-| `site/agile-dev-team.html`, `site/advisory.html`, `site/about.html` | The three other pages, served as `/agile-dev-team`, `/advisory` and `/about`. The header and footer are the same on every page (a check holds them equal). |
+| `site/agile-dev-team.html`, `site/asbuild.html`, `site/advisory.html`, `site/about.html` | The four other pages, served as `/agile-dev-team`, `/asbuild`, `/advisory` and `/about`. The header and footer are the same on every page (a check holds them equal). |
 | `site/styles.css` | Colors, type and layout. Colors are tokens at the top; dark follows the system. |
 | `site/site.js` | The copy-address button, the phone "Menu" button and the keyboard stops of the scrolling boxes. Every page works fully without it. |
 | `site/fonts/` | Montserrat, IBM Plex Sans and IBM Plex Mono (Latin, WOFF2), with their open-font licences. |
