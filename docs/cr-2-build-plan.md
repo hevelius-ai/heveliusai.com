@@ -42,8 +42,8 @@ offers; install commands and version numbers; the LinkedIn company page.
 
 - The SoftwareApplication node carries `isAccessibleForFree`, the MIT licence, the repository as `downloadUrl`, and no version,
   price, rating or operating system.
-- The receipt is the top of the demo's receipt, word for word. The demo's last two lines ("Good to know: …" and "The check ran
-  on GitHub, separately from the AI.") are not on the page, as in the CR. The box keeps a label like the evidence box on the
+- The receipt is the demo's receipt, word for word, with its "Good to know" line (owner, 13 Nov 2026, after review); only the
+  last line, "The check ran on GitHub, separately from the AI.", is left out. The box keeps a label like the evidence box on the
   main page: "A real receipt, from the demo".
 - The phone orbit's words are at 13px or more at 360px (the site's footer size); a check holds that.
 - The desktop orbit's view box ends under the legend, now that the footnote is gone.
@@ -70,3 +70,9 @@ addresses (part D).
 - When AsBuild is listed in Anthropic's plugin directory: add that link beside the GitHub link.
 - When a second language is built: change "What you need" and "More languages".
 - LinkedIn company page "We build" line (owner, by hand).
+
+## 7. Changes after the owner's review (13 Nov 2026)
+
+- The receipt gains the demo's "Good to know" line, which states what the check does not cover.
+- "More languages": "Support for other languages is planned, and no date is set." becomes "Support for other languages is planned."
+

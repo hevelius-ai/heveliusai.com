@@ -1078,6 +1078,7 @@ test("CR-2 M1: the real receipt sits under the verdicts table, word for word fro
     '✓ works: When you name a text file, the app shows how many words it has, like "words: 3".',
     "✓ works: If the file you name doesn't exist, the app tells you so instead of crashing.",
     "Do you need to do anything? Yes, one last step to add it to your app. Open this change on GitHub. Press the green button there (Merge pull request). It's safe to press, because every line on your list works.",
+    "Good to know: AsBuild checked only the lines on your list, nothing else, such as how fast it is or how it looks.",
   ]) expect(receipt).toContain(line);
   const table = await section.locator("table").boundingBox();
   const box = await section.locator(".receipt").boundingBox();
