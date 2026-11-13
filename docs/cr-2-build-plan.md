@@ -66,7 +66,7 @@ addresses (part D).
 
 ## 6. Follow-ups (not in this change)
 
-- N2: reword the main page's opening, button and mission to cover both products; owner approves the words first.
+- ~~N2~~: done 13 Nov 2026, see section 7.
 - When AsBuild is listed in Anthropic's plugin directory: add that link beside the GitHub link.
 - When a second language is built: change "What you need" and "More languages".
 - LinkedIn company page "We build" line (owner, by hand).
@@ -79,4 +79,8 @@ addresses (part D).
   Contact stays in the header and the closing band.
 - After publishing: every off-site link (GitHub, LinkedIn) opens in a new tab, as the LinkedIn link on `/about` already did
   (`target="_blank" rel="noopener"`). Links within the site and the email address open in the same tab. A check holds both.
-
+- N2 (owner, 13 Nov 2026, from proposed wording): the opening sentence under the headline stays. The mission's first paragraph
+  ends "…means nothing until a program has checked it and recorded the result."; the second opens "Hevelius closes both gaps."
+  and names AsBuild (free and open source) before Agile Dev Team (in development), with "records evidence" for "records proof".
+  The meta and share descriptions name both products, and the contact text starts "Write to us about AsBuild, for early access
+  to Agile Dev Team, …".
