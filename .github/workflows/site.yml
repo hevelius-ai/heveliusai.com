@@ -72,7 +72,8 @@ jobs:
         run: |
           v="${GITHUB_SHA::8}"
           for f in site/*.html; do
-            sed -i "s|href=\"styles.css\"|href=\"styles.css?v=$v\"|; s|src=\"site.js\"|src=\"site.js?v=$v\"|" "$f"
+            # 404.html is served at any address, so it names both files from the site root ("/styles.css").
+            sed -i "s|href=\"\(/\?\)styles.css\"|href=\"\1styles.css?v=$v\"|; s|src=\"\(/\?\)site.js\"|src=\"\1site.js?v=$v\"|" "$f"
             grep -q "styles.css?v=$v" "$f" && grep -q "site.js?v=$v" "$f" || { echo "::error::$f was not tied to this release"; exit 1; }
           done
       - uses: actions/upload-pages-artifact@v3
