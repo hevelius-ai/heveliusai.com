@@ -11,6 +11,7 @@ and no build step a visitor depends on. The requirements are locked in the Notio
 | `site/` | Everything that is published, and nothing else. |
 | `site/index.html` | The main page and all its text. |
 | `site/agile-dev-team.html`, `site/asbuild.html`, `site/advisory.html`, `site/about.html` | The four other pages, served as `/agile-dev-team`, `/asbuild`, `/advisory` and `/about`. The header and footer are the same on every page (a check holds them equal). |
+| `site/404.html` | The page GitHub Pages shows for an address that does not exist (status 404). It is served at any address, so it names its files from the site root (`/styles.css`); it is left out of the sitemap and search. |
 | `site/styles.css` | Colors, type and layout. Colors are tokens at the top; dark follows the system. |
 | `site/site.js` | The copy-address button, the phone "Menu" button and the keyboard stops of the scrolling boxes. Every page works fully without it. |
 | `site/fonts/` | Montserrat, IBM Plex Sans and IBM Plex Mono (Latin, WOFF2), with their open-font licences. |

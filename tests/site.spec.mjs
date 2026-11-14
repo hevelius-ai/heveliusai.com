@@ -774,7 +774,7 @@ test("E5-S2-3: the about page carries the founder text, the photo, the company a
   const text = (await page.locator("main").innerText()).replace(/\s+/g, " ");
   expect(text).toContain(FOUNDER);
   expect(text).toContain(NAME_LINE);
-  expect(text).toContain("Hevelius AI Group LLC is an AI advisory and developer-tools company in Naples, Florida, founded in 2026 by Christopher Zaczek. It builds Agile Dev Team, a Claude Code plugin, and advises organizations on AI readiness, transformation and governance.");
+  expect(text).toContain("Hevelius AI Group LLC is an AI advisory and developer-tools company in Naples, Florida, founded in 2026 by Christopher Zaczek. It builds AsBuild and Agile Dev Team, two plugins for Claude Code, and advises organizations on AI readiness, transformation and governance.");
   expect(text).toContain("Hevelius AI Group is a company in Naples, Florida, and has no connection to any astronomical institution.");
   const photo = page.getByRole("img", { name: "Christopher Zaczek, founder of Hevelius AI Group" });
   await expect(photo).toBeVisible();
@@ -983,12 +983,12 @@ test("CR2-6: the AsBuild text never says it makes AI prove its work", async ({ p
 });
 
 test("CR2-7: the AsBuild text speaks of what exists today", async ({ page }) => {
-  // v0.3.0 is released, so the setup line is the one-command line and "in development" appears nowhere (decision A).
+  // The setup line describes the copy-paste setup in the README (owner, 14 Nov 2026); "in development" appears nowhere.
   for (const [where, [text]] of Object.entries(await asbuildTexts(page))) {
     expect(text, where).not.toMatch(/in development|at release|when it is out|hear when/i);
   }
   await open(page, "/asbuild");
-  await expect(page.locator("main")).toContainText("Setup in your project is one command in Claude Code and one pull request to merge.");
+  await expect(page.locator("main")).toContainText("To set it up, you paste one message from the README into Claude Code. It does each step it can, asks before it installs anything, and stops when it needs you, for example to sign in to GitHub yourself. Setup ends with one pull request for you to merge.");
   await expect(page.locator(".opening .eyebrow")).toHaveText("Free and open source · MIT licence");
   await open(page, "/");
   await expect(page.locator("#asbuild .status")).toHaveText("Free and open source · MIT licence");
@@ -1115,4 +1115,58 @@ test("Off-site links open in a new tab; links within the site and the email addr
       }
     }
   }
+});
+
+// ---------------------------------------------------------------- 14 Nov 2026: About and Advisory name AsBuild; the 404 page
+
+test("About and Advisory name AsBuild beside Agile Dev Team (owner, 14 Nov 2026)", async ({ page }) => {
+  await open(page, "/about");
+  await expect(page.locator("#do-h")).toHaveText("Two products, one practice");
+  const products = page.locator("section", { has: page.locator("#do-h") });
+  await expect(products.locator("h3")).toHaveText(["AsBuild", "Agile Dev Team", "Advisory"]);
+  await expect(products.getByRole("link", { name: /^Read about AsBuild/ })).toHaveAttribute("href", "/asbuild");
+  await expect(products.getByRole("link", { name: /^Read about Agile Dev Team/ })).toHaveAttribute("href", "/agile-dev-team");
+  await expect(page.locator("#contact")).toContainText("About AsBuild, for early access to Agile Dev Team, or to talk about an assessment or advisory work.");
+  // The structured data carries the same company sentence as the page.
+  expect(await page.locator('script[type="application/ld+json"]').textContent()).toContain("It builds AsBuild and Agile Dev Team, two plugins for Claude Code");
+  await open(page, "/advisory");
+  await expect(page.locator("main")).toContainText("The principles behind AsBuild and Agile Dev Team apply to any process where AI does part of the work.");
+});
+
+test("404: a mistyped address shows the site's own page, with the header, a way home and status 404", async ({ page }) => {
+  for (const address of ["/no-such-page", "/asbuild/old/deep/address"]) {
+    const res = await page.goto(address);
+    expect(res.status(), address).toBe(404);
+    await page.evaluate(() => document.fonts.ready);
+    await expect(page).toHaveTitle("Page not found | Hevelius AI Group");
+    await expect(page.locator("h1")).toHaveText("Page not found");
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex");
+    // Served at any depth, it still finds its stylesheet: the page is laid out, not bare.
+    expect(await page.evaluate(() => getComputedStyle(document.body).fontFamily)).toContain("IBM Plex Sans");
+    await expect(page.getByRole("navigation", { name: "Main" }).getByRole("link")).toHaveText(["Main", "Agile Dev Team", "AsBuild", "Advisory", "About", "Contact"]);
+  }
+  await page.getByRole("link", { name: "Go to the main page" }).click();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.locator("h1")).toHaveText("AI you can trust, because you can verify it.");
+});
+
+test("404: the page passes the accessibility scan in both themes and fits a small phone", async ({ page }) => {
+  for (const scheme of ["light", "dark"]) {
+    await page.setViewportSize({ width: 320, height: 568 });
+    await page.emulateMedia({ colorScheme: scheme });
+    await page.goto("/no-such-page");
+    await page.evaluate(() => document.fonts.ready);
+    expect(await page.evaluate(layoutProblems)).toEqual([]);
+    const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+    expect(results.violations.map((v) => `${v.id}: ${v.nodes.length}`), scheme).toEqual([]);
+  }
+});
+
+test("404: the page is left out of the sitemap, and its header matches every page's", async ({ page }) => {
+  const sitemap = await (await page.request.get("/sitemap.xml")).text();
+  expect(sitemap).not.toContain("404");
+  await open(page, "/about");
+  const nav = await page.locator(".site-nav").evaluate((n) => n.outerHTML.replace(/ aria-current="page"/g, ""));
+  await page.goto("/no-such-page");
+  expect(await page.locator(".site-nav").evaluate((n) => n.outerHTML)).toBe(nav);
 });

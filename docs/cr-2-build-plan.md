@@ -84,3 +84,21 @@ addresses (part D).
   and names AsBuild (free and open source) before Agile Dev Team (in development), with "records evidence" for "records proof".
   The meta and share descriptions name both products, and the contact text starts "Write to us about AsBuild, for early access
   to Agile Dev Team, …".
+
+## 8. Owner's review of 14 Nov 2026
+
+A review listed four points. The owner's decisions:
+
+1. Agile Dev Team (retired as a project on 9 Nov): **stays on the site as it is**, as a placeholder until something similar replaces
+   it; the principles are the same. No change to its page, header link, main-page section or buttons.
+2. About: AsBuild added beside Agile Dev Team. Company sentence: "It builds AsBuild and Agile Dev Team, two plugins for Claude Code, and
+   advises organizations on AI readiness, transformation and governance." (page and structured data); heading "Two products, one
+   practice" with an AsBuild block first; contact line "About AsBuild, for early access to Agile Dev Team, or to talk about an
+   assessment or advisory work." Advisory: "The principles behind AsBuild and Agile Dev Team apply to any process where AI does part
+   of the work."
+3. `/asbuild` setup line, checked against the README on 14 Nov (latest release v0.3.2; setup is one message pasted into Claude Code):
+   "To set it up, you paste one message from the README into Claude Code. It does each step it can, asks before it installs anything,
+   and stops when it needs you, for example to sign in to GitHub yourself. Setup ends with one pull request for you to merge."
+4. A branded 404 page (`site/404.html`): status 404, header and footer as on every page, links to every page, contact band, `noindex`.
+   It names its files from the site root, so the publish step now ties `/styles.css` and `/site.js` to the release as well; the local
+   server serves it for a missing address, as GitHub Pages does.

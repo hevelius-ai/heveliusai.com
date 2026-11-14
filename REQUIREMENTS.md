@@ -97,3 +97,14 @@ Recorded exceptions (owner, 13 Nov 2026):
 - "No certification claim" (E2-S3-1) leaves out one sentence on `/asbuild`: "It does not make code bug-free, secure or compliant.", which names the words to deny them.
 - Labels in the desktop orbit may be smaller than 16px, as for the CR-1 diagrams; the phone drawing and the steps carry the same words.
 - The `/asbuild` title tag is longer than 70 characters, as for `/agile-dev-team` and `/advisory`.
+
+## 14 Nov 2026: About and Advisory name AsBuild; the 404 page
+
+From the owner's review of 14 Nov 2026. Agile Dev Team stays on the site as it is (owner: a placeholder until a similar product replaces it).
+
+| Change | How it is checked |
+| --- | --- |
+| About: the company sentence (page and structured data) names AsBuild and Agile Dev Team; "Two products, one practice" with AsBuild first; the contact line names AsBuild | Headings, links and sentences word for word |
+| Advisory: "The principles behind AsBuild and Agile Dev Team apply…" | Sentence word for word |
+| `/asbuild`: the setup line describes the copy-paste setup in the README | CR2-7, word for word |
+| A branded 404 page | Status 404 at any address and depth; styled from the site root; header, a way home, `noindex`; accessibility scan in both themes at 320px; not in the sitemap; the publish step ties its root-relative stylesheet to the release |
