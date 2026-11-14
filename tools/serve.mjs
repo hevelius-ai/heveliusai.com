@@ -1,5 +1,5 @@
 // Minimal static server for site/, used by the checks and for local preview: npm run serve
-// Serves text files gzip-compressed, and /advisory from advisory.html, as GitHub Pages does.
+// Serves text files gzip-compressed, /advisory from advisory.html, and 404.html with status 404 for a missing address, as GitHub Pages does.
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
@@ -20,15 +20,22 @@ createServer(async (req, res) => {
   else if (!extname(path)) path += ".html";
   const file = normalize(join(root, path));
   if (!file.startsWith(root)) { res.writeHead(403).end(); return; }
+  let status = 200;
+  let found = file;
+  let body = await readFile(found).catch(() => null);
+  if (body === null) {
+    status = 404;
+    found = join(root, "404.html");
+  }
   try {
-    let body = await readFile(file);
-    const ext = extname(file);
+    body ??= await readFile(found);
+    const ext = extname(found);
     const headers = { "content-type": types[ext] || "application/octet-stream", "cache-control": "no-store" };
     if (compressible.has(ext) && /\bgzip\b/.test(req.headers["accept-encoding"] || "")) {
       body = gzipSync(body);
       headers["content-encoding"] = "gzip";
     }
-    res.writeHead(200, headers).end(body);
+    res.writeHead(status, headers).end(body);
   } catch {
     res.writeHead(404, { "content-type": "text/plain" }).end("Not found");
   }
