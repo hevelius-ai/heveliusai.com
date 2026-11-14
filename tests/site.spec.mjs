@@ -1084,20 +1084,27 @@ test("CR-2 C: the orbit fits the screen, swaps to its phone drawing under 720px,
   for (const w of words) { expect(wide, w).toContain(w); expect(tall, w).toContain(w); }
 });
 
-test("CR-2 M1: the real receipt sits under the verdicts table, word for word from the demo", async ({ page }) => {
+test("CR-2 M1: the PROVEN receipt sits under the verdicts table, word for word as AsBuild writes it (engine/receipt.py)", async ({ page }) => {
   await open(page, "/asbuild");
   const section = page.locator("section", { has: page.locator("#verdicts-h") });
   const rows = await section.locator("table tbody th").allTextContents();
   expect(rows).toEqual(["PROVEN", "NOT PROVEN", "WAITING FOR YOU", "UNRESOLVED"]);
+  // Verdict meanings follow the README; they never claim more than was checked (owner, AsBuild v0.3.4 wording).
+  const meanings = (await section.locator("table tbody").innerText()).replace(/\s+/g, " ");
+  expect(meanings).toContain("Every test you approved failed before the change and passes now, none of them was changed, and none of your app's other tests that ran failed. Read it, and merge it if you want it.");
+  expect(meanings).toContain("A test you approved still fails, or another of your app's tests failed.");
+  await expect(section.locator(".evidence figcaption")).toHaveText("A PROVEN receipt");
   const receipt = (await section.locator(".receipt").innerText()).replace(/\s+/g, " ");
   for (const line of [
-    "Done. Every line on your list works. Everything that worked before still works.",
+    "Done. Every line on your list works. None of your app's other checks failed.",
     "The list you agreed with the AI before it started:",
     '✓ works: When you name a text file, the app shows how many words it has, like "words: 3".',
     "✓ works: If the file you name doesn't exist, the app tells you so instead of crashing.",
-    "Do you need to do anything? Yes, one last step to add it to your app. Open this change on GitHub. Press the green button there (Merge pull request). It's safe to press, because every line on your list works.",
-    "Good to know: AsBuild checked only the lines on your list, nothing else, such as how fast it is or how it looks.",
+    "Do you need to do anything? Yes, one last step to add it to your app. Open this change on GitHub. If you want this change, press the green button there (Merge pull request). Every line on your list works; that is all AsBuild checked.",
+    "Good to know: AsBuild checked only the lines on your list, nothing else, such as how fast it is or how it looks. The check ran on GitHub, separately from the AI.",
   ]) expect(receipt).toContain(line);
+  // The demo's pull requests still show the older wording, so the receipt no longer links to one.
+  expect(await section.locator(".split a").count()).toBe(0);
   const table = await section.locator("table").boundingBox();
   const box = await section.locator(".receipt").boundingBox();
   expect(box.y).toBeGreaterThan(table.y + table.height);
@@ -1169,4 +1176,15 @@ test("404: the page is left out of the sitemap, and its header matches every pag
   const nav = await page.locator(".site-nav").evaluate((n) => n.outerHTML.replace(/ aria-current="page"/g, ""));
   await page.goto("/no-such-page");
   expect(await page.locator(".site-nav").evaluate((n) => n.outerHTML)).toBe(nav);
+});
+
+test("AsBuild text never calls merging safe, and names what is not protected (owner, AsBuild v0.3.4 wording)", async ({ page }) => {
+  for (const path of ["/asbuild", "/"]) {
+    await open(page, path);
+    const text = path === "/" ? await page.locator("#asbuild").innerText() : await page.locator("main").innerText();
+    expect(text, path).not.toMatch(/\bsafe(ly)?\b/i);
+    expect(text, path).not.toMatch(/Everything that worked before still works|nothing else broke|something that worked before broke/i);
+  }
+  await open(page, "/asbuild");
+  await expect(page.locator("main")).toContainText("Only the tests you approved are protected: a test the AI deleted or skipped is not noticed, and a test that already fails on main counts as broken, so get main passing first.");
 });

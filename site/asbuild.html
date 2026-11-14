@@ -224,8 +224,8 @@
             <tr><th scope="col">Verdict</th><th scope="col">What it means</th></tr>
           </thead>
           <tbody>
-            <tr><th scope="row">PROVEN</th><td>Every test you approved failed before the change and passes now, none of them was changed, and nothing else broke. Ready for you to merge.</td></tr>
-            <tr><th scope="row">NOT PROVEN</th><td>A test you approved still fails, or something that worked before broke. The receipt says what, in one line, and the work goes back to your agent.</td></tr>
+            <tr><th scope="row">PROVEN</th><td>Every test you approved failed before the change and passes now, none of them was changed, and none of your app's other tests that ran failed. Read it, and merge it if you want it.</td></tr>
+            <tr><th scope="row">NOT PROVEN</th><td>A test you approved still fails, or another of your app's tests failed. The receipt says what, in one line, and the work goes back to your agent.</td></tr>
             <tr><th scope="row">WAITING FOR YOU</th><td>A decision is yours: for example, new tests to approve, a locked test or a protected file was changed, or a test is missing.</td></tr>
             <tr><th scope="row">UNRESOLVED</th><td>The check could not finish, for example because the tests could not run. Nothing is claimed.</td></tr>
           </tbody>
@@ -233,21 +233,21 @@
       </section>
       <div class="split">
         <figure class="evidence">
-          <figcaption>A real receipt, from the demo</figcaption>
+          <figcaption>A PROVEN receipt</figcaption>
           <div class="receipt">
-            <p><strong>Done. Every line on your list works.</strong> Everything that worked before still works.</p>
+            <p><strong>Done. Every line on your list works.</strong> None of your app's other checks failed.</p>
             <p class="muted">The list you agreed with the AI before it started:</p>
             <ul>
               <li><span class="ok">✓ works:</span> When you name a text file, the app shows how many words it has, like "words: 3".</li>
               <li><span class="ok">✓ works:</span> If the file you name doesn't exist, the app tells you so instead of crashing.</li>
             </ul>
-            <p><strong>Do you need to do anything?</strong> Yes, one last step to add it to your app. Open this change on GitHub. Press the green button there (Merge pull request). It's safe to press, because every line on your list works.</p>
-            <p class="muted"><strong>Good to know:</strong> AsBuild checked only the lines on your list, nothing else, such as how fast it is or how it looks.</p>
+            <p><strong>Do you need to do anything?</strong> Yes, one last step to add it to your app. Open this change on GitHub. If you want this change, press the green button there (Merge pull request). Every line on your list works; that is all AsBuild checked.</p>
+            <p class="muted"><strong>Good to know:</strong> AsBuild checked only the lines on your list, nothing else, such as how fast it is or how it looks. The check ran on GitHub, separately from the AI.</p>
           </div>
         </figure>
         <div class="block">
           <h3>A program writes each receipt from fixed wording. No AI does.</h3>
-          <p><a class="arrow tap" href="https://github.com/hevelius-ai/asbuild-demo/pull/3" target="_blank" rel="noopener">See this one on its pull request</a></p>
+          <p class="muted">The receipt is an aid to your own review: it says what AsBuild checked, and nothing more.</p>
         </div>
       </div>
     </div>
@@ -263,6 +263,7 @@
           <li data-test="limits">It does not make code bug-free, secure or compliant. It shows that each test you approved failed before the change, passes after it and was not changed, and keeps the record. That is not a promise that the feature does everything you meant.</li>
           <li>It does not block a merge. The decision stays with you.</li>
           <li>It does not stop an agent that sets out to fake test results. It catches tests that were changed, skipped, weakened or never failed.</li>
+          <li>Only the tests you approved are protected: a test the AI deleted or skipped is not noticed, and a test that already fails on main counts as broken, so get main passing first.</li>
         </ul>
       </div>
     </div>
