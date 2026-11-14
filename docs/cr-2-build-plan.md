@@ -102,3 +102,23 @@ A review listed four points. The owner's decisions:
 4. A branded 404 page (`site/404.html`): status 404, header and footer as on every page, links to every page, contact band, `noindex`.
    It names its files from the site root, so the publish step now ties `/styles.css` and `/site.js` to the release as well; the local
    server serves it for a missing address, as GitHub Pages does.
+
+## 9. AsBuild v0.3.4 receipt wording (owner, 14 Nov 2026)
+
+AsBuild v0.3.4 changed its receipts so they never claim more than was checked. `/asbuild` now matches the source of truth (the
+README's "The receipts" and "What AsBuild does not prove", and the templates in `engine/receipt.py`, read on 14 Nov):
+
+- Receipt: "None of your app's other checks failed." in place of "Everything that worked before still works."; "If you want this
+  change, press the green button there (Merge pull request). Every line on your list works; that is all AsBuild checked." in place
+  of "Press the green button there (Merge pull request). It's safe to press, because every line on your list works."; the "Good to
+  know" line gains the template's last sentence, "The check ran on GitHub, separately from the AI."
+- The demo's pull requests still show the older wording, so the box is labelled "A PROVEN receipt" and no longer links to demo
+  pull request 3. The owner offered the label "A PROVEN receipt (AsBuild v0.3.4)"; it was left without the version, because version
+  numbers stay off the site (CR-2 decision, held by check CR2-3). The demo links in "Status" stay: each still shows its verdict.
+  In place of the link: "The receipt is an aid to your own review: it says what AsBuild checked, and nothing more."
+- Verdicts: PROVEN "…none of them was changed, and none of your app's other tests that ran failed. Read it, and merge it if you
+  want it." ("Ready for you to merge." also replaced, after the README); NOT PROVEN "A test you approved still fails, or another of
+  your app's tests failed."
+- "What AsBuild does not do" gains: "Only the tests you approved are protected: a test the AI deleted or skipped is not noticed, and
+  a test that already fails on main counts as broken, so get main passing first."
+- A check now fails if the AsBuild text calls merging "safe", or brings back the older wording.
