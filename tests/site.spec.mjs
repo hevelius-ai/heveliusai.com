@@ -634,17 +634,18 @@ test("E5-S2-1: each page beside the main one has its own title, main heading, de
 });
 
 // The site's four pictures (CR-3): the two-check ring on the main page, the AsBuild ring, the twelve areas on
-// /aschecked and the three-phase moon path on /playbook. Each has a wide drawing and a phone drawing.
+// /aschecked and the three-phase moon path on /playbook. Each has a wide drawing and a phone drawing, shown from `wide`
+// pixels up: 720 for the rings, 1024 for the two CR-3 pictures (V1, owner, 23 Nov 2026).
 const PICTURES = [
-  { path: "/", figure: "#fit figure.diagram", name: /^Two checks from outside your AI builder A ring of four stops/ },
-  { path: "/asbuild", figure: "figure.diagram-orbit", name: /^How a change travels through AsBuild A ring of three stops/ },
-  { path: "/aschecked", figure: "figure.diagram-read", name: /^What AsChecked reads, and what comes out A ring of twelve areas/ },
-  { path: "/playbook", figure: "figure.diagram-read", name: /^The playbook in three phases A rising path of five moons/ },
+  { path: "/", figure: "#fit figure.diagram", wide: 720, name: /^Two checks from outside your AI builder A ring of four stops/ },
+  { path: "/asbuild", figure: "figure.diagram-orbit", wide: 720, name: /^How a change travels through AsBuild A ring of three stops/ },
+  { path: "/aschecked", figure: "figure.diagram-read", wide: 1024, name: /^What AsChecked reads, and what comes out A ring of twelve areas/ },
+  { path: "/playbook", figure: "figure.diagram-read", wide: 1024, name: /^The playbook in three phases A rising path of five moons/ },
 ];
 
-test("E5-S2-6: each picture fits the screen and swaps to its phone drawing under 720px", async ({ page }) => {
+test("E5-S2-6: each picture fits the screen and swaps to its phone drawing under its breakpoint", async ({ page }) => {
   for (const pic of PICTURES) {
-    for (const [width, shown, hidden] of [[1280, ".diagram-wide", ".diagram-tall"], [720, ".diagram-wide", ".diagram-tall"], [719, ".diagram-tall", ".diagram-wide"], [390, ".diagram-tall", ".diagram-wide"]]) {
+    for (const [width, shown, hidden] of [[1280, ".diagram-wide", ".diagram-tall"], [pic.wide, ".diagram-wide", ".diagram-tall"], [pic.wide - 1, ".diagram-tall", ".diagram-wide"], [390, ".diagram-tall", ".diagram-wide"]]) {
       await page.setViewportSize({ width, height: 900 });
       await open(page, pic.path);
       const svg = page.locator(`${pic.figure} ${shown} svg`);
@@ -1361,9 +1362,13 @@ const NEW_PICTURES = [
   },
   {
     path: "/playbook", figure: "figure.diagram-read",
-    keys: ["what you want", "before building", "agreed finish line", "agree what done means", "decide once", "tests first, then locked",
-      "while building", "checked from outside", "programs check, not agents", "reviews", "one file holds the state",
-      "before release", "released on evidence", "the person decides", "a first-time user tests it", "the rules get shorter", "the record"],
+    // P4 (owner, 23 Nov 2026): the text alternative stays as drafted. It names each phase and its three rules, but not
+    // the drawn phase titles ("Agreed finish line", "Checked from outside", "Released on evidence"), so they are not keys.
+    keys: ["what you want", "before building", "agree what done means", "decide once", "tests first, then locked",
+      "while building", "programs check, not agents", "reviews", "one file holds the state",
+      "before release", "the person decides", "a first-time user tests it", "the rules get shorter", "the record"],
+    // A path, not a ring: the words are read as drawn, left to right on the wide drawing, top to bottom on the phone.
+    byPosition: true,
   },
 ];
 
@@ -1384,8 +1389,14 @@ test.describe("CR3-9: each new picture's text alternative gives the same items i
         const svg = page.locator(`${pic.figure} ${part} svg`);
         const desc = norm(await svg.locator("desc").textContent());
         inOrder(desc, `${part} text alternative`);
-        // The drawn words, in document order, each text element joined by a space.
-        const drawn = norm((await svg.locator("text").allTextContents()).join(" "));
+        // The drawn words, each text element joined by a space: in document order around a ring, or for a path in
+        // reading order by position (x then y on the wide drawing, y then x on the phone drawing).
+        const words = await svg.locator("text").evaluateAll((ts, [byPosition, wide]) => {
+          const at = ts.map((t) => ({ text: t.textContent, x: Number(t.getAttribute("x")), y: Number(t.getAttribute("y")) }));
+          if (byPosition) at.sort((a, b) => (wide ? a.x - b.x || a.y - b.y : a.y - b.y || a.x - b.x));
+          return at.map((w) => w.text);
+        }, [!!pic.byPosition, part === ".diagram-wide"]);
+        const drawn = norm(words.join(" "));
         inOrder(drawn, `${part} drawing`);
         if (pic.middle) { expect(desc).toContain(pic.middle); expect(drawn).toContain(pic.middle); }
         if (pic.roles && part === ".diagram-wide") expect(await svg.locator(".dg-role").allTextContents()).toEqual(pic.roles);
@@ -1394,10 +1405,12 @@ test.describe("CR3-9: each new picture's text alternative gives the same items i
   }
 });
 
-test("CR3-9: the new pictures' phone drawings keep every word at 13px or more at 360px wide", async ({ page }) => {
-  await page.setViewportSize({ width: 360, height: 800 });
-  for (const pic of NEW_PICTURES) {
+test("CR3-9 and V1: the new pictures' phone drawings keep every word at 13px or more, at 360px and wherever they show", async ({ page }) => {
+  // 360: a small phone. 1023: the widest screen that shows the column drawing on /aschecked and /playbook (V1).
+  for (const [pic, width] of [...NEW_PICTURES.map((p) => [p, 360]), ...NEW_PICTURES.filter((p) => p.path !== "/").map((p) => [p, 1023])]) {
+    await page.setViewportSize({ width, height: 800 });
     await open(page, pic.path);
+    await expect(page.locator(`${pic.figure} .diagram-tall svg`), `${pic.path} at ${width}`).toBeVisible();
     const r = await page.evaluate((sel) => {
       const svg = document.querySelector(`${sel} .diagram-tall svg`);
       const scale = svg.getBoundingClientRect().width / svg.viewBox.baseVal.width;

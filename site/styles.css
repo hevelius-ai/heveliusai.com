@@ -465,6 +465,12 @@ main:has(.opening) .section-head > :not(.label) { max-width: 44rem; }
 /* The pictures on /aschecked and /playbook: under 720px their column drawings are set near full size,
    so every word stays at 13px or more on a 360px phone. */
 .diagram-read .diagram-tall svg { max-width: 22rem; }
+/* V1 (owner, 23 Nov 2026): scaled down, their wide drawings would show words under 11px below 1024px, so these two
+   pictures keep their column drawing up to 1023px. */
+@media (max-width: 63.99rem) {
+  .diagram-read .diagram-wide { display: none; }
+  .diagram-read .diagram-tall { display: block; }
+}
 .diagram-read .diagram-tall .dg-eye { font-size: 15.5px; letter-spacing: 1px; }
 .diagram-read .diagram-tall .dg-ph { font-size: 18px; }
 .diagram-read .diagram-tall .dg-li { font-size: 16px; }

@@ -46,9 +46,9 @@ its links go in once it is; the skills do not sit on the website, and the owner 
 | T1 to T5 | Page text the AsChecked release makes untrue or incomplete (section 6) | All five as proposed |
 | X1 | Models for the independent review and the walkthrough | Claude Fable 5.2 for both; review at high effort |
 | X2 | Old records | `docs/cr-1-build-plan.md` and `docs/cr-2-build-plan.md` kept as dated records; `docs/design/team-picture-v1/` removed |
-| P3 | `/playbook` "Get them" and status line, now that the skills are shared on request | *to be answered* (section 8) |
-| P4 | The moon path's text alternative leaves out the three drawn phase titles | *to be answered* (section 8) |
-| V1 | The two new pictures between 720 and about 1000 px | *to be answered* (section 8) |
+| P3 | `/playbook` "Get them" and status line | The draft's text stays: the owner will publish the skills on GitHub ("to be published"; "will be published on GitHub, free to use"). When they are, the follow-up adds "Get them on GitHub" and the licence line |
+| P4 | The moon path's text alternative leaves out the three drawn phase titles | Left as it is. CR3-9 on `/playbook` checks each phase and its rules, not the three phase titles |
+| V1 | The two new pictures between 720 and about 1000 px | Their column drawing shows up to 1023 px; every word in it is 16 px there |
 
 ## 3. Tasks, in order
 
@@ -163,19 +163,10 @@ IndexNow for the six addresses and `/agile-dev-team` once as removed.
   on macOS and Linux, so on Windows the local server refused every page and the image tool failed. Both now use
   `fileURLToPath`. CI runs on Linux and was not affected.
 - **Checks:** 309 in all. Before the change to the checks, 143 failed on the draft (most because the page list named the
-  removed page); after it, one fails, CR3-9 on `/playbook`, which waits for P4.
+  removed page); after it and the owner's P4 and V1 answers, all 309 pass. The CR3-9 check reads a path's words in drawn
+  order (left to right, or top to bottom), since the moon path's last moon comes early in the page's code.
 - **Repository search** after the change: the old name is left only in the dated CR-1 and CR-2 build plans (X2), in the
   checks that test for its absence, and in the IndexNow step that announces its removal.
 
-**Waiting for the owner:**
-
-- **P3.** `/playbook` says the skills "will be published on GitHub, free to use", and its status line says "to be published".
-  The owner shares them on request instead. Proposed: status line "Three skills for Claude Code · shared on request";
-  "Get them": "The three skills are not published. Write to contact@heveliusai.com and we will send them."
-- **P4.** CR3-9 asks for the same items, in the same order, in the drawing and its text alternative. The moon path draws three
-  phase titles ("Agreed finish line", "Checked from outside", "Released on evidence") that its text alternative leaves out.
-  Proposed: "A crescent for Before building, an agreed finish line: …", "A half moon for While building, checked from
-  outside: …", "A nearly full moon for Before release, and after, released on evidence: …".
-- **V1.** Between 720 and about 1000 px the two new pictures show their desktop drawing scaled down: the smallest words are
-  8.2 px (`/aschecked`) and 7.2 px (`/playbook`) at 768, and 10.9 and 9.5 px at 1000. Proposed: show their phone drawing up to
-  1023 px for these two pictures only, where every word is 13 px or more.
+**Answered by the owner on 23 Nov 2026:** P3, P4 and V1 (section 2). At 768 and 1000 px the two column drawings now
+show their smallest word at 16.6 px (`/aschecked`) and 16.0 px (`/playbook`).
