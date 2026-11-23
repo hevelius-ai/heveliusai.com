@@ -205,3 +205,27 @@ CHANGES NEEDED, no HIGH, two MEDIUM, two LOW. Round 1's M1 to M7 closed; M8 clos
 **Re-check of the round 2 fixes** (22 Nov 2026, Claude Fable 5.2 at high effort, a new fresh headless session,
 read-only, on commit `8d3b340`): **APPROVE**. N1, N2, L1 and L2 closed. Two LOW wording points taken: a missing full
 stop in the T5 row, and one name ("merge day") for the step that opens the links again.
+
+## 10. User walkthrough
+
+**Run 1** (22 Nov 2026, 10:01 to 10:13 PM US Eastern; Claude Fable 5.2 at high effort, a fresh headless Claude Code session in
+a new folder outside the repository, auto mode). It had CR-3, the owner's decisions (sections 2, 6 and 9 of this plan, cut by
+a program), the README and the walker's rules from the skill (cut by a program), and a frozen copy of the site at `fbf4017`
+served on its own port, with a small headless-browser helper. "No code": its folder held no source; reading the repository,
+the draft and the review files was denied to its file tools (a deny rule does not stop a shell command). It also fetched
+pages with curl (view source) and wrote three small scripts on the browser library, which its report lists.
+
+**Verdict: BLOCKER FOUND.** 27 rows: 15 PASS, 4 FAIL, 5 UNCLEAR, 2 NOT CHECKED, 1 NOT VISIBLE; findings: 1 HIGH, 6 LOW.
+
+| Finding | What | Resolution |
+| --- | --- | --- |
+| F1 HIGH (rows CR3-4a to c, CR3-8) | AsChecked has no release tag, its README opens "In development", and the two `docs/` pages the site links to do not exist yet | The agreed gate: the pull request waits for the release. A fresh walker repeats these four rows on the merge day |
+| F2 LOW (rows Done-2a text, Done-2b) | Fifteen places where the page text is not CR-3's and no owner decision covers it; the walker did not have the draft, which CR-3 says wins | Every one (D1 to D15) is word for word in the draft; D12, the receipt without its header and technical part, follows the CR-2 decision. Checked by the builder, not independently |
+| F3 LOW (row CR3-6a) | "best practice" inside the cited title "Best practices for Claude Code" | Recorded exception in `REQUIREMENTS.md` (review round 1, M6) |
+| F4 LOW (rows CR3-5a, b) | CR3-5 can be read as asking the main page's AsBuild section to name both demos | `REQUIREMENTS.md` says the two are read together, as CR-3 section 4 asks the main page for the two kinds of project only |
+| F5 LOW | Wide drawings show small words at some widths: the main-page ring 8.8 px (stop numbers) at 1024 to 1280 px; the moon path 9.8 px and the twelve areas 11.2 px at 1024 px | Within the recorded exception (labels in pictures may be under 16 px; each has a text alternative with the same words). Reported to the owner |
+| F6 LOW | The local preview server sends `.jpg` as `application/octet-stream` | Older than this change and in a tool that is not published (GitHub Pages sets the type): listed under "Found, not fixed" |
+| F7 LOW | `lastmod` reads 2026-11-23 | Set to the merge day in step 14 |
+
+⚠️ QUALITY RISK: F2 was settled by the builder's comparison with the draft, not by the walker; the merge-day re-check
+repeats only the F1 rows.
