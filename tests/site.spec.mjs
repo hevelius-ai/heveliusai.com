@@ -1141,8 +1141,8 @@ test("AsBuild text never calls merging safe, and names what is not protected (ow
 
 // ---------------------------------------------------------------- CR-3 (22 Nov 2026): AsChecked and the playbook
 // Codes CR3-1 to CR3-10 refer to section 12 of "Website change request CR-3"; the owner's decisions are in
-// docs/cr-3-build-plan.md. CR3-4 and CR3-8 also need the outside links opened by hand on the build day (build plan,
-// section 5): these checks hold the site's side of them. CR3-10 is every check in this file.
+// docs/cr-3-build-plan.md. CR3-4 and CR3-8 also need the outside links opened by hand on the merge day (build plan,
+// sections 3 and 5): these checks hold the site's side of them. CR3-10 is every check in this file.
 
 const AC_REPO = "https://github.com/hevelius-ai/aschecked";
 const SITE_DIR = new URL("../site/", import.meta.url);

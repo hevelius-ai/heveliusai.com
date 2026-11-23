@@ -84,7 +84,7 @@ the skills on GitHub.)
     and the decision log; at most three rounds.
 13. **User walkthrough** (skill `user-walkthrough-qa`): a fresh agent with the README and CR-3's criteria serves the site
     locally from the README and checks each CR-3 criterion as a visitor would see it.
-14. **Build-day re-check** (owner's rule 8): AsChecked's tag and README, every outside link in the CR3-8 list opened again
+14. **Merge-day re-check** (owner's rule 8): AsChecked's tag and README, every outside link in the CR3-8 list opened again
     (the two AsChecked `docs/` pages among them), the skills' status, and `lastmod` in the sitemap set to the merge day;
     anything that changes page text goes to the owner first.
 15. **Pull request** only once the tag exists; then watch its checks and stop at "ready for you to merge".
@@ -128,7 +128,7 @@ the skills on GitHub.)
 
 ## 6. Page text the AsChecked release changes (owner to decide; nothing is changed without a yes)
 
-Checked against the release branch on 22 Nov 2026; checked again on build day.
+Checked against the release branch on 22 Nov 2026; checked again on the merge day.
 
 | Code | Draft text and where | What the release says | Proposed |
 | --- | --- | --- | --- |
@@ -136,7 +136,7 @@ Checked against the release branch on 22 Nov 2026; checked again on build day.
 | T2 | "AsChecked only reads. It installs nothing, runs none of your code and changes no file." (`/aschecked`); "It changes nothing in your project." (main page) | `docs/git-safety.md`: read-only is an instruction the model is asked to follow; plan mode is meant to keep it reading | "AsChecked is written only to read: it is told to install nothing, run none of your code and change no file, and in Claude Code it runs in plan mode." Main page: "It is written only to read your project." |
 | T3 | `/asbuild`: "On your computer: Git, the GitHub command-line tool and Python." | README: Node.js 24 or newer as well, for a TypeScript or JavaScript app | Add ", and Node.js for a TypeScript or JavaScript app" |
 | T4 | `/aschecked`: link text "the README says what we tried in each", pointing at `docs/other-tools.md` | The detail sits on the tools page | "the tools page says what we tried in each and what happened" |
-| T5 | `/aschecked` "How it was tested" has no sentence on the second test (CR-3 asked for one) | `docs/how-we-tested.md`: a sandbox test on 22 Nov 2026, eight apps written for the test, six with planted problems | Add: "On 22 Nov 2026 we also tested the released version on eight small apps we wrote with problems planted on purpose; the testing page says what that test can and cannot show." Or leave it out, as the draft does Replaced by M1 (section 9). |
+| T5 | `/aschecked` "How it was tested" has no sentence on the second test (CR-3 asked for one) | `docs/how-we-tested.md`: a sandbox test on 22 Nov 2026, eight apps written for the test, six with planted problems | Add: "On 22 Nov 2026 we also tested the released version on eight small apps we wrote with problems planted on purpose; the testing page says what that test can and cannot show." Or leave it out, as the draft does. Replaced by M1 (section 9). |
 
 ## 7. Publishing
 
@@ -201,3 +201,7 @@ CHANGES NEEDED, no HIGH, two MEDIUM, two LOW. Round 1's M1 to M7 closed; M8 clos
 | N2 | `REQUIREMENTS.md`'s CR3-8 row cites a merge-day step that opened only the AsChecked links | Fixed: step 14 opens every outside link in the CR3-8 list again |
 | L1 | `styles.css`: a comment still said "under 720px" for the two V1 pictures | Fixed: "under 1024px" |
 | L2 | The V1 row said "16 px"; the words are 16 px or more | Fixed |
+
+**Re-check of the round 2 fixes** (22 Nov 2026, Claude Fable 5.2 at high effort, a new fresh headless session,
+read-only, on commit `8d3b340`): **APPROVE**. N1, N2, L1 and L2 closed. Two LOW wording points taken: a missing full
+stop in the T5 row, and one name ("merge day") for the step that opens the links again.
