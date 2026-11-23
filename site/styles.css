@@ -462,10 +462,10 @@ main:has(.opening) .section-head > :not(.label) { max-width: 44rem; }
 /* A file path in the report illustration is one long word: at the largest text size on a small phone it wraps
    inside the report instead of pushing the list off the screen. */
 .receipt li { overflow-wrap: anywhere; }
-/* The pictures on /aschecked and /playbook: under 720px their column drawings are set near full size,
+/* The pictures on /aschecked and /playbook: under 1024px their column drawings are set near full size,
    so every word stays at 13px or more on a 360px phone. */
 .diagram-read .diagram-tall svg { max-width: 22rem; }
-/* V1 (owner, 23 Nov 2026): scaled down, their wide drawings would show words under 11px below 1024px, so these two
+/* V1 (owner, 22 Nov 2026): scaled down, their wide drawings would show words under 11px below 1024px, so these two
    pictures keep their column drawing up to 1023px. */
 @media (max-width: 63.99rem) {
   .diagram-read .diagram-wide { display: none; }

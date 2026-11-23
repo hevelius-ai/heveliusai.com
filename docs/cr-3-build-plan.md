@@ -49,7 +49,7 @@ the skills on GitHub.)
 | X2 | Old records | `docs/cr-1-build-plan.md` and `docs/cr-2-build-plan.md` kept as dated records; `docs/design/team-picture-v1/` removed |
 | P3 | `/playbook` "Get them" and status line | The draft's text stays: the owner will publish the skills on GitHub ("to be published"; "will be published on GitHub, free to use"). When they are, the follow-up adds "Get them on GitHub" and the licence line |
 | P4 | The moon path's text alternative leaves out the three drawn phase titles | Left as it is. CR3-9 on `/playbook` checks each phase and its rules, not the three phase titles |
-| V1 | The two new pictures between 720 and about 1000 px | Their column drawing shows up to 1023 px; every word in it is 16 px there |
+| V1 | The two new pictures between 720 and about 1000 px | Their column drawing shows up to 1023 px; every word in it is 16 px or more there |
 
 ## 3. Tasks, in order
 
@@ -84,8 +84,9 @@ the skills on GitHub.)
     and the decision log; at most three rounds.
 13. **User walkthrough** (skill `user-walkthrough-qa`): a fresh agent with the README and CR-3's criteria serves the site
     locally from the README and checks each CR-3 criterion as a visitor would see it.
-14. **Build-day re-check** (owner's rule 8): AsChecked's tag and README, the two AsChecked `docs/` links, the skills'
-    status; anything that changes page text goes to the owner first.
+14. **Build-day re-check** (owner's rule 8): AsChecked's tag and README, every outside link in the CR3-8 list opened again
+    (the two AsChecked `docs/` pages among them), the skills' status, and `lastmod` in the sitemap set to the merge day;
+    anything that changes page text goes to the owner first.
 15. **Pull request** only once the tag exists; then watch its checks and stop at "ready for you to merge".
 
 ## 4. Premortem
@@ -190,3 +191,13 @@ show their smallest word at 16.6 px (`/aschecked`) and 16.0 px (`/playbook`).
 | Parked | A check that fails while AsChecked has no tag; a no-version check for `/aschecked` | Parking list |
 
 After the fixes and the owner's M1 to M3: 312 checks pass locally.
+
+**Round 2** (22 Nov 2026, Claude Fable 5.2 at high effort, a new fresh headless session, read-only, on commit `fbf4017`):
+CHANGES NEEDED, no HIGH, two MEDIUM, two LOW. Round 1's M1 to M7 closed; M8 closed except one date.
+
+| Finding | What | Resolution |
+| --- | --- | --- |
+| N1 | `styles.css`: the V1 comment dated 23 Nov 2026 (the last piece of M8) | Fixed: 22 Nov 2026 |
+| N2 | `REQUIREMENTS.md`'s CR3-8 row cites a merge-day step that opened only the AsChecked links | Fixed: step 14 opens every outside link in the CR3-8 list again |
+| L1 | `styles.css`: a comment still said "under 720px" for the two V1 pictures | Fixed: "under 1024px" |
+| L2 | The V1 row said "16 px"; the words are 16 px or more | Fixed |
