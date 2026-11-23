@@ -33,7 +33,8 @@ new tooling for IndexNow.
 ## 2. Owner's decisions
 
 The owner took every lean on 22 Nov 2026 ("all your leans"), and added: AsChecked is released today or tomorrow, and
-its links go in once it is; the skills do not sit on the website, and the owner shares them with anyone who asks.
+its links go in once it is; the skills do not sit on the website itself. (Later the same evening, P3: the owner will publish
+the skills on GitHub.)
 
 | Code | Question | Decision (22 Nov 2026) |
 | --- | --- | --- |
@@ -134,7 +135,7 @@ Checked against the release branch on 22 Nov 2026; checked again on build day.
 | T2 | "AsChecked only reads. It installs nothing, runs none of your code and changes no file." (`/aschecked`); "It changes nothing in your project." (main page) | `docs/git-safety.md`: read-only is an instruction the model is asked to follow; plan mode is meant to keep it reading | "AsChecked is written only to read: it is told to install nothing, run none of your code and change no file, and in Claude Code it runs in plan mode." Main page: "It is written only to read your project." |
 | T3 | `/asbuild`: "On your computer: Git, the GitHub command-line tool and Python." | README: Node.js 24 or newer as well, for a TypeScript or JavaScript app | Add ", and Node.js for a TypeScript or JavaScript app" |
 | T4 | `/aschecked`: link text "the README says what we tried in each", pointing at `docs/other-tools.md` | The detail sits on the tools page | "the tools page says what we tried in each and what happened" |
-| T5 | `/aschecked` "How it was tested" has no sentence on the second test (CR-3 asked for one) | `docs/how-we-tested.md`: a sandbox test on 22 Nov 2026, eight apps written for the test, six with planted problems | Add: "On 22 Nov 2026 we also tested the released version on eight small apps we wrote with problems planted on purpose; the testing page says what that test can and cannot show." Or leave it out, as the draft does |
+| T5 | `/aschecked` "How it was tested" has no sentence on the second test (CR-3 asked for one) | `docs/how-we-tested.md`: a sandbox test on 22 Nov 2026, eight apps written for the test, six with planted problems | Add: "On 22 Nov 2026 we also tested the released version on eight small apps we wrote with problems planted on purpose; the testing page says what that test can and cannot show." Or leave it out, as the draft does Replaced by M1 (section 9). |
 
 ## 7. Publishing
 
