@@ -4,8 +4,9 @@ import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 import { gzipSync } from "node:zlib";
+import { fileURLToPath } from "node:url";
 
-const root = new URL("../site/", import.meta.url).pathname;
+const root = fileURLToPath(new URL("../site/", import.meta.url));
 const port = Number(process.env.PORT || 4173);
 const types = {
   ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "text/javascript; charset=utf-8",

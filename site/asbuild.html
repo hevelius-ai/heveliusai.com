@@ -85,8 +85,9 @@
     <nav class="site-nav" id="site-nav" aria-label="Main">
       <ul>
         <li><a href="/">Main</a></li>
-        <li><a href="/agile-dev-team">Agile Dev Team</a></li>
         <li><a href="/asbuild" aria-current="page">AsBuild</a></li>
+        <li><a href="/aschecked">AsChecked</a></li>
+        <li><a href="/playbook">Playbook</a></li>
         <li><a href="/advisory">Advisory</a></li>
         <li><a href="/about">About</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -264,6 +265,7 @@
           <li>It does not block a merge. The decision stays with you.</li>
           <li>It does not stop an agent that sets out to fake test results. It catches tests that were changed, skipped, weakened or never failed.</li>
           <li>Only the tests you approved are protected: a test the AI deleted or skipped is not noticed, and a test that already fails on main counts as broken, so get main passing first.</li>
+          <li>It does not review a whole project. <a class="tap-inline" href="/aschecked">AsChecked</a> does that.</li>
         </ul>
       </div>
     </div>
@@ -283,13 +285,13 @@
       <div class="split">
         <div class="block">
           <div class="section-head flush"><p class="label">Requirements</p><h2 id="need-h">What you need</h2></div>
-          <p>A GitHub repository, a Python project tested with pytest, and Claude Code, where AsBuild installs as a plugin. On your computer: Git, the GitHub command-line tool and Python. <a class="tap-inline" href="https://github.com/hevelius-ai/asbuild#install" target="_blank" rel="noopener">The install steps are in the README</a>.</p>
-          <p>To set it up, you paste one message from the README into Claude Code. It does each step it can, asks before it installs anything, and stops when it needs you, for example to sign in to GitHub yourself. Setup ends with one pull request for you to merge.</p>
+          <p>A GitHub repository, Claude Code, where AsBuild installs as a plugin, and one of two kinds of project: Python tested with pytest, or a TypeScript or JavaScript app made with React and Vite. On your computer: Git, the GitHub command-line tool and Python, and Node.js for a TypeScript or JavaScript app. <a class="tap-inline" href="https://github.com/hevelius-ai/asbuild#install" target="_blank" rel="noopener">The install steps are in the README</a>.</p>
+          <p>To set it up, you add the plugin in Claude Code and run its setup, or paste one message from the README and let Claude Code take you through it. It asks before it installs anything, and stops when it needs you, for example to sign in to GitHub yourself. Setup ends with one pull request for you to merge.</p>
         </div>
         <div class="block">
           <div class="section-head flush"><p class="label">Status</p><h2 id="status-h">Status</h2></div>
           <p>AsBuild is free and open source under the MIT licence. The code, the install steps and the releases are <a class="tap-inline" href="https://github.com/hevelius-ai/asbuild" target="_blank" rel="noopener">on GitHub</a>.</p>
-          <p><a class="tap-inline" href="https://github.com/hevelius-ai/asbuild-demo#readme" target="_blank" rel="noopener">A public demo</a> shows each verdict on a real pull request: <a class="tap-inline" href="https://github.com/hevelius-ai/asbuild-demo/pull/3" target="_blank" rel="noopener">PROVEN</a>, <a class="tap-inline" href="https://github.com/hevelius-ai/asbuild-demo/pull/4" target="_blank" rel="noopener">NOT PROVEN</a>, <a class="tap-inline" href="https://github.com/hevelius-ai/asbuild-demo/pull/5" target="_blank" rel="noopener">WAITING FOR YOU</a> and <a class="tap-inline" href="https://github.com/hevelius-ai/asbuild-demo/pull/6" target="_blank" rel="noopener">UNRESOLVED</a>. So far AsBuild has been used on that demo and on one private project.</p>
+          <p>Two public demos show each verdict on a real pull request. <a class="tap-inline" href="https://github.com/hevelius-ai/asbuild-demo#readme" target="_blank" rel="noopener">A Python app</a>: <a class="tap-inline" href="https://github.com/hevelius-ai/asbuild-demo/pull/3" target="_blank" rel="noopener">PROVEN</a>, <a class="tap-inline" href="https://github.com/hevelius-ai/asbuild-demo/pull/4" target="_blank" rel="noopener">NOT PROVEN</a>, <a class="tap-inline" href="https://github.com/hevelius-ai/asbuild-demo/pull/5" target="_blank" rel="noopener">WAITING FOR YOU</a> and <a class="tap-inline" href="https://github.com/hevelius-ai/asbuild-demo/pull/6" target="_blank" rel="noopener">UNRESOLVED</a>. <a class="tap-inline" href="https://github.com/hevelius-ai/asbuild-demo-ts#readme" target="_blank" rel="noopener">A React and TypeScript app</a>: <a class="tap-inline" href="https://github.com/hevelius-ai/asbuild-demo-ts/pull/3" target="_blank" rel="noopener">PROVEN</a>, <a class="tap-inline" href="https://github.com/hevelius-ai/asbuild-demo-ts/pull/4" target="_blank" rel="noopener">NOT PROVEN</a>, <a class="tap-inline" href="https://github.com/hevelius-ai/asbuild-demo-ts/pull/5" target="_blank" rel="noopener">WAITING FOR YOU</a> and <a class="tap-inline" href="https://github.com/hevelius-ai/asbuild-demo-ts/pull/6" target="_blank" rel="noopener">UNRESOLVED</a>. So far AsBuild has been used on those two demos and on one private project.</p>
         </div>
       </div>
     </div>
@@ -299,7 +301,7 @@
     <div class="wrap side">
       <div class="section-head"><p class="label">Next</p><h2 id="next-h">What comes next</h2></div>
       <div class="prose">
-        <p><strong>More languages.</strong> Today AsBuild checks Python projects tested with pytest. Support for other languages is planned. Write to <a class="tap-inline" href="mailto:contact@heveliusai.com">contact@heveliusai.com</a> to say which one you need.</p>
+        <p>AsBuild is complete as it stands. More is built when a real user asks for it: write to <a class="tap-inline" href="mailto:contact@heveliusai.com">contact@heveliusai.com</a> to say what you need.</p>
       </div>
     </div>
   </section>
@@ -310,7 +312,7 @@
         <div class="prose">
           <p class="label">Contact</p>
           <h2 id="contact-h">Get in touch</h2>
-          <p>Write to us about AsBuild, or to discuss advisory work. Replies come by email.</p>
+          <p>Write to us about AsBuild, AsChecked or advisory work. Replies come by email.</p>
         </div>
         <div class="contact-card">
           <p class="email"><a class="tap" href="mailto:contact@heveliusai.com">contact@heveliusai.com</a></p>

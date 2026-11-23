@@ -28,8 +28,8 @@
   });
 })();
 
-// The evidence example and the roles table scroll sideways when they are wider than the screen,
-// so each has a keyboard stop for scrolling it. Where it fits, the stop does nothing; it is
+// A table that is wider than the screen scrolls sideways in its own box,
+// so each box has a keyboard stop for scrolling it. Where it fits, the stop does nothing; it is
 // taken out, and put back as soon as the box overflows again (a narrower window, zoom, larger text).
 (function () {
   var boxes = document.querySelectorAll(".scroll[tabindex]");
