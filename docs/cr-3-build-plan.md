@@ -32,10 +32,10 @@ new tooling for IndexNow.
 
 ## 2. Owner's decisions
 
-The owner took every lean on 23 Nov 2026 ("all your leans"), and added: AsChecked is released today or tomorrow, and
+The owner took every lean on 22 Nov 2026 ("all your leans"), and added: AsChecked is released today or tomorrow, and
 its links go in once it is; the skills do not sit on the website, and the owner shares them with anyone who asks.
 
-| Code | Question | Decision (23 Nov 2026) |
+| Code | Question | Decision (22 Nov 2026) |
 | --- | --- | --- |
 | H1 | How the hand review names the model | The named model, dated: "…in AsChecked's published tests; as of November 2026, that is Claude Fable 5.2." |
 | H2 | "A person checks every finding…" on `/advisory` and `/aschecked` | Kept: every hand review is run that way |
@@ -95,8 +95,8 @@ its links go in once it is; the skills do not sit on the website, and the owner 
    CR3-3 and CR3-4, and the build-day re-check against the release README.
 3. **A picture's phone drawing has words under 13 px or a text alternative out of step with the drawing:** the new
    13 px and alt-order checks (CR3-9) on all three pictures.
-4. **The seven-link header breaks between 640 and 760 px:** the existing touch-target and no-sideways-scroll checks run
-   at 768, and a screenshot goes to the owner.
+4. **The seven-link header breaks between 640 and 760 px:** the no-sideways-scroll check runs at 768, a new check holds
+   the header's links at 44 px, unoverlapped, from 640 to 1024 px, and the owner sees the wrapped header.
 5. **A half-changed site goes live:** one pull request; it opens only after AsChecked's tag; the owner merges.
 
 ## 5. One-time checks (done 22 Nov 2026, before building)
@@ -142,7 +142,7 @@ A merge to `main` publishes. Before the merge: the owner reads the five changed 
 on the day; `lastmod` is set to the merge day. After it: `docs/publish-checklist.md` part C for the changed pages, then
 IndexNow for the six addresses and `/agile-dev-team` once as removed.
 
-## 8. Notes from the build (23 Nov 2026)
+## 8. Notes from the build (22 Nov 2026, US Eastern)
 
 - **The draft** was copied over `site/` unchanged; `site/agile-dev-team.html` and its share image were deleted. Every line of
   the diff was read against CR-3. Page text then changed only by the owner's decisions (section 2).
@@ -155,7 +155,7 @@ IndexNow for the six addresses and `/agile-dev-team` once as removed.
 - **The verdicts table** turns into cards under 640 px, so it never needs a keyboard stop on a phone. The E2-S2-4 checks now
   hold that, and test the keyboard stop by making the table wider than its box.
 - **`site.js`:** one comment reworded (it named the removed evidence example and roles table).
-- **`sitemap.xml`** lists the six pages in the header's order; every `lastmod` is 23 Nov 2026, to be set to the merge day.
+- **`sitemap.xml`** lists the six pages in the header's order; every `lastmod` reads 2026-11-23, the expected merge day; it is set to the actual merge day before merging.
 - **`/advisory` structured data** gains the fourth `Service`, the hand review, with the offer's "What it answers" line.
 - **Share images** `share-aschecked.png` ("AsChecked") and `share-playbook.png` ("The Hevelius playbook"), 1200 by 630, made
   with `npm run images`; the other images were left as they were.
@@ -168,5 +168,24 @@ IndexNow for the six addresses and `/agile-dev-team` once as removed.
 - **Repository search** after the change: the old name is left only in the dated CR-1 and CR-2 build plans (X2), in the
   checks that test for its absence, and in the IndexNow step that announces its removal.
 
-**Answered by the owner on 23 Nov 2026:** P3, P4 and V1 (section 2). At 768 and 1000 px the two column drawings now
+**Answered by the owner on 22 Nov 2026:** P3, P4 and V1 (section 2). At 768 and 1000 px the two column drawings now
 show their smallest word at 16.6 px (`/aschecked`) and 16.0 px (`/playbook`).
+
+## 9. Independent review
+
+**Round 1** (22 Nov 2026, Claude Fable 5.2 at high effort, a fresh headless Claude Code session, read-only, on commit
+`2ae9494`): CHANGES NEEDED, no HIGH, eight MEDIUM, two PARKED. Each finding was checked against the files before fixing.
+
+| Finding | What | Resolution |
+| --- | --- | --- |
+| M1 | `/aschecked`: the second-test sentence says eight apps with planted problems; the testing page says six of the eight | Page text: owner to decide |
+| M2 | `/advisory`: "The review only reads: nothing in your project is changed." was not in the T2 table | Page text: owner to decide |
+| M3 | The main-page ring's text alternative leaves out two drawn arrow labels; the phone drawings shorten a few words; the CR3-9 check passes anyway | Owner to decide (as P4) |
+| M4 | CR3-3 and CR3-6 searched only the visible text | Fixed: a check searches the raw page files (head tags, structured data, text alternatives, hidden drawing); shown to fail when "certified" is planted in a meta description |
+| M5 | CR3-8 was recorded as every link opened, while two return 404 until AsChecked's release | Fixed: the check's name and the requirement say what was opened and when |
+| M6 | The "Best practices for Claude Code" title was an unrecorded exception in CR3-6 | Fixed: recorded in `REQUIREMENTS.md` |
+| M7 | The premortem said the touch-target check ran at 768; it ran at 390 only | Fixed: a check holds the seven header links at 44 px, unoverlapped and on screen at 640, 700, 768, 800 and 1024 px; the premortem line corrected |
+| M8 | Dates in two time zones | Fixed: the plan and the checks use US Eastern (decisions of 22 Nov 2026) |
+| Parked | A check that fails while AsChecked has no tag; a no-version check for `/aschecked` | Parking list |
+
+After the fixes: 311 checks pass locally.

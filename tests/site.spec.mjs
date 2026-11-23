@@ -635,7 +635,7 @@ test("E5-S2-1: each page beside the main one has its own title, main heading, de
 
 // The site's four pictures (CR-3): the two-check ring on the main page, the AsBuild ring, the twelve areas on
 // /aschecked and the three-phase moon path on /playbook. Each has a wide drawing and a phone drawing, shown from `wide`
-// pixels up: 720 for the rings, 1024 for the two CR-3 pictures (V1, owner, 23 Nov 2026).
+// pixels up: 720 for the rings, 1024 for the two CR-3 pictures (V1, owner, 22 Nov 2026).
 const PICTURES = [
   { path: "/", figure: "#fit figure.diagram", wide: 720, name: /^Two checks from outside your AI builder A ring of four stops/ },
   { path: "/asbuild", figure: "figure.diagram-orbit", wide: 720, name: /^How a change travels through AsBuild A ring of three stops/ },
@@ -1203,7 +1203,7 @@ test("CR3-3: the AsChecked text names its limits only to deny them, and never cl
   expect(not[1]).toBe("It never says your project is safe. It lists the problems it found in what it checked.");
 });
 
-test("CR3-3 and H1, H2, T1 to T5: the AsChecked lines say what the release says (owner, 23 Nov 2026)", async ({ page }) => {
+test("CR3-3 and H1, H2, T1 to T5: the AsChecked lines say what the release says (owner, 22 Nov 2026)", async ({ page }) => {
   await open(page, "/aschecked");
   const main = (await page.locator("main").innerText()).replace(/\s+/g, " ");
   expect(main).toContain("Tested in Claude Code. It also runs in a claude.ai chat, not yet proven to give the same results.");
@@ -1314,7 +1314,7 @@ test("CR3-7: the whole site drops the old wording", async ({ page }) => {
   }
 });
 
-test("CR3-8: the off-site links are exactly the reviewed list (each was opened by hand on the build day)", async ({ page }) => {
+test("CR3-8: the off-site links are exactly the reviewed list (each is opened by hand before the merge)", async ({ page }) => {
   const found = new Set();
   for (const path of [...PAGES, "/no-such-page"]) {
     await page.goto(path);
@@ -1362,7 +1362,7 @@ const NEW_PICTURES = [
   },
   {
     path: "/playbook", figure: "figure.diagram-read",
-    // P4 (owner, 23 Nov 2026): the text alternative stays as drafted. It names each phase and its three rules, but not
+    // P4 (owner, 22 Nov 2026): the text alternative stays as drafted. It names each phase and its three rules, but not
     // the drawn phase titles ("Agreed finish line", "Checked from outside", "Released on evidence"), so they are not keys.
     keys: ["what you want", "before building", "agree what done means", "decide once", "tests first, then locked",
       "while building", "programs check, not agents", "reviews", "one file holds the state",
@@ -1431,4 +1431,60 @@ test("CR-3: the pictures on /aschecked and /playbook carry the owner's late word
   await expect(areas.locator("figcaption")).toHaveText("AsChecked looks at up to twelve areas, takes the ones that apply to your project, and keeps the findings that matter most.");
   await open(page, "/playbook");
   await expect(page.locator("figure.diagram-read figcaption")).toHaveCount(0);
+});
+
+// CR3-3 and CR3-6 on the raw files: head tags, structured data, text alternatives and the hidden drawing are searched
+// too, not only the text a visitor sees (review round 1, M4).
+const rawPage = (name) => readFileSync(new URL(name, SITE_DIR), "utf8").replace(/\s+/g, " ");
+
+test("CR3-3 and CR3-6: the raw page files carry no claim words either", async () => {
+  // Never allowed: on the three CR-3 places, and anywhere on the main page's AsChecked section or the hand-review offer.
+  const aschecked = rawPage("aschecked.html");
+  const playbook = rawPage("playbook.html");
+  const index = rawPage("index.html");
+  const advisory = rawPage("advisory.html");
+  const section = index.match(/<section id="aschecked".*?<\/section>/)[0];
+  const offer = advisory.match(/<li class="offer" id="hand-review">.*?<\/li>/)[0];
+  for (const [where, text] of Object.entries({ "/aschecked": aschecked, "/playbook": playbook, "main page section": section, "hand-review offer": offer })) {
+    expect(text, where).not.toMatch(/\b(certified|compliant|secure)\b/i);
+    expect(text, where).not.toMatch(/\b(AsChecked|It|The review)( also)? (verifies|proves|guarantees|certifies)\b/);
+  }
+  // The limit words only in the lines that deny them.
+  const denied = [
+    '<li data-test="limits">It is not an audit, a certificate or a security scan.</li>',
+    "<li>It never says your project is safe. It lists the problems it found in what it checked.</li>",
+  ];
+  let rest = aschecked;
+  for (const line of denied) { expect(rest).toContain(line); rest = rest.replace(line, ""); }
+  expect(rest, "/aschecked").not.toMatch(/\b(audits?|certificates?|security scans?|safe(ly|ty)?)\b/i);
+  const limits = "It is not an audit, a certificate or a security scan, and it does not say a project is safe: it lists the problems found in what was checked.";
+  expect(offer).toContain(limits);
+  expect(offer.replace(limits, ""), "hand-review offer").not.toMatch(/\b(audits?|certificates?|security scans?|safe(ly|ty)?)\b/i);
+  expect(section, "main page section").not.toMatch(/\b(audits?|certificates?|security scans?|safe(ly|ty)?)\b/i);
+  // The playbook's standing words only in "What this page does not claim" (the article title is the one exception).
+  const claim = playbook.match(/<section aria-labelledby="claim-h">.*?<\/section>/)[0];
+  expect(playbook.replace(claim, ""), "/playbook").not.toMatch(/\blatest\b|best practice(?!s for Claude Code)|industry standard|endorse/i);
+});
+
+test("CR3-2: the seven-link header stays tappable and unbroken from 640 to 1024px", async ({ page }) => {
+  for (const width of [640, 700, 768, 800, 1024]) {
+    await page.setViewportSize({ width, height: 800 });
+    await open(page, "/aschecked");
+    const m = await page.evaluate(() => {
+      const links = [...document.querySelectorAll(".site-nav a")].filter((a) => a.getClientRects().length);
+      const boxes = links.map((a) => a.getBoundingClientRect());
+      const overlaps = [];
+      for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+        const [a, b] = [boxes[i], boxes[j]];
+        if (a.left < b.right - 0.5 && b.left < a.right - 0.5 && a.top < b.bottom - 0.5 && b.top < a.bottom - 0.5) overlaps.push(`${links[i].textContent} / ${links[j].textContent}`);
+      }
+      return { shown: links.length, minHeight: Math.min(...boxes.map((b) => b.height)), minWidth: Math.min(...boxes.map((b) => b.width)), overlaps,
+        inside: boxes.every((b) => b.left >= 0 && b.right <= document.documentElement.clientWidth) };
+    });
+    expect(m.shown, `${width}px: all seven links on screen, no Menu button`).toBe(7);
+    expect(m.minHeight, `${width}px`).toBeGreaterThanOrEqual(44);
+    expect(m.minWidth, `${width}px`).toBeGreaterThanOrEqual(24);
+    expect(m.overlaps, `${width}px`).toEqual([]);
+    expect(m.inside, `${width}px`).toBe(true);
+  }
 });
