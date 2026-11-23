@@ -178,9 +178,9 @@ show their smallest word at 16.6 px (`/aschecked`) and 16.0 px (`/playbook`).
 
 | Finding | What | Resolution |
 | --- | --- | --- |
-| M1 | `/aschecked`: the second-test sentence says eight apps with planted problems; the testing page says six of the eight | Page text: owner to decide |
-| M2 | `/advisory`: "The review only reads: nothing in your project is changed." was not in the T2 table | Page text: owner to decide |
-| M3 | The main-page ring's text alternative leaves out two drawn arrow labels; the phone drawings shorten a few words; the CR3-9 check passes anyway | Owner to decide (as P4) |
+| M1 | `/aschecked`: the second-test sentence says eight apps with planted problems; the testing page says six of the eight | Owner's wording: "On 22 Nov 2026 we also tested the released version on eight apps we wrote for the test, six of them with problems planted on purpose; the testing page says what that test can and cannot show." |
+| M2 | `/advisory`: "The review only reads: nothing in your project is changed." was not in the T2 table | Owner, 2A: "We review a copy of your project, so nothing in your project is changed." |
+| M3 | The main-page ring's text alternative leaves out two drawn arrow labels; the phone drawings shorten a few words; the CR3-9 check passes anyway | Owner, 3A: left as drawn. A check holds the two drawings of each new picture to the same words, apart from the recorded differences (main ring phone: no "in your own setup", no "you read the receipt and merge"; `/playbook` phone: no "and after"; `/aschecked` phone: its own heading) |
 | M4 | CR3-3 and CR3-6 searched only the visible text | Fixed: a check searches the raw page files (head tags, structured data, text alternatives, hidden drawing); shown to fail when "certified" is planted in a meta description |
 | M5 | CR3-8 was recorded as every link opened, while two return 404 until AsChecked's release | Fixed: the check's name and the requirement say what was opened and when |
 | M6 | The "Best practices for Claude Code" title was an unrecorded exception in CR3-6 | Fixed: recorded in `REQUIREMENTS.md` |
@@ -188,4 +188,4 @@ show their smallest word at 16.6 px (`/aschecked`) and 16.0 px (`/playbook`).
 | M8 | Dates in two time zones | Fixed: the plan and the checks use US Eastern (decisions of 22 Nov 2026) |
 | Parked | A check that fails while AsChecked has no tag; a no-version check for `/aschecked` | Parking list |
 
-After the fixes: 311 checks pass locally.
+After the fixes and the owner's M1 to M3: 312 checks pass locally.

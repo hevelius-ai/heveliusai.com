@@ -1209,7 +1209,7 @@ test("CR3-3 and H1, H2, T1 to T5: the AsChecked lines say what the release says 
   expect(main).toContain("Tested in Claude Code. It also runs in a claude.ai chat, not yet proven to give the same results.");
   expect(main).toContain("AsChecked is written only to read: it is told to install nothing, run none of your code and change no file, and in Claude Code it runs in plan mode.");
   expect(main).toContain("the tools page says what we tried in each and what happened");
-  expect(main).toContain("On 22 Nov 2026 we also tested the released version on eight small apps we wrote with problems planted on purpose; the testing page says what that test can and cannot show.");
+  expect(main).toContain("On 22 Nov 2026 we also tested the released version on eight apps we wrote for the test, six of them with problems planted on purpose; the testing page says what that test can and cannot show.");
   expect(main).toContain("Hevelius runs AsChecked reviews by hand, and a person checks every finding against your code before the report reaches you.");
   expect(main).not.toContain("Tested in Claude Code and in a claude.ai chat");
   await open(page, "/");
@@ -1219,6 +1219,9 @@ test("CR3-3 and H1, H2, T1 to T5: the AsChecked lines say what the release says 
   await open(page, "/advisory");
   const offer = (await page.locator("#hand-review").innerText()).replace(/\s+/g, " ");
   expect(offer).toContain("A person checks every finding against your code before the report reaches you.");
+  // M2 (owner, 22 Nov 2026): the offer says why nothing in the project changes.
+  expect(offer).toContain("We review a copy of your project, so nothing in your project is changed.");
+  expect(offer).not.toContain("The review only reads");
   expect(offer).toContain("with the Anthropic model that scored best in AsChecked's published tests; as of November 2026, that is Claude Fable 5.2.");
   await open(page, "/asbuild");
   await expect(page.locator("main")).toContainText("On your computer: Git, the GitHub command-line tool and Python, and Node.js for a TypeScript or JavaScript app.");
@@ -1486,5 +1489,29 @@ test("CR3-2: the seven-link header stays tappable and unbroken from 640 to 1024p
     expect(m.minWidth, `${width}px`).toBeGreaterThanOrEqual(24);
     expect(m.overlaps, `${width}px`).toEqual([]);
     expect(m.inside, `${width}px`).toBe(true);
+  }
+});
+
+// M3 (owner, 22 Nov 2026): the new pictures stay as drawn. Their two drawings carry the same words, apart from the
+// differences recorded here: the phone drawings are shorter in three places, and the /aschecked phone drawing has a
+// heading of its own. (The main-page ring's text alternative is CR-3's own wording and names the four stops.)
+const DRAWING_DIFFERENCES = {
+  "/": { wideOnly: ["in your own setup", "you read the receipt and merge"], tallOnly: [] },
+  "/aschecked": { wideOnly: [], tallOnly: ["It reads up to twelve areas"] },
+  "/playbook": { wideOnly: ["and after"], tallOnly: [] },
+};
+
+test("CR3-9 and M3: each new picture's two drawings carry the same words, apart from the recorded differences", async ({ page }) => {
+  const words = (s) => s.toLowerCase().match(/[a-z0-9'’-]+/g) || [];
+  const count = (list) => list.reduce((m, w) => m.set(w, (m.get(w) || 0) + 1), new Map());
+  const minus = (a, b) => { const out = new Map(a); for (const [w, n] of b) out.set(w, (out.get(w) || 0) - n); return [...out].filter(([, n]) => n > 0).flatMap(([w, n]) => Array(n).fill(w)).sort(); };
+  for (const pic of NEW_PICTURES) {
+    await open(page, pic.path);
+    const drawn = async (part) => words((await page.locator(`${pic.figure} ${part} svg text`).allTextContents()).join(" "));
+    const wide = count(await drawn(".diagram-wide"));
+    const tall = count(await drawn(".diagram-tall"));
+    const diff = DRAWING_DIFFERENCES[pic.path];
+    expect(minus(wide, tall), `${pic.path}: words only in the wide drawing`).toEqual(words(diff.wideOnly.join(" ")).sort());
+    expect(minus(tall, wide), `${pic.path}: words only in the phone drawing`).toEqual(words(diff.tallOnly.join(" ")).sort());
   }
 });
