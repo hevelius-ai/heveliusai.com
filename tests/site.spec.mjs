@@ -1212,7 +1212,9 @@ test("CR3-3: the AsChecked lines say what the release says: T1, T2 as shortened 
   expect(main).not.toMatch(/plan mode/i);
   expect(main).toContain("the tools page says what we tried in each and what happened");
   // R2 (owner's own wording, 25 Nov 2026): both tests, undated, in the testing page's words; never "the released version".
-  expect(main).toContain("In a benchmark we ran AsChecked on four real projects in which earlier hand reviews had found 19 problems, with 13 model and effort settings, and scored every report without knowing which setting wrote it. We also ran AsChecked on 24 sample apps we built, 19 of them with problems planted on purpose. Every setting's score, cost and time is on the testing page.");
+  // The last sentence ties cost and time to the benchmark, the one test that shows them (owner, option B).
+  expect(main).toContain("In a benchmark we ran AsChecked on four real projects in which earlier hand reviews had found 19 problems, with 13 model and effort settings, and scored every report without knowing which setting wrote it. We also ran AsChecked on 24 sample apps we built, 19 of them with problems planted on purpose. The testing page has every result, with each benchmark setting's score, cost and time.");
+  await expect(page.getByRole("link", { name: "The testing page has every result, with each benchmark setting's score, cost and time" })).toHaveAttribute("href", `${AC_REPO}/blob/main/docs/how-we-tested.md`);
   expect(main).not.toContain("the released version");
   expect(main).toContain("Hevelius runs AsChecked reviews by hand, and a person checks every finding against your code before the report reaches you.");
   expect(main).not.toContain("Tested in Claude Code and in a claude.ai chat");

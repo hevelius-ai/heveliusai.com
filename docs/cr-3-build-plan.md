@@ -263,4 +263,6 @@ for word, with one full stop in place of a semicolon before "Every":
 > sample apps we built, 19 of them with problems planted on purpose. Every setting's score, cost and time is on the
 > testing page.
 
-This drops the benchmark's date, which CR-3 (B1) had asked for: the owner's wording wins.
+This drops the benchmark's date, which CR-3 (B1) had asked for: the owner's wording wins. The testing page shows cost and
+time for the benchmark only, so the owner then chose (option B) to tie the last sentence to it. The paragraph now ends:
+"The testing page has every result, with each benchmark setting's score, cost and time."
