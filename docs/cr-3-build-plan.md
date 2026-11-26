@@ -133,7 +133,7 @@ Checked against the release branch on 22 Nov 2026; checked again on the merge da
 | Code | Draft text and where | What the release says | Proposed |
 | --- | --- | --- | --- |
 | T1 | "Tested in Claude Code and in a claude.ai chat." (main page, `/aschecked`) | README: "Our tests ran in Claude Code; a chat is not yet proven to reach the same results." | "Tested in Claude Code. It also runs in a claude.ai chat, not yet proven to give the same results." |
-| T2 | "AsChecked only reads. It installs nothing, runs none of your code and changes no file." (`/aschecked`); "It changes nothing in your project." (main page) | `docs/git-safety.md`: read-only is an instruction the model is asked to follow; plan mode is meant to keep it reading | "AsChecked is written only to read: it is told to install nothing, run none of your code and change no file, and in Claude Code it runs in plan mode." Main page: "It is written only to read your project." |
+| T2 | "AsChecked only reads. It installs nothing, runs none of your code and changes no file." (`/aschecked`); "It changes nothing in your project." (main page) | `docs/git-safety.md`: read-only is an instruction the model is asked to follow; plan mode is meant to keep it reading | "AsChecked is written only to read: it is told to install nothing, run none of your code and change no file, and in Claude Code it runs in plan mode." Main page: "It is written only to read your project." On `/aschecked`, shortened by R1 (section 11). |
 | T3 | `/asbuild`: "On your computer: Git, the GitHub command-line tool and Python." | README: Node.js 24 or newer as well, for a TypeScript or JavaScript app | Add ", and Node.js for a TypeScript or JavaScript app" |
 | T4 | `/aschecked`: link text "the README says what we tried in each", pointing at `docs/other-tools.md` | The detail sits on the tools page | "the tools page says what we tried in each and what happened" |
 | T5 | `/aschecked` "How it was tested" has no sentence on the second test (CR-3 asked for one) | `docs/how-we-tested.md`: a sandbox test on 22 Nov 2026, eight apps written for the test, six with planted problems | Add: "On 22 Nov 2026 we also tested the released version on eight small apps we wrote with problems planted on purpose; the testing page says what that test can and cannot show." Or leave it out, as the draft does. Replaced by M1 (section 9). |
@@ -180,7 +180,7 @@ show their smallest word at 16.6 px (`/aschecked`) and 16.0 px (`/playbook`).
 
 | Finding | What | Resolution |
 | --- | --- | --- |
-| M1 | `/aschecked`: the second-test sentence says eight apps with planted problems; the testing page says six of the eight | Owner's wording: "On 22 Nov 2026 we also tested the released version on eight apps we wrote for the test, six of them with problems planted on purpose; the testing page says what that test can and cannot show." |
+| M1 | `/aschecked`: the second-test sentence says eight apps with planted problems; the testing page says six of the eight | Owner's wording: "On 22 Nov 2026 we also tested the released version on eight apps we wrote for the test, six of them with problems planted on purpose; the testing page says what that test can and cannot show." Replaced by R2 (section 11). |
 | M2 | `/advisory`: "The review only reads: nothing in your project is changed." was not in the T2 table | Owner, 2A: "We review a copy of your project, so nothing in your project is changed." |
 | M3 | The main-page ring's text alternative leaves out two drawn arrow labels; the phone drawings shorten a few words; the CR3-9 check passes anyway | Owner, 3A: left as drawn. A check holds the two drawings of each new picture to the same words, apart from the recorded differences (main ring phone: no "in your own setup", no "you read the receipt and merge"; `/playbook` phone: no "and after"; `/aschecked` phone: its own heading) |
 | M4 | CR3-3 and CR3-6 searched only the visible text | Fixed: a check searches the raw page files (head tags, structured data, text alternatives, hidden drawing); shown to fail when "certified" is planted in a meta description |
@@ -246,7 +246,7 @@ repeats only the F1 rows.
 
 - **Outside links:** all 21 open (anonymous), the two AsChecked `docs/` pages among them; the eight demo pull requests show
   their verdicts; rows K5 and K6 are in AsBuild's known issues; AsBuild is at `v0.4.2`.
-- **Skills:** not published (no public repository in `hevelius-ai`), so "to be published" stays true.
+- **Skills:** not published (no public skills repository in `hevelius-ai`), so "to be published" stays true.
 - **Website `main`:** still `4cdfeb6`. **Sitemap:** every `lastmod` 2026-11-25.
 - **Walkthrough re-check** (a fresh walker in a new folder, the build at `87ea8b5`): F1 not reproduced; rows CR3-4a, b, c
   and CR3-8 PASS; one new LOW, the repository description above. Over both runs no row fails; the rows a visitor cannot

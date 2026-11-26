@@ -1203,7 +1203,7 @@ test("CR3-3: the AsChecked text names its limits only to deny them, and never cl
   expect(not[1]).toBe("It never says your project is safe. It lists the problems it found in what it checked.");
 });
 
-test("CR3-3 and H1, H2, T1 to T5, R1, R2: the AsChecked lines say what the release says (owner, 22 and 25 Nov 2026)", async ({ page }) => {
+test("CR3-3: the AsChecked lines say what the release says: T1, T2 as shortened by R1, T3, T4, H1, H2, M2, R2 (owner, 22 and 25 Nov 2026)", async ({ page }) => {
   await open(page, "/aschecked");
   const main = (await page.locator("main").innerText()).replace(/\s+/g, " ");
   expect(main).toContain("Tested in Claude Code. It also runs in a claude.ai chat, not yet proven to give the same results.");
