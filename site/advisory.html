@@ -77,6 +77,19 @@
       }
     },
     {
+      "@type": "Service",
+      "name": "AsChecked hand review",
+      "serviceType": "AsChecked hand review",
+      "description": "what a professional would fix first in something you built with AI, before real users, a client or an investor see it.",
+      "provider": {
+        "@id": "https://heveliusai.com/#organization"
+      },
+      "areaServed": {
+        "@type": "Place",
+        "name": "Southwest Florida"
+      }
+    },
+    {
       "@type": "BreadcrumbList",
       "itemListElement": [
         {
@@ -107,8 +120,9 @@
     <nav class="site-nav" id="site-nav" aria-label="Main">
       <ul>
         <li><a href="/">Main</a></li>
-        <li><a href="/agile-dev-team">Agile Dev Team</a></li>
         <li><a href="/asbuild">AsBuild</a></li>
+        <li><a href="/aschecked">AsChecked</a></li>
+        <li><a href="/playbook">Playbook</a></li>
         <li><a href="/advisory" aria-current="page">Advisory</a></li>
         <li><a href="/about">About</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -138,8 +152,8 @@
 
   <section aria-labelledby="offers-h">
     <div class="wrap stack">
-      <div class="section-head flush"><p class="label">Three offers</p><h2 id="offers-h" class="one-line">Assessment, transformation, governance</h2></div>
-      <ul class="offers">
+      <div class="section-head flush"><p class="label">Four offers</p><h2 id="offers-h" class="one-line">Assess, transform, govern, review</h2></div>
+      <ul class="offers offers-four">
         <li class="offer">
           <h3>AI readiness assessment</h3>
           <dl>
@@ -165,6 +179,15 @@
             <div><dt>What you receive</dt><dd>the strategy and business case, the governance pack, and the framework mapping. We provide evidence and advice.</dd></div>
           </dl>
         </li>
+        <li class="offer" id="hand-review">
+          <h3>AsChecked hand review</h3>
+          <dl>
+            <div><dt>What it answers</dt><dd>what a professional would fix first in something you built with AI, before real users, a client or an investor see it.</dd></div>
+            <div><dt>What we do</dt><dd>run the AsChecked review on your project for you. We review a copy of your project, so nothing in your project is changed. A person checks every finding against your code before the report reaches you.</dd></div>
+            <div><dt>How it runs</dt><dd>in Claude Code, with the Anthropic model that scored best in AsChecked's published tests; as of November 2026, that is Claude Fable 5.2. The method was developed and tested with Anthropic's Claude models.</dd></div>
+            <div><dt>What you receive</dt><dd>a short written report in plain words: what to fix first, the evidence for each point, and a prompt you can hand to your AI builder. It is not an audit, a certificate or a security scan, and it does not say a project is safe: it lists the problems found in what was checked.</dd></div>
+          </dl>
+        </li>
       </ul>
     </div>
   </section>
@@ -172,7 +195,7 @@
   <section aria-labelledby="design-h">
     <div class="wrap stack">
       <div class="section-head flush"><p class="label">Approach</p><h2 id="design-h">The way we design AI work</h2>
-        <p class="muted">The principles behind AsBuild and Agile Dev Team apply to any process where AI does part of the work.</p></div>
+        <p class="muted">The principles behind AsBuild, AsChecked and <a class="tap-inline" href="/playbook">our playbook</a> apply to any process where AI does part of the work.</p></div>
       <div class="split">
         <ul class="points">
           <li><strong>Agile where it fits.</strong> Small steps, a prioritised list and a review at the end of each step, so you see value early and can change direction cheaply.</li>

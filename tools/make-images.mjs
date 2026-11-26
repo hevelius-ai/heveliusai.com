@@ -2,6 +2,7 @@
 // Run after a logo change: npm run images
 import { chromium } from "@playwright/test";
 import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
 const site = new URL("../site/", import.meta.url);
 const dataUri = (rel, type) => `data:${type};base64,${readFileSync(new URL(rel, site)).toString("base64")}`;
@@ -18,7 +19,7 @@ for (const [size, name] of [[180, "apple-touch-icon"], [192, "icon-192"], [512, 
   // iOS rounds the corners itself, so the touch icon is a full square.
   const bg = name === "apple-touch-icon" ? "#0B1F3A" : "transparent";
   await page.setContent(`<style>html,body{margin:0;background:${bg}}img{display:block;width:${size}px;height:${size}px}</style><img src="${favicon}">`);
-  await page.screenshot({ path: new URL(`img/${name}.png`, site).pathname, omitBackground: bg === "transparent" });
+  await page.screenshot({ path: fileURLToPath(new URL(`img/${name}.png`, site)), omitBackground: bg === "transparent" });
 }
 
 await page.setViewportSize({ width: 1200, height: 630 });
@@ -33,10 +34,10 @@ h1{font:600 52px/1.12 M;letter-spacing:-.02em;margin:0 0 32px}
 .url{font:500 24px/1 P;color:#C0C6CF;margin:0}
 </style><div class="c"><img src="${emblem}"><div><p class="name">HEVELIUS AI GROUP</p><h1>AI you can trust, because you can verify it.</h1><p class="url">heveliusai.com</p></div></div>`);
 await page.evaluate(() => document.fonts.ready);
-await page.screenshot({ path: new URL("img/share.png", site).pathname });
+await page.screenshot({ path: fileURLToPath(new URL("img/share.png", site)) });
 
 // One share image per page beside the main one: navy, the simplified mark, the page's name.
-for (const [name, title] of [["agile-dev-team", "Agile Dev Team"], ["asbuild", "AsBuild"], ["advisory", "AI advisory"], ["about", "About Hevelius AI Group"]]) {
+for (const [name, title] of [["asbuild", "AsBuild"], ["aschecked", "AsChecked"], ["playbook", "The Hevelius playbook"], ["advisory", "AI advisory"], ["about", "About Hevelius AI Group"]]) {
   await page.setContent(`<style>
 @font-face{font-family:M;font-weight:600;src:url(${montserrat}) format("woff2")}
 @font-face{font-family:P;font-weight:500;src:url(${plexMono}) format("woff2")}
@@ -48,7 +49,7 @@ h1{font:600 64px/1.1 M;letter-spacing:-.02em;margin:0 0 32px}
 .url{font:500 24px/1 P;color:#C0C6CF;margin:0}
 </style><div class="c"><img src="${favicon}"><div><p class="name">HEVELIUS AI GROUP</p><h1>${title}</h1><p class="url">heveliusai.com/${name}</p></div></div>`);
   await page.evaluate(() => document.fonts.ready);
-  await page.screenshot({ path: new URL(`img/share-${name}.png`, site).pathname });
+  await page.screenshot({ path: fileURLToPath(new URL(`img/share-${name}.png`, site)) });
 }
 
 await browser.close();

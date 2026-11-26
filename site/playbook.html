@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; manifest-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>The Hevelius playbook: nine rules for building with AI agents | Hevelius AI Group</title>
+<meta name="description" content="The rules Hevelius builds by, written as three skills an AI agent loads at the start of every session: agree what done means first, lock the tests, let programs check, never let the builder review its own work.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F5F6F8">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0B1F3A">
+<link rel="canonical" href="https://heveliusai.com/playbook">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Hevelius AI Group">
+<meta property="og:url" content="https://heveliusai.com/playbook">
+<meta property="og:title" content="The Hevelius playbook">
+<meta property="og:description" content="The rules Hevelius builds by, written as three skills an AI agent loads at the start of every session: agree what done means first, lock the tests, let programs check, never let the builder review its own work.">
+<meta property="og:image" content="https://heveliusai.com/img/share-playbook.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Hevelius mark beside the words The Hevelius playbook.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/montserrat-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script src="site.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://heveliusai.com/#organization",
+      "name": "Hevelius AI Group",
+      "url": "https://heveliusai.com/"
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://heveliusai.com/playbook#webpage",
+      "name": "The Hevelius playbook",
+      "url": "https://heveliusai.com/playbook",
+      "description": "How we build with AI agents. Nine rules, written down as three skills that an agent loads at the start of every session.",
+      "publisher": {
+        "@id": "https://heveliusai.com/#organization"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Main",
+          "item": "https://heveliusai.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Playbook",
+          "item": "https://heveliusai.com/playbook"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body id="top">
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Hevelius AI Group, main page"><svg width="900" height="240" viewBox="0 0 900 240" aria-hidden="true" focusable="false"><g transform="scale(0.3333333333333333)"><circle cx="360" cy="360" r="338" fill="none" stroke="currentColor" stroke-width="24"/><path d="M294.7,61.1A306,306 0 1 1 294.7,658.9A446.5,446.5 0 0 0 395,472.9L395,493L473,493L473,227L395,227L395,247.1A446.5,446.5 0 0 0 294.7,61.1Z" class="moon"/><path d="M252,242H300V337.0H410V242H458V478H410V383.0H300V478H252Z" fill="currentColor"/></g><path fill="currentColor" fill-rule="evenodd" transform="translate(292,70) scale(0.69)" d="M691.3,1.3 L691.3,60.7 L692.3,63.0 L692.3,65.7 L693.3,67.3 L693.3,69.0 L697.3,77.0 L699.3,79.7 L704.3,84.3 L708.7,87.0 L712.3,88.3 L712.7,89.0 L715.0,89.3 L717.3,90.3 L726.3,91.3 L732.0,91.0 L733.3,90.3 L736.3,90.3 L737.3,89.7 L739.3,89.3 L745.7,86.3 L751.0,82.3 L753.3,80.0 L757.3,73.7 L759.3,69.0 L759.3,67.7 L760.3,65.3 L760.3,62.7 L761.3,59.3 L761.3,1.3 L750.3,1.3 L750.3,60.0 L749.7,61.3 L749.3,65.0 L746.3,71.0 L741.7,76.3 L737.3,79.3 L730.7,81.3 L722.7,81.3 L721.3,80.7 L719.3,80.7 L713.7,78.3 L708.3,74.0 L704.3,68.0 L704.3,67.0 L703.3,65.3 L702.3,59.7 L702.3,1.3ZM616.3,1.3 L616.3,89.3 L627.7,89.3 L627.7,1.3ZM504.3,1.3 L504.3,89.3 L560.3,89.3 L560.3,80.0 L560.0,79.7 L516.7,79.7 L515.3,78.7 L515.3,1.3ZM384.3,1.3 L384.3,89.3 L443.0,89.3 L443.0,79.7 L396.7,79.7 L395.3,78.7 L395.3,51.0 L396.7,49.3 L437.3,49.3 L437.3,40.0 L437.0,39.7 L396.3,39.7 L395.3,38.7 L395.3,12.0 L396.3,10.7 L397.3,10.3 L443.0,10.3 L443.3,1.7 L443.0,1.3ZM246.0,1.3 L247.3,4.3 L247.7,6.3 L249.3,9.7 L249.3,10.7 L251.0,13.7 L252.3,18.0 L254.3,22.0 L254.3,23.0 L256.3,26.7 L256.3,27.7 L258.3,31.7 L258.3,33.0 L260.3,36.3 L260.3,37.3 L262.3,41.3 L262.3,42.3 L265.3,49.3 L265.3,50.3 L266.3,51.7 L266.3,53.0 L268.3,56.7 L268.3,57.7 L270.3,61.7 L271.3,65.3 L272.3,66.7 L272.3,67.7 L274.7,72.3 L275.3,75.0 L276.3,76.3 L276.3,77.3 L278.3,81.3 L278.3,82.7 L279.3,84.0 L279.3,85.0 L281.3,88.3 L281.3,89.3 L293.0,89.3 L293.0,88.3 L294.3,86.0 L295.3,82.3 L296.3,81.3 L296.3,80.3 L297.3,78.7 L297.3,77.3 L298.3,76.0 L298.3,75.0 L301.3,68.7 L301.3,67.7 L302.3,66.3 L302.3,65.3 L309.3,49.3 L309.3,48.3 L311.3,44.7 L311.3,43.7 L315.3,35.0 L316.0,32.3 L317.0,31.0 L318.0,27.7 L319.3,25.3 L319.3,24.3 L320.3,23.0 L323.7,14.3 L325.0,12.0 L325.3,10.3 L327.3,6.7 L329.0,1.3 L317.3,1.3 L305.7,29.0 L305.3,31.0 L304.3,32.3 L303.3,36.0 L302.3,37.3 L302.3,38.7 L301.3,40.0 L300.3,43.7 L299.3,45.0 L299.3,46.0 L297.3,50.0 L297.3,51.0 L296.3,52.3 L295.3,56.0 L294.3,57.0 L294.3,58.3 L293.3,59.7 L293.3,61.0 L292.3,62.3 L292.3,63.7 L291.3,65.0 L291.3,66.0 L289.3,71.3 L288.3,72.7 L288.3,74.0 L287.3,75.0 L286.0,74.3 L285.3,71.3 L284.3,70.0 L284.3,68.7 L283.3,67.3 L283.3,66.0 L282.3,64.7 L281.3,60.7 L279.3,56.3 L279.3,55.0 L278.3,53.7 L278.3,52.3 L277.3,51.3 L277.3,50.0 L275.3,46.0 L275.3,44.7 L273.3,41.0 L273.3,39.3 L272.3,38.0 L271.3,34.3 L269.3,30.3 L269.3,29.0 L267.3,25.3 L267.3,24.0 L265.3,20.0 L265.3,18.7 L264.3,17.3 L264.0,15.3 L262.3,12.0 L262.3,10.7 L261.3,9.3 L258.3,1.3ZM0.3,1.3 L0.3,89.3 L11.3,89.3 L11.3,50.3 L12.3,49.3 L51.0,49.3 L51.3,49.0 L55.7,49.0 L56.0,49.3 L58.7,49.0 L60.0,49.3 L61.0,50.3 L61.0,89.3 L71.7,89.3 L71.7,81.7 L72.0,81.3 L72.0,1.3 L61.0,1.3 L61.0,38.3 L60.0,39.7 L58.0,39.3 L57.0,39.7 L12.3,39.7 L11.3,38.7 L11.3,1.3ZM135.3,1.3 L135.3,89.3 L195.0,89.3 L195.0,82.3 L195.3,82.0 L195.0,79.7 L147.3,79.7 L146.3,78.7 L146.3,50.3 L147.0,49.3 L187.3,49.0 L187.3,39.7 L147.3,39.7 L146.3,38.7 L146.3,11.7 L147.7,10.3 L194.3,10.3 L194.3,1.3 L153.7,1.3 L153.3,1.0 L152.0,1.3ZM843.0,0.3 L836.0,2.3 L833.0,4.3 L831.7,4.7 L825.7,10.7 L825.7,11.7 L824.7,12.3 L822.3,18.0 L822.3,28.0 L823.3,30.0 L823.3,31.7 L824.0,32.3 L824.3,34.0 L826.3,36.3 L826.7,37.3 L829.7,40.3 L834.0,43.3 L847.0,48.3 L851.3,49.3 L853.3,50.3 L855.0,50.3 L856.3,51.3 L857.7,51.3 L862.3,53.7 L864.0,55.0 L866.7,58.0 L868.3,61.3 L868.3,63.0 L869.0,64.7 L868.3,69.7 L866.3,73.3 L862.0,77.7 L859.3,79.3 L852.3,81.3 L847.7,81.3 L839.3,79.3 L832.0,74.3 L829.3,71.3 L827.0,67.7 L826.3,67.7 L819.0,74.0 L819.0,75.0 L822.3,79.7 L824.7,82.0 L829.0,85.3 L832.7,87.3 L836.0,88.3 L837.7,89.3 L839.7,89.3 L841.7,90.3 L844.7,90.3 L846.7,91.0 L855.0,91.0 L856.3,90.3 L859.0,90.3 L867.0,87.3 L871.0,84.7 L874.7,81.0 L878.3,74.7 L879.7,70.3 L880.0,61.7 L879.3,60.3 L879.3,58.3 L877.3,53.7 L875.3,50.7 L871.0,46.7 L868.0,44.7 L858.0,40.3 L856.7,40.3 L855.0,39.3 L853.7,39.3 L852.7,38.7 L850.3,38.3 L848.7,37.3 L845.0,36.3 L840.7,34.3 L837.7,32.3 L835.3,30.0 L833.3,26.7 L833.0,25.0 L833.3,19.7 L835.3,16.0 L839.3,12.3 L843.3,10.3 L845.7,10.3 L847.3,9.7 L853.7,9.7 L857.3,10.3 L863.0,13.3 L867.0,17.3 L867.3,18.3 L869.3,20.7 L870.0,20.7 L873.3,17.3 L874.3,17.0 L877.0,14.3 L877.0,13.3 L875.0,10.3 L869.7,5.3 L864.3,2.3 L858.0,0.3 L854.7,0.3 L854.3,0.0Z"/><path fill="currentColor" opacity="0.72" fill-rule="evenodd" transform="translate(294,160) scale(0.69)" d="M356.0,0.7 L355.7,1.0 L355.7,24.3 L356.3,27.3 L358.3,31.7 L361.7,35.0 L365.3,36.7 L369.0,37.3 L373.0,37.3 L376.0,36.7 L380.7,34.3 L382.0,33.0 L384.3,29.0 L384.7,25.7 L385.3,24.7 L385.3,19.3 L385.0,19.0 L385.0,3.0 L385.3,1.7 L385.0,0.7 L381.3,0.7 L381.3,25.3 L380.3,28.3 L377.3,32.0 L374.3,33.7 L371.7,34.3 L369.7,34.3 L368.3,33.7 L365.7,33.3 L364.0,32.3 L360.3,28.3 L360.3,26.0 L359.3,23.7 L359.7,1.7 L359.0,0.7ZM69.7,0.7 L69.3,2.3 L69.7,4.3 L69.3,5.7 L69.3,37.0 L73.3,37.0 L73.3,1.0 L73.0,0.7ZM16.3,0.7 L15.3,1.7 L12.3,9.7 L7.3,19.7 L4.3,27.7 L1.3,33.3 L0.3,37.0 L4.3,37.0 L7.3,29.7 L7.3,28.7 L8.0,27.7 L9.3,27.0 L22.3,27.0 L22.7,27.3 L25.7,27.0 L27.3,28.3 L31.0,37.0 L34.3,37.0 L34.3,36.0 L33.3,34.3 L33.3,33.0 L32.3,32.0 L31.3,28.3 L27.3,19.7 L27.3,18.7 L25.3,14.7 L25.3,13.7 L24.3,12.3 L24.3,11.3 L22.3,7.3 L22.0,5.7 L21.3,5.0 L20.3,1.7 L19.7,0.7ZM17.3,5.3 L19.0,6.7 L20.3,11.0 L21.3,12.3 L21.3,13.3 L23.3,17.3 L23.3,18.3 L24.3,20.0 L24.3,21.3 L25.3,22.7 L25.3,23.7 L24.7,24.3 L10.7,24.3 L9.3,23.3 L11.3,20.0 L12.3,16.3 L14.0,13.3 L14.3,11.3ZM442.3,1.7 L438.0,0.3 L423.3,0.7 L423.0,1.7 L423.3,3.3 L423.3,37.0 L426.7,37.0 L426.7,23.3 L428.3,22.0 L428.7,22.3 L438.3,22.3 L442.7,21.3 L445.0,20.0 L447.0,18.0 L448.3,14.7 L448.3,8.3 L446.3,4.7ZM426.7,4.7 L428.0,3.3 L438.0,3.3 L438.7,4.0 L441.0,4.3 L444.3,8.3 L444.7,9.7 L444.3,15.3 L442.7,17.3 L439.3,19.3 L427.7,19.3 L427.0,19.0 L426.3,17.7 L426.7,17.3ZM221.7,0.7 L221.7,35.3 L221.3,35.7 L221.7,37.0 L225.3,37.3 L225.3,22.7 L226.3,21.7 L233.7,22.0 L238.3,28.3 L238.3,29.0 L241.3,33.0 L243.7,37.0 L247.7,37.0 L246.0,33.3 L242.3,28.3 L242.3,27.7 L239.0,22.7 L239.7,21.3 L243.3,19.3 L246.3,15.7 L246.3,14.7 L247.3,13.0 L247.3,9.0 L246.0,5.7 L242.7,2.3 L237.3,0.3ZM225.3,4.3 L226.3,3.3 L230.0,3.3 L230.3,3.7 L237.0,3.3 L237.3,4.0 L239.7,4.7 L242.3,7.0 L243.3,8.7 L243.3,12.7 L242.3,15.0 L239.7,17.7 L238.0,18.7 L233.3,19.3 L226.0,19.3 L225.3,18.3ZM303.0,-0.3 L295.3,0.3 L291.0,2.3 L286.0,6.7 L283.3,11.0 L283.3,12.3 L282.3,14.0 L282.3,22.7 L283.3,24.3 L283.3,26.0 L285.3,29.7 L289.7,34.3 L293.7,36.3 L298.0,37.3 L306.0,37.0 L312.0,34.0 L314.7,31.3 L317.3,27.7 L318.3,25.3 L318.3,23.7 L319.3,20.0 L319.3,17.0 L318.3,13.7 L318.3,11.7 L316.3,7.7 L314.0,5.0 L309.0,1.3 L307.3,1.3 L306.7,0.7ZM297.7,3.3 L304.0,3.3 L306.0,4.3 L307.0,4.3 L309.7,6.0 L313.3,10.0 L315.3,15.7 L315.3,22.0 L313.0,28.0 L311.0,30.3 L308.3,32.3 L303.3,34.3 L298.7,34.3 L295.3,33.3 L292.3,31.7 L289.3,29.0 L287.3,25.7 L287.3,24.7 L286.3,22.7 L286.3,15.0 L287.3,13.3 L287.3,12.0 L291.7,6.3ZM167.0,-0.3 L165.0,0.3 L163.0,0.3 L161.3,1.3 L159.7,1.3 L155.7,4.0 L152.7,7.0 L150.7,10.0 L149.3,13.3 L149.3,15.3 L148.7,16.7 L148.7,20.7 L149.3,22.3 L149.3,24.0 L150.7,27.0 L152.3,29.7 L155.7,33.3 L158.7,35.3 L163.3,37.0 L170.3,37.3 L175.3,36.3 L178.7,34.3 L182.0,31.0 L183.7,27.3 L183.7,18.7 L183.3,18.0 L179.0,18.0 L178.7,17.7 L168.3,18.0 L168.0,18.7 L168.3,20.3 L179.3,20.3 L180.3,21.3 L180.0,27.0 L178.3,30.0 L176.0,32.0 L173.3,33.3 L169.7,34.3 L166.0,34.3 L162.7,33.3 L156.7,29.3 L154.3,26.3 L152.3,19.7 L152.3,17.3 L153.3,15.0 L153.3,13.3 L155.0,10.0 L159.0,5.7 L162.0,4.0 L164.0,3.3 L169.3,3.3 L171.0,4.3 L172.3,4.3 L174.3,5.3 L178.3,8.7 L179.3,8.7 L180.3,7.7 L181.7,7.3 L181.7,6.3 L178.7,3.3 L176.0,1.7 L171.0,0.0Z"/></svg></a>
+    <button class="btn btn-quiet menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" hidden>Menu</button>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="/">Main</a></li>
+        <li><a href="/asbuild">AsBuild</a></li>
+        <li><a href="/aschecked">AsChecked</a></li>
+        <li><a href="/playbook" aria-current="page">Playbook</a></li>
+        <li><a href="/advisory">Advisory</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="opening">
+    <div class="wrap">
+      <p class="eyebrow">Three skills for Claude Code · to be published</p>
+      <h1>The Hevelius playbook</h1>
+      <p class="lede">How we build with AI agents. Nine rules, written down as three skills that an agent loads at the start of every session. AsBuild and AsChecked were built by them.</p>
+      <div class="actions"><a class="btn btn-primary" href="#rules">Read the nine rules</a></div>
+    </div>
+  </div>
+
+  <section aria-labelledby="why-h">
+    <div class="wrap side">
+      <div class="section-head"><p class="label">Why</p><h2 id="why-h">Why write rules for an AI</h2></div>
+      <div class="prose">
+        <p>An AI agent is fast, willing and never short of ideas. Left alone, it adds features nobody asked for, reopens what was already decided, and reports its own work as done. The fix is not a cleverer prompt. It is the discipline any delivery team needs: an agreed finish line, a record of decisions, and checks made by someone other than the builder.</p>
+        <p>The rules come from two places: the controls used in bank delivery, such as maker-checker, and our own builds with AI agents, where many of them were written after something went wrong.</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="path-h">
+    <div class="wrap stack">
+      <div class="section-head flush"><p class="label">At a glance</p><h2 id="path-h">Three phases, nine rules</h2></div>
+      <figure class="diagram diagram-read">
+        <div class="diagram-wide">
+<svg viewBox="0 120 1280 560" role="img" aria-labelledby="path-t path-d">
+<title id="path-t">The playbook in three phases</title>
+<desc id="path-d">A rising path of five moons joined by arrows, from a new moon to a full moon. The new moon is you, saying what you want. A crescent for Before building: agree what done means; decide once and keep it; tests first, then locked. A half moon for While building: programs check, not agents; no one reviews their own work; one file holds the state. A nearly full moon for Before release, and after: the person decides; a first-time user tests it; the rules get shorter. The full moon is you, holding the record.</desc>
+<defs><marker id="path-ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path class="dg-ah" d="M0,0 L10,5 L0,10 z"/></marker>
+<clipPath id="path-c1"><circle cx="300" cy="338" r="82"/></clipPath>
+<clipPath id="path-c2"><circle cx="640" cy="290" r="82"/></clipPath>
+<clipPath id="path-c3"><circle cx="980" cy="242" r="82"/></clipPath></defs>
+<line class="dg-line" x1="167.3" y1="356.7" x2="206.9" y2="351.1" marker-end="url(#path-ah)"/>
+<line class="dg-line" x1="393.1" y1="324.9" x2="546.9" y2="303.1" marker-end="url(#path-ah)"/>
+<line class="dg-line" x1="733.1" y1="276.9" x2="886.9" y2="255.1" marker-end="url(#path-ah)"/>
+<line class="dg-line" x1="1073.1" y1="228.9" x2="1112.7" y2="223.3" marker-end="url(#path-ah)"/>
+<circle class="dg-halo" cx="96" cy="366.8" r="66"/>
+<circle class="dg-shadow" cx="96" cy="366.8" r="60"/>
+<circle class="dg-halo" cx="300" cy="338" r="88"/>
+<circle class="dg-shadow" cx="300" cy="338" r="82"/>
+<rect class="dg-lit" x="300" y="256" width="82" height="164" clip-path="url(#path-c1)"/>
+<ellipse class="dg-shadow" cx="300" cy="338" rx="41" ry="82"/>
+<circle class="dg-halo" cx="640" cy="290" r="88"/>
+<circle class="dg-shadow" cx="640" cy="290" r="82"/>
+<rect class="dg-lit" x="640" y="208" width="82" height="164" clip-path="url(#path-c2)"/>
+<circle class="dg-halo" cx="980" cy="242" r="88"/>
+<circle class="dg-shadow" cx="980" cy="242" r="82"/>
+<rect class="dg-lit" x="980" y="160" width="82" height="164" clip-path="url(#path-c3)"/>
+<ellipse class="dg-lit" cx="980" cy="242" rx="41" ry="82"/>
+<circle class="dg-halo" cx="1184" cy="213.2" r="66"/>
+<circle class="dg-lit" cx="1184" cy="213.2" r="60"/>
+<text x="96" y="360.8" text-anchor="middle" class="dg-you-t dg-on">You</text>
+<text x="96" y="378.8" text-anchor="middle" class="dg-you-s dg-on-soft">say what</text>
+<text x="96" y="393.8" text-anchor="middle" class="dg-you-s dg-on-soft">you want</text>
+<text x="1184" y="207.2" text-anchor="middle" class="dg-you-t dg-on-lit">You</text>
+<text x="1184" y="225.2" text-anchor="middle" class="dg-you-s dg-on-lit">hold the</text>
+<text x="1184" y="240.2" text-anchor="middle" class="dg-you-s dg-on-lit">record</text>
+<line class="dg-guide" x1="300" y1="434" x2="300" y2="460"/>
+<text x="300" y="500" text-anchor="middle" class="dg-eye">1 · BEFORE BUILDING</text>
+<text x="300" y="538" text-anchor="middle" class="dg-ph">Agreed finish line</text>
+<text x="300" y="581" text-anchor="middle" class="dg-li">Agree what done means</text>
+<text x="300" y="611" text-anchor="middle" class="dg-li">Decide once, keep it</text>
+<text x="300" y="641" text-anchor="middle" class="dg-li">Tests first, then locked</text>
+<line class="dg-guide" x1="640" y1="386" x2="640" y2="460"/>
+<text x="640" y="500" text-anchor="middle" class="dg-eye">2 · WHILE BUILDING</text>
+<text x="640" y="538" text-anchor="middle" class="dg-ph">Checked from outside</text>
+<text x="640" y="581" text-anchor="middle" class="dg-li">Programs check, not agents</text>
+<text x="640" y="611" text-anchor="middle" class="dg-li">No one reviews own work</text>
+<text x="640" y="641" text-anchor="middle" class="dg-li">One file holds the state</text>
+<line class="dg-guide" x1="980" y1="338" x2="980" y2="460"/>
+<text x="980" y="500" text-anchor="middle" class="dg-eye">3 · BEFORE RELEASE, AND AFTER</text>
+<text x="980" y="538" text-anchor="middle" class="dg-ph">Released on evidence</text>
+<text x="980" y="581" text-anchor="middle" class="dg-li">The person decides</text>
+<text x="980" y="611" text-anchor="middle" class="dg-li">A first-time user tests it</text>
+<text x="980" y="641" text-anchor="middle" class="dg-li">The rules get shorter</text>
+</svg>
+        </div>
+        <div class="diagram-tall">
+<svg viewBox="0 0 340 836" role="img" aria-labelledby="path-tall-t path-tall-d">
+<title id="path-tall-t">The playbook in three phases</title>
+<desc id="path-tall-d">A rising path of five moons joined by arrows, from a new moon to a full moon. The new moon is you, saying what you want. A crescent for Before building: agree what done means; decide once and keep it; tests first, then locked. A half moon for While building: programs check, not agents; no one reviews their own work; one file holds the state. A nearly full moon for Before release, and after: the person decides; a first-time user tests it; the rules get shorter. The full moon is you, holding the record.</desc>
+<defs><marker id="path-tall-ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path class="dg-ah" d="M0,0 L10,5 L0,10 z"/></marker>
+<clipPath id="path-tall-c1"><circle cx="52" cy="220" r="40"/></clipPath>
+<clipPath id="path-tall-c2"><circle cx="52" cy="397" r="40"/></clipPath>
+<clipPath id="path-tall-c3"><circle cx="52" cy="593" r="40"/></clipPath></defs>
+<circle class="dg-halo" cx="52" cy="70" r="47"/>
+<circle class="dg-shadow" cx="52" cy="70" r="41"/>
+<text x="52" y="62" text-anchor="middle" class="dg-you-t dg-on">You</text>
+<text x="52" y="80" text-anchor="middle" class="dg-you-s dg-on-soft">say what</text>
+<text x="52" y="96" text-anchor="middle" class="dg-you-s dg-on-soft">you want</text>
+<circle class="dg-halo" cx="52" cy="220" r="46"/>
+<circle class="dg-shadow" cx="52" cy="220" r="40"/>
+<rect class="dg-lit" x="52" y="180" width="40" height="80" clip-path="url(#path-tall-c1)"/>
+<ellipse class="dg-shadow" cx="52" cy="220" rx="20" ry="40"/>
+<circle class="dg-halo" cx="52" cy="397" r="46"/>
+<circle class="dg-shadow" cx="52" cy="397" r="40"/>
+<rect class="dg-lit" x="52" y="357" width="40" height="80" clip-path="url(#path-tall-c2)"/>
+<circle class="dg-halo" cx="52" cy="593" r="46"/>
+<circle class="dg-shadow" cx="52" cy="593" r="40"/>
+<rect class="dg-lit" x="52" y="553" width="40" height="80" clip-path="url(#path-tall-c3)"/>
+<ellipse class="dg-lit" cx="52" cy="593" rx="20" ry="40"/>
+<circle class="dg-halo" cx="52" cy="770" r="47"/>
+<circle class="dg-lit" cx="52" cy="770" r="41"/>
+<text x="52" y="762" text-anchor="middle" class="dg-you-t dg-on-lit">You</text>
+<text x="52" y="780" text-anchor="middle" class="dg-you-s dg-on-lit">hold the</text>
+<text x="52" y="796" text-anchor="middle" class="dg-you-s dg-on-lit">record</text>
+<line class="dg-line" x1="52" y1="123" x2="52" y2="166" marker-end="url(#path-tall-ah)"/>
+<line class="dg-line" x1="52" y1="272" x2="52" y2="343" marker-end="url(#path-tall-ah)"/>
+<line class="dg-line" x1="52" y1="449" x2="52" y2="539" marker-end="url(#path-tall-ah)"/>
+<line class="dg-line" x1="52" y1="645" x2="52" y2="715" marker-end="url(#path-tall-ah)"/>
+<text x="112" y="186" class="dg-eye">1 · BEFORE BUILDING</text>
+<text x="112" y="210" class="dg-ph">Agreed finish line</text>
+<text x="112" y="234" class="dg-li">Agree what done means</text>
+<text x="112" y="257" class="dg-li">Decide once, keep it</text>
+<text x="112" y="280" class="dg-li">Tests first, then locked</text>
+<text x="112" y="363" class="dg-eye">2 · WHILE BUILDING</text>
+<text x="112" y="387" class="dg-ph">Checked from outside</text>
+<text x="112" y="411" class="dg-li">Programs check, not agents</text>
+<text x="112" y="434" class="dg-li">No one reviews own work</text>
+<text x="112" y="457" class="dg-li">One file holds the state</text>
+<text x="112" y="559" class="dg-eye">3 · BEFORE RELEASE</text>
+<text x="112" y="583" class="dg-ph">Released on evidence</text>
+<text x="112" y="607" class="dg-li">The person decides</text>
+<text x="112" y="630" class="dg-li">A first-time user tests it</text>
+<text x="112" y="653" class="dg-li">The rules get shorter</text>
+</svg>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section id="rules" aria-labelledby="rules-h">
+    <div class="wrap stack">
+      <div class="section-head flush"><p class="label">The rules</p><h2 id="rules-h">The nine rules</h2>
+        <p class="muted">Each rule says why it is there and where the same idea is published by others.</p></div>
+      <div class="block">
+        <h3>Before building</h3>
+        <ol class="steps">
+        <li>
+          <strong>Agree "done" before anything is built.</strong>
+          <p class="muted">"Done" is at most three lines that can be tested, with a budget and a hard stop. Anything "done" does not need goes on a parking list.</p>
+          <p class="muted"><small><strong>Why:</strong> a build with no finish line never finishes.</small></p>
+          <p class="muted"><small><strong>Also published:</strong> <a class="tap-inline" href="https://www.anthropic.com/engineering/harness-design-long-running-apps" target="_blank" rel="noopener">Anthropic, "Harness design for long-running application development", 24 Mar 2026</a>, where the builder and the checker agree what done looks like before any code is written.</small></p>
+        </li>
+        <li>
+          <strong>Decide once, and keep the decision.</strong>
+          <p class="muted">Every decision goes in a log with its reason and what would reopen it. Only evidence reopens one: a failing test, a measurement, a real user's problem.</p>
+          <p class="muted"><small><strong>Why:</strong> ask a model for a fresh opinion and it will always add some ideas and drop others, so more opinions never settle anything.</small></p>
+          <p class="muted"><small><strong>Also published:</strong> <a class="tap-inline" href="https://code.claude.com/docs/en/best-practices" target="_blank" rel="noopener">Claude Code documentation, "Best practices for Claude Code"</a>, which warns that a reviewer asked to find gaps will usually find some, and that chasing every one leads to over-engineering.</small></p>
+        </li>
+        <li>
+          <strong>Tests first, then locked.</strong>
+          <p class="muted">Each requirement gets a test that is seen failing before the change. Once the person approves the tests, the builder may not edit them.</p>
+          <p class="muted"><small><strong>Why:</strong> the easiest way to make a failing test pass is to weaken the test.</small></p>
+          <p class="muted"><small><strong>Also published:</strong> <a class="tap-inline" href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents" target="_blank" rel="noopener">Anthropic, "Effective harnesses for long-running agents", 26 Nov 2025</a>, which forbids the agent to remove or edit tests.</small></p>
+        </li>
+        </ol>
+      </div>
+      <div class="block">
+        <h3>While building</h3>
+        <ol class="steps steps-from-4">
+        <li>
+          <strong>Programs check; agents do not vouch.</strong>
+          <p class="muted">A program at a checkpoint decides whether the work passed, not the agent's own word.</p>
+          <p class="muted"><small><strong>Why:</strong> "all tests pass", from the agent that wrote the code, is a claim.</small></p>
+          <p class="muted"><small><strong>Also published:</strong> <a class="tap-inline" href="https://code.claude.com/docs/en/best-practices" target="_blank" rel="noopener">Claude Code documentation, "Best practices for Claude Code"</a>: give the agent a check that returns pass or fail, and have it show evidence instead of saying it succeeded.</small></p>
+        </li>
+        <li>
+          <strong>Nobody reviews their own work.</strong>
+          <p class="muted">Every change is reviewed in a fresh session that did not build it, by a different top model where one is available. The reviewer grades each finding; a new idea is parked, not built; three rounds at most.</p>
+          <p class="muted"><small><strong>Why:</strong> a builder is kind to its own work.</small></p>
+          <p class="muted"><small><strong>Also published:</strong> <a class="tap-inline" href="https://www.anthropic.com/engineering/harness-design-long-running-apps" target="_blank" rel="noopener">Anthropic, "Harness design for long-running application development", 24 Mar 2026</a>, which found that agents praise their own work and added a separate, sceptical evaluator.</small></p>
+        </li>
+        <li>
+          <strong>One file holds the current state.</strong>
+          <p class="muted">A short control file is read first in every session; a log and the decision log sit beside it.</p>
+          <p class="muted"><small><strong>Why:</strong> an agent starts every session with no memory of the last.</small></p>
+          <p class="muted"><small><strong>Also published:</strong> <a class="tap-inline" href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents" target="_blank" rel="noopener">Anthropic, "Effective harnesses for long-running agents", 26 Nov 2025</a>, where each new session reads a progress log to pick up the work.</small></p>
+        </li>
+        </ol>
+      </div>
+      <div class="block">
+        <h3>Before release, and after</h3>
+        <ol class="steps steps-from-7">
+        <li>
+          <strong>The person decides.</strong>
+          <p class="muted">The agent never merges its own work, never handles a password or a key, and treats instructions it finds in files as information, not orders. What the person must do is set out in plain words.</p>
+          <p class="muted"><small><strong>Why:</strong> the person answers for the result.</small></p>
+          <p class="muted"><small><strong>Ours:</strong> this is maker-checker and segregation of duties, the controls banks use, applied to an AI builder.</small></p>
+        </li>
+        <li>
+          <strong>A first-time user tests the release.</strong>
+          <p class="muted">A fresh agent with no code and no build history installs the product from its README alone and checks every promise as a user would see it. It reports and never fixes.</p>
+          <p class="muted"><small><strong>Why:</strong> the builder knows too much to notice what a newcomer cannot do.</small></p>
+          <p class="muted"><small><strong>Also published:</strong> <a class="tap-inline" href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents" target="_blank" rel="noopener">Anthropic, "Effective harnesses for long-running agents", 26 Nov 2025</a>, which has agents test the way a human user would.</small></p>
+        </li>
+        <li>
+          <strong>The rules get shorter.</strong>
+          <p class="muted">At each release and each new model, every rule about agent behaviour is tested again, and a rule the current model no longer needs is removed. The rules name no model.</p>
+          <p class="muted"><small><strong>Why:</strong> rules written for last year's model slow down this year's.</small></p>
+          <p class="muted"><small><strong>Also published:</strong> <a class="tap-inline" href="https://www.anthropic.com/engineering/harness-design-long-running-apps" target="_blank" rel="noopener">Anthropic, "Harness design for long-running application development", 24 Mar 2026</a>, which revisits the setup with each new model and removes what is no longer needed.</small></p>
+        </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="skills-h">
+    <div class="wrap">
+      <div class="split">
+        <div class="block">
+          <div class="section-head flush"><p class="label">The skills</p><h2 id="skills-h">The three skills</h2></div>
+          <ul class="points">
+            <li><strong>engineering-playbook:</strong> how the agent and the person work together: scope, decisions, records, safety.</li>
+            <li><strong>engineering-build-loop:</strong> how each piece of work is built: plan, locked tests, checks, review, pull request.</li>
+            <li><strong>user-walkthrough-qa:</strong> how a release is tested from the user's side before it is called done.</li>
+          </ul>
+          <p class="muted">They are written for Claude Code. Each project adds a short file of its own facts, including which models build and which review.</p>
+        </div>
+        <div class="block">
+          <div class="section-head flush"><p class="label">Get them</p><h2 id="get-h">Get them</h2></div>
+          <p>The three skills will be published on GitHub, free to use. Write to <a class="tap-inline" href="mailto:contact@heveliusai.com">contact@heveliusai.com</a> if you want them before then.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="claim-h">
+    <div class="wrap side">
+      <div class="section-head"><p class="label">Limits</p><h2 id="claim-h">What this page does not claim</h2></div>
+      <div class="prose">
+        <p>These are our working rules, not a standard, and nobody outside Hevelius has reviewed or endorsed them. The links show where the same ideas are published by others; read those too.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="contact" aria-labelledby="contact-h">
+    <div class="wrap">
+      <div class="band-inner">
+        <div class="prose">
+          <p class="label">Contact</p>
+          <h2 id="contact-h">Get in touch</h2>
+          <p>Write to us about the playbook, AsBuild, AsChecked or advisory work. Replies come by email.</p>
+        </div>
+        <div class="contact-card">
+          <p class="email"><a class="tap" href="mailto:contact@heveliusai.com">contact@heveliusai.com</a></p>
+          <div class="copy-row" id="copy-row" hidden>
+            <button class="btn btn-quiet" type="button" id="copy-email">Copy address</button>
+            <span id="copy-status" role="status"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <h2>Company</h2>
+      <p>Hevelius AI Group LLC, Florida, USA.</p>
+      <p>Named for Johannes Hevelius, who published the first atlas of the Moon from his own observations. We hold AI work to the same standard: trust what is proven and recorded.</p>
+    </div>
+    <div>
+      <h2>Privacy</h2>
+      <p>This site sets no cookies and runs no analytics. If you email us, we use your address only to reply.</p>
+    </div>
+    <div>
+      <h2>Accessibility</h2>
+      <p>This site aims to meet WCAG 2.2 level AA. If something does not work for you, write to <a class="tap-inline" href="mailto:contact@heveliusai.com">contact@heveliusai.com</a> and we will fix it.</p>
+    </div>
+    <p class="fineprint">© 2026 Hevelius AI Group LLC. Claude and Claude Code are trademarks of Anthropic, PBC. Hevelius AI Group is an independent company and is not affiliated with Anthropic.</p>
+    <p class="to-top"><a class="tap" href="#top">Back to top</a></p>
+  </div>
+</footer>
+</body>
+</html>

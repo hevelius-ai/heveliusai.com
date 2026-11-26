@@ -19,7 +19,6 @@
   --accent-fg: #FFFFFF;
   --link: #1B4B8F;
   --silver: #C0C6CF;
-  --orbit: #B9C1CC; /* decorative rings in the team picture */
   --focus: #1B4B8F;
   --display: "Montserrat", "Avenir Next", "Century Gothic", "Segoe UI", Arial, sans-serif;
   --body: "IBM Plex Sans", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -45,7 +44,6 @@
     --accent-fg: #0B1F3A;
     --link: #AFC6F2;
     --focus: #FFD479;
-    --orbit: #3A5478;
     color-scheme: dark;
   }
 }
@@ -216,7 +214,6 @@ caption { text-align: left; font-weight: 600; font-size: var(--step-1); padding-
 th, td { text-align: left; vertical-align: top; padding: 0.8rem 1rem 0.8rem 0; border-top: 1px solid var(--rule); }
 thead th { font-family: var(--mono); font-size: var(--step--1); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); border-top: 0; }
 tbody th { font-weight: 600; }
-td.when { font-family: var(--mono); font-size: var(--step--1); white-space: nowrap; }
 
 /* Lists */
 .points { display: grid; gap: 0.9rem; }
@@ -263,8 +260,6 @@ td.when { font-family: var(--mono); font-size: var(--step--1); white-space: nowr
   .hero .wrap { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); }
   .plate { justify-self: center; width: min(100%, 21rem); }
   .split { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  /* The team picture sits under the table at every width (version 2 is too wide to stand beside it). */
-  .split-team { grid-template-columns: minmax(0, 1fr); }
   .contact-card { max-width: none; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 1.25rem 3rem; align-items: center; }
   .contact-card > :first-child { grid-row: 1 / span 2; }
   .contact-card > :not(:first-child) { grid-column: 2; }
@@ -272,48 +267,7 @@ td.when { font-family: var(--mono); font-size: var(--step--1); white-space: nowr
   tbody th { white-space: nowrap; }
 }
 
-/* Team picture, version 2 (28 Oct 2026; version 1 is kept in docs/design/team-picture-v1).
-   Rings and stars are decoration. Early access is solid; roles planned for 0.2 and 0.3 are dashed, and the
-   table above it and the text alternative give each role's release in words; the key under it explains the dashes.
-   Lines, outlines and text use --fg and --muted, which pass 3:1 (graphics) and 4.5:1 (text) in both themes.
-   The named picture is shown from 720px, where its names stay at 16px or more; under that, the one without names. */
-.team-visual { margin: 0; display: grid; gap: 0.75rem; min-width: 0; width: 100%; max-width: 52rem; justify-self: center; }
-.team-visual svg { display: block; width: 100%; height: auto; }
-.team-visual .orbit-narrow { display: none; max-width: 380px; margin-inline: auto; }
-@media (max-width: 44.99rem) {
-  .team-visual .orbit-wide { display: none; }
-  .team-visual .orbit-narrow { display: block; }
-}
-.team-visual figcaption { font-family: var(--mono); font-size: var(--step--1); color: var(--muted); }
-.team-visual .tv-orbit-later { fill: none; stroke: var(--orbit); stroke-width: 1.25; stroke-dasharray: 3 6; }
-.team-visual .tv-node-later { fill: var(--bg); stroke: var(--muted); stroke-width: 1.75; stroke-dasharray: 5 4; }
-.team-visual .tv-link-later { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 4 4; }
-/* A halo in the page colour keeps names readable where a ring passes behind them. */
-.team-visual .tv-label { paint-order: stroke; stroke: var(--bg); stroke-width: 6px; stroke-linejoin: round; }
-.team-visual .tv-label.tv-label-soft { fill: var(--muted); font-weight: 400; }
-.team-visual .tv-orbit-now { fill: none; stroke: var(--orbit); stroke-width: 1.25; }
-.team-visual .tv-orbit-planned { fill: none; stroke: var(--orbit); stroke-width: 1.25; stroke-dasharray: 3 6; }
-.team-visual .tv-you { fill: var(--surface); stroke: var(--fg); stroke-width: 1.5; }
-.team-visual .tv-label { font-family: var(--body); font-weight: 600; font-size: 18px; fill: var(--fg); }
-.team-visual .orbit-wide .tv-label { font-size: 24px; }
-.team-visual .tv-link { fill: none; stroke: var(--fg); stroke-width: 1.5; }
-.team-visual .tv-link-planned { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 4 4; }
-.team-visual .tv-arrow { fill: var(--fg); }
-.team-visual .tv-hub { fill: #0B1F3A; }
-.team-visual .tv-hub-ring { fill: none; stroke: var(--orbit); stroke-width: 1.5; }
-.team-visual .tv-node { fill: var(--fg); }
-.team-visual .tv-icon { fill: none; stroke: var(--bg); stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
-.team-visual .tv-node-planned { fill: var(--bg); stroke: var(--muted); stroke-width: 1.75; stroke-dasharray: 5 4; }
-.team-visual .tv-icon-planned { fill: none; stroke: var(--muted); stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
-.team-visual .tv-st path { fill: none; stroke: var(--silver); stroke-width: 1; stroke-linecap: round; }
-.team-visual .tv-st .tv-st2 { stroke-width: 0.75; }
-.team-visual .tv-st circle, .team-visual .tv-dot { fill: var(--silver); }
-@media (prefers-color-scheme: dark) {
-  /* The Manager's navy disc would vanish on the navy page; a silver ring keeps it at 9.6:1. */
-  .team-visual .tv-hub-ring { stroke: var(--silver); }
-}
-
-/* The three pages beside the main one: Agile Dev Team, Advisory, About (CR-1).
+/* The pages beside the main one: AsBuild, AsChecked, Playbook, Advisory, About (CR-1 to CR-3).
    They reuse everything above; the rules below are for their own parts only. */
 .opening .wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; padding-block: clamp(2rem, 6vw, 4.5rem); } /* the same as the main page's opening */
 .opening .lede { max-width: 40rem; }
@@ -333,14 +287,6 @@ td.when { font-family: var(--mono); font-size: var(--step--1); white-space: nowr
 .steps li { border-left: 1px solid var(--rule); padding-left: 1.25rem; }
 .steps li::before { font-size: 1.5rem; line-height: 1.2; }
 .steps strong { font-weight: 600; }
-
-/* Status chips: the word is always there, never colour alone. */
-.chip {
-  display: inline-block; font-family: var(--body); font-size: var(--step--1); line-height: 1.5;
-  border: 1px solid currentColor; border-radius: 999px; padding: 0.05rem 0.65rem; white-space: nowrap;
-}
-.chip-now { color: var(--fg); }
-.chip-soon { color: var(--muted); }
 
 /* Diagrams: the drawing, its one-sentence reading, and nothing else. Colours come from the tokens,
    so both themes work; labels are drawn, and the steps or the table that follow carry the same text. */
@@ -402,7 +348,6 @@ td.when { font-family: var(--mono); font-size: var(--step--1); white-space: nowr
   }
   .roles th { font-size: var(--step-1); }
   .roles td { grid-column: 1 / -1; color: var(--muted); }
-  .roles td.when { grid-column: 2; grid-row: 1; }
 }
 
 /* Advisory offers */
@@ -503,3 +448,32 @@ td.when { font-family: var(--mono); font-size: var(--step--1); white-space: nowr
 main:has(.opening) .section-head { max-width: none; }
 main:has(.opening) .section-head > :not(.label) { max-width: 44rem; }
 /* Every two-column layout uses the same two equal columns and 3rem gap, so right-hand columns line up on every page. */
+
+/* CR-3 (22 Nov 2026). Four advisory cards and four offers sit two by two (the cards four across on very wide
+   screens); the playbook's nine rules are three lists that count on from 01 to 09. */
+@media (min-width: 52rem) {
+  .services-four, .offers-four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 80rem) {
+  .services-four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.steps-from-4 { counter-reset: step 3; }
+.steps-from-7 { counter-reset: step 6; }
+/* A file path in the report illustration is one long word: at the largest text size on a small phone it wraps
+   inside the report instead of pushing the list off the screen. */
+.receipt li { overflow-wrap: anywhere; }
+/* The pictures on /aschecked and /playbook: under 1024px their column drawings are set near full size,
+   so every word stays at 13px or more on a 360px phone. */
+.diagram-read .diagram-tall svg { max-width: 22rem; }
+/* V1 (owner, 22 Nov 2026): scaled down, their wide drawings would show words under 11px below 1024px, so these two
+   pictures keep their column drawing up to 1023px. */
+@media (max-width: 63.99rem) {
+  .diagram-read .diagram-wide { display: none; }
+  .diagram-read .diagram-tall { display: block; }
+}
+.diagram-read .diagram-tall .dg-eye { font-size: 15.5px; letter-spacing: 1px; }
+.diagram-read .diagram-tall .dg-ph { font-size: 18px; }
+.diagram-read .diagram-tall .dg-li { font-size: 16px; }
+.diagram-read .diagram-tall .dg-you-t { font-size: 16px; }
+.diagram-read .diagram-tall .dg-you-s { font-size: 15.5px; }
+.diagram-read .diagram-tall .dg-mid { font-size: 18px; }

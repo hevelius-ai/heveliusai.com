@@ -1,6 +1,6 @@
 # heveliusai.com
 
-The public website of Hevelius AI Group LLC: five static pages, plain HTML and CSS, no framework,
+The public website of Hevelius AI Group LLC: six static pages, plain HTML and CSS, no framework,
 and no build step a visitor depends on. The requirements are locked in the Notion page
 "Hevelius website: proposal and requirements"; [`REQUIREMENTS.md`](REQUIREMENTS.md) maps each story to its check.
 
@@ -10,7 +10,7 @@ and no build step a visitor depends on. The requirements are locked in the Notio
 | --- | --- |
 | `site/` | Everything that is published, and nothing else. |
 | `site/index.html` | The main page and all its text. |
-| `site/agile-dev-team.html`, `site/asbuild.html`, `site/advisory.html`, `site/about.html` | The four other pages, served as `/agile-dev-team`, `/asbuild`, `/advisory` and `/about`. The header and footer are the same on every page (a check holds them equal). |
+| `site/asbuild.html`, `site/aschecked.html`, `site/playbook.html`, `site/advisory.html`, `site/about.html` | The five other pages, served as `/asbuild`, `/aschecked`, `/playbook`, `/advisory` and `/about`. The header and footer are the same on every page (a check holds them equal). |
 | `site/404.html` | The page GitHub Pages shows for an address that does not exist (status 404). It is served at any address, so it names its files from the site root (`/styles.css`); it is left out of the sitemap and search. |
 | `site/styles.css` | Colors, type and layout. Colors are tokens at the top; dark follows the system. |
 | `site/site.js` | The copy-address button, the phone "Menu" button and the keyboard stops of the scrolling boxes. Every page works fully without it. |
@@ -40,23 +40,20 @@ npm run serve    # preview at http://localhost:4173/
 
 ## Before going live
 
-1. Check the version on the status line and in the team table against the latest Agile Dev Team release
-   (`site/index.html`, and `VERSION` in `tests/site.spec.mjs`).
-2. Replace the evidence illustration with one from a real run, if one is available (keep the "Illustration" caption).
-3. Move the code to the Hevelius repository with GitHub's "Transfer ownership", make it public,
+1. Move the code to the Hevelius repository with GitHub's "Transfer ownership", make it public,
    and set Settings → Pages → Source to "GitHub Actions". The `deploy` job in `.github/workflows/site.yml`
    then publishes `site/` on every merge to `main`.
-4. Set the custom domain `heveliusai.com` in Settings → Pages and tick "Enforce HTTPS".
-5. At Porkbun, list the Google Workspace mail records (MX, SPF, DKIM, DMARC) first, then point the apex
+2. Set the custom domain `heveliusai.com` in Settings → Pages and tick "Enforce HTTPS".
+3. At Porkbun, list the Google Workspace mail records (MX, SPF, DKIM, DMARC) first, then point the apex
    (A records 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153) and `www` (CNAME to the
    Pages host) to GitHub Pages. Leave the mail records untouched and check them afterwards.
-6. Confirm the live emblem arrives compressed (`content-encoding: gzip` on `/img/emblem.svg`), run a
+4. Confirm the live emblem arrives compressed (`content-encoding: gzip` on `/img/emblem.svg`), run a
    link-preview check on the address, and send a test email to contact@heveliusai.com.
-7. Owner's manual pass: one real iPhone and one real Android phone, portrait and landscape, light and dark;
-   keyboard only on desktop; 200% zoom; a screen reader over the headings and the team table.
-8. Remove the small print under step 2 once version 0.2 is released.
+5. Owner's manual pass: one real iPhone and one real Android phone, portrait and landscape, light and dark;
+   keyboard only on desktop; 200% zoom; a screen reader over the headings, the pictures and the verdicts table.
 
-## Before publishing the four-page update (CR-1)
+## Publishing a change
 
-The update is built on its own branch and is not merged until the owner's changes to the main page are in,
-because a merge to `main` publishes. The steps, in order, are in [`docs/publish-checklist.md`](docs/publish-checklist.md).
+A merge to `main` publishes, so a change is built on its own branch and merged by the owner once every check is green
+and every sentence is true on the day. The steps after a merge are in [`docs/publish-checklist.md`](docs/publish-checklist.md);
+each change's build plan is in `docs/`.

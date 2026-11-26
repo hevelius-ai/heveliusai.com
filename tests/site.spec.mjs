@@ -3,17 +3,14 @@
 // the sub-page "Website FRD (CR-1): pages, content and diagrams".
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { readdirSync, readFileSync } from "node:fs";
 
 const EMAIL = "contact@heveliusai.com";
-// Each role's release, from the plan on the Notion page "Agile Dev Team: requirements" (owner, 28 Oct 2026).
-// The main page and the product page show the same.
-const RELEASE = {
-  Manager: "Early access", "Senior developer": "Early access", "Junior developer": "Early access", "Top-model developer": "Early access",
-  Tester: "Planned, 0.2", Analyst: "Planned, 0.2",
-  "Cybersecurity and governance expert": "Planned, 0.3", "Solution architect": "Planned, 0.3",
-};
-// The five pages, in the header's order. Every check of section 6 runs on each of them.
-const PAGES = ["/", "/agile-dev-team", "/asbuild", "/advisory", "/about"];
+// The six pages, in the header's order (CR-3, N1). Every check of section 6 runs on each of them.
+const PAGES = ["/", "/asbuild", "/aschecked", "/playbook", "/advisory", "/about"];
+// The header's links (CR3-2): the six pages, then Contact.
+const NAV_TEXT = ["Main", "AsBuild", "AsChecked", "Playbook", "Advisory", "About", "Contact"];
+const NAV_HREF = [...PAGES, "#contact"];
 
 // Phones in portrait, the same phones in landscape, then tablet and desktop (section 6).
 const PHONES = [[320, 568], [360, 740], [375, 667], [390, 844], [412, 915], [430, 932]];
@@ -100,7 +97,7 @@ for (const path of PAGES) {
       await expect(skip).toBeInViewport();
 
       const nav = page.getByRole("navigation", { name: "Main" }).getByRole("link");
-      await expect(nav).toHaveText(["Main", "Agile Dev Team", "AsBuild", "Advisory", "About", "Contact"]);
+      await expect(nav).toHaveText(NAV_TEXT);
       await page.locator('nav a[href="#contact"]').click();
       await expect(page).toHaveURL(/#contact$/);
       await expect(page.locator("#contact")).toBeInViewport();
@@ -185,8 +182,8 @@ for (const path of PAGES) {
           if (!node.textContent.trim()) continue;
           const el = node.parentElement;
           if (el.closest(".skip")) continue;
-          // The two product diagrams are drawings: their labels scale with the picture, and the steps
-          // and the table that follow each one carry the same words as text (owner, 27 Oct 2026).
+          // The pictures are drawings: their labels scale with the picture, and each has a text alternative
+          // with the same words (owner, 27 Oct 2026); CR-2 C and CR3-9 hold their phone drawings at 13px or more.
           if (el.closest(".diagram svg")) continue;
           const size = parseFloat(getComputedStyle(el).fontSize);
           // The footer may use 13px (owner decision, 9 Oct 2026); everything else stays at 16px or more.
@@ -381,19 +378,21 @@ for (const path of PAGES) {
       const types = data["@graph"].map((n) => n["@type"]);
       const expected = {
         "/": ["WebSite", "Organization"],
-        "/agile-dev-team": ["Organization", "SoftwareApplication", "BreadcrumbList"],
         "/asbuild": ["Organization", "SoftwareApplication", "BreadcrumbList"],
-        "/advisory": ["Organization", "Service", "Service", "Service", "BreadcrumbList"],
+        "/aschecked": ["Organization", "SoftwareApplication", "BreadcrumbList"],
+        "/playbook": ["Organization", "WebPage", "BreadcrumbList"],
+        "/advisory": ["Organization", "Service", "Service", "Service", "Service", "BreadcrumbList"],
         "/about": ["ProfilePage", "Person", "Organization", "BreadcrumbList"],
       }[path];
       expect(types).toEqual(expected);
     });
 
-    test("E5-S2-2: the header reaches the five pages and Contact, and marks the current page", async ({ page }) => {
+    test("E5-S2-2 and CR3-2: the header reaches the six pages and Contact, in order, and marks the current page", async ({ page }) => {
       await open(page, path);
       const nav = page.getByRole("navigation", { name: "Main" });
       const links = nav.getByRole("link");
-      expect(await links.evaluateAll((as) => as.map((a) => a.getAttribute("href")))).toEqual(["/", "/agile-dev-team", "/asbuild", "/advisory", "/about", "#contact"]);
+      await expect(links).toHaveText(NAV_TEXT);
+      expect(await links.evaluateAll((as) => as.map((a) => a.getAttribute("href")))).toEqual(NAV_HREF);
       await expect(nav.locator('[aria-current="page"]')).toHaveCount(1);
       await expect(nav.locator('[aria-current="page"]')).toHaveAttribute("href", path);
       for (const target of PAGES) expect((await page.request.get(target)).status(), target).toBe(200);
@@ -468,22 +467,21 @@ test("E2-S1-1 and E2-S1-2: the opening names both offers and its buttons lead on
   await open(page);
   await expect(page.locator("h1")).toHaveText("AI you can trust, because you can verify it.");
   const lede = page.locator(".lede");
-  await expect(lede).toContainText("We build tools that make AI prove its work.");
+  await expect(lede).toContainText("We build free tools that check AI-built work.");
   await expect(lede).toContainText("We help organizations adopt AI");
-  // The second button opens /asbuild (owner, 13 Nov 2026); Contact stays in the header.
-  await expect(page.locator(".hero .actions a")).toHaveText(["See Agile Dev Team", "See AsBuild"]);
-  await page.getByRole("link", { name: "See AsBuild" }).click();
-  await expect(page).toHaveURL(/\/asbuild$/);
-  await expect(page.locator("h1")).toHaveText("AsBuild");
-  await open(page);
-  await page.getByRole("link", { name: "See Agile Dev Team" }).click();
-  await expect(page).toHaveURL(/\/agile-dev-team$/);
-  await expect(page.locator("h1")).toHaveText("Agile Dev Team");
+  // CR-3: the two buttons open the two tools; Contact stays in the header.
+  await expect(page.locator(".hero .actions a")).toHaveText(["See AsBuild", "See AsChecked"]);
+  for (const [name, href, h1] of [["See AsBuild", "/asbuild", "AsBuild"], ["See AsChecked", "/aschecked", "AsChecked"]]) {
+    await open(page);
+    await page.getByRole("link", { name }).click();
+    await expect(page).toHaveURL(new RegExp(`${href}$`));
+    await expect(page.locator("h1")).toHaveText(h1);
+  }
 });
 
 test("E5-S2-2: each main-page section leads to its own page", async ({ page }) => {
   await open(page);
-  for (const [name, href] of [["How AsBuild works", "/asbuild"], ["How the team works", "/agile-dev-team"], ["See the three offers in detail", "/advisory"], ["More about Christopher", "/about"]]) {
+  for (const [name, href] of [["How AsBuild works", "/asbuild"], ["How AsChecked works", "/aschecked"], ["Read the nine rules", "/playbook"], ["See the four offers in detail", "/advisory"], ["More about Christopher", "/about"]]) {
     await expect(page.getByRole("link", { name: new RegExp(`^${name}`) })).toHaveAttribute("href", href);
   }
 });
@@ -497,114 +495,77 @@ test("E2-S1-1: on a small phone the headline and its sentence come before the em
   expect(emblem.y).toBeGreaterThan(lede.y + lede.height);
 });
 
-test("E2-S2-1 to E2-S2-3: product status, each role's release, and the illustration caption", async ({ page }) => {
+test("E2-S2-1 and E2-S2-3: the tools' status lines, and the report illustration is labelled as one", async ({ page }) => {
   await open(page);
-  await expect(page.locator('[data-test="status"]')).toHaveText("In development · early access on request");
-  const rows = await page.locator("#product table tbody tr").evaluateAll((trs) =>
-    trs.map((tr) => [tr.querySelector("th").textContent.trim(), tr.querySelector("td.when").textContent.trim()]),
-  );
-  expect(Object.fromEntries(rows)).toEqual(RELEASE);
-  await expect(page.locator(".evidence figcaption")).toContainText("Illustration");
-  // No released version and no commands on the main page (owner, 28 Oct 2026): only the planned releases of roles.
-  const text = await page.locator("#product").textContent();
-  expect(text).not.toMatch(/Version|\b0\.1\b|\/dev:/);
+  await expect(page.locator("#asbuild .status")).toHaveText("Free and open source · MIT licence");
+  await expect(page.locator("#aschecked .status")).toHaveText("Free and open · CC BY 4.0");
+  // No version and no commands on the main page (owner, 28 Oct 2026; CR-2).
+  for (const id of ["#asbuild", "#aschecked", "#playbook"]) {
+    // The licence name "CC BY 4.0" is not a version.
+    const text = (await page.locator(id).textContent()).replace("CC BY 4.0", "");
+    expect(text, id).not.toMatch(/\bv?\d+\.\d+(\.\d+)?\b|\/as(build|checked)\b|install/i);
+  }
+  await open(page, "/aschecked");
+  await expect(page.locator(".opening .eyebrow")).toHaveText("Free and open · CC BY 4.0");
+  await expect(page.locator(".evidence figcaption")).toHaveText("Illustration of a report, shortened");
 });
 
-test("E2-S2-2: the team picture fits the screen, has a text alternative and marks planned roles", async ({ page }) => {
-  for (const [width, shown, hidden] of [[1440, ".orbit-wide", ".orbit-narrow"], [720, ".orbit-wide", ".orbit-narrow"], [719, ".orbit-narrow", ".orbit-wide"], [390, ".orbit-narrow", ".orbit-wide"]]) {
-    await page.setViewportSize({ width, height: 900 });
-    await open(page);
-    const picture = page.locator(`.team-visual ${shown}`);
-    await expect(picture).toBeVisible();
-    await expect(page.locator(`.team-visual ${hidden}`)).toBeHidden();
-    await expect(picture).toHaveAttribute("role", "img");
-    await expect(picture).toHaveAccessibleName(/top-model developer, all in early access\. A Tester and an Analyst are planned for 0\.2\. A Cybersecurity and governance expert and an optional Solution architect are planned for 0\.3\./);
-    // Planned roles are dashed and the key says so; the table above gives each role's release in words.
-    await expect(page.locator(".team-visual figcaption")).toHaveText("Dashed: planned for 0.2 & 0.3");
-    await expect(page.locator(".team-visual figcaption")).toBeVisible();
-  }
-  for (const svg of [".orbit-wide", ".orbit-narrow"]) {
-    await expect(page.locator(`${svg} .tv-node`)).toHaveCount(3);
-    await expect(page.locator(`${svg} .tv-node-planned`)).toHaveCount(2);
-    await expect(page.locator(`${svg} .tv-node-later`)).toHaveCount(2);
-  }
-});
+// The main page no longer has a table (CR-3); the verdicts table on /asbuild is the site's table now.
+const VERDICTS = "section.scroll";
 
-test("E2-S2-2: the team picture sits under the table, inside the screen, with names at 16px or more", async ({ page }) => {
-  for (const width of [720, 768, 1024, 1280, 1440, 1920]) {
-    await page.setViewportSize({ width, height: 900 });
-    await open(page);
-    const m = await page.evaluate(() => {
-      const svg = document.querySelector(".team-visual .orbit-wide");
-      const box = svg.getBoundingClientRect();
-      const vb = svg.viewBox.baseVal;
-      const scale = Math.min(box.width / vb.width, box.height / vb.height);
-      const outside = [...svg.querySelectorAll("text")].filter((t) => {
-        const r = t.getBoundingClientRect();
-        return r.left < box.left - 1 || r.right > box.right + 1 || r.top < box.top - 1 || r.bottom > box.bottom + 1;
-      }).map((t) => t.textContent);
-      return {
-        tableBottom: document.querySelector("#product table").getBoundingClientRect().bottom,
-        top: box.top, left: box.left, right: box.right, outside,
-        label: Math.min(...[...svg.querySelectorAll(".tv-label")].map((t) => parseFloat(getComputedStyle(t).fontSize))) * scale,
-        viewport: document.documentElement.clientWidth,
-      };
-    });
-    expect(m.top, `${width}: under the table`).toBeGreaterThan(m.tableBottom);
-    expect(m.label, `${width}: names at least 16px`).toBeGreaterThanOrEqual(16);
-    expect(m.outside, `${width}: every name inside the picture`).toEqual([]);
-    expect(m.left).toBeGreaterThanOrEqual(0);
-    expect(m.right).toBeLessThanOrEqual(m.viewport);
-  }
-});
-
-test("E2-S2-4: the roles table scrolls inside its own area, by keyboard too", async ({ page }) => {
+test("E2-S2-4: the verdicts table fits a small phone with the largest text, and scrolls in its own area, by keyboard, when it cannot", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 });
-  await open(page);
+  await open(page, "/asbuild");
   await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
-  const area = page.locator("section.scroll", { has: page.locator("table") });
-  await expect(area).toHaveAttribute("tabindex", "0");
+  const area = page.locator(VERDICTS, { has: page.locator("table") });
   await expect(area).toHaveAttribute("aria-label", /.+/);
-  const overflows = await area.evaluate((el) => el.scrollWidth > el.clientWidth);
-  expect(overflows).toBe(true);
+  // Under 640px the rows become cards, so the table fits and needs no keyboard stop.
+  expect(await area.evaluate((el) => el.scrollWidth > el.clientWidth)).toBe(false);
+  await expect(area).not.toHaveAttribute("tabindex");
+  expect(await page.evaluate(layoutProblems)).toEqual([]);
+  // Made wider than its area, the table scrolls inside it, and the keyboard reaches and scrolls it.
+  await page.addStyleTag({ content: ".scroll table { display: table !important; min-width: 60rem; }" });
+  await expect(area).toHaveAttribute("tabindex", "0");
   await area.focus();
   await page.keyboard.press("ArrowRight");
   await expect.poll(() => area.evaluate((el) => el.scrollLeft)).toBeGreaterThan(0);
-  expect(await page.evaluate(layoutProblems)).toEqual([]);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
 });
 
 test("E2-S2-4: a box that fits needs no keyboard stop; one that overflows gets it back", async ({ page }) => {
-  // Desktop: both fit, so Tab passes over them.
+  // Desktop: the table fits, so Tab passes over it.
   await page.setViewportSize({ width: 1440, height: 900 });
-  await open(page);
-  const boxes = page.locator("section.scroll");
-  await expect(boxes).toHaveCount(2);
-  for (const box of await boxes.all()) await expect(box).not.toHaveAttribute("tabindex");
-  // A narrow window with larger text: the table overflows again and can be reached by keyboard.
-  await page.setViewportSize({ width: 320, height: 568 });
-  await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
-  const table = page.locator("section.scroll", { has: page.locator("table") });
+  await open(page, "/asbuild");
+  await expect(page.locator(VERDICTS)).toHaveCount(1);
+  const table = page.locator(VERDICTS, { has: page.locator("table") });
+  await expect(table).not.toHaveAttribute("tabindex");
+  // A narrower window where the table is wider than its area: it can be reached by keyboard.
+  await page.setViewportSize({ width: 700, height: 900 });
+  const wide = await page.addStyleTag({ content: ".scroll table { min-width: 60rem; }" });
   await expect(table).toHaveAttribute("tabindex", "0");
-  // Back to desktop: the stop goes again.
+  // Back to desktop with the table fitting again: the stop goes again.
+  await wide.evaluate((el) => el.remove());
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.addStyleTag({ content: "html { font-size: 100% !important; }" });
   await expect(table).not.toHaveAttribute("tabindex");
 });
 
-test("E2-S2-4: with scripts off, both boxes keep their keyboard stop", async ({ browser }) => {
+test("E2-S2-4: with scripts off, the box keeps its keyboard stop", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
-  await page.goto("/");
-  for (const box of await page.locator("section.scroll").all()) await expect(box).toHaveAttribute("tabindex", "0");
+  await page.goto("/asbuild");
+  const boxes = page.locator(VERDICTS);
+  await expect(boxes).toHaveCount(1);
+  for (const box of await boxes.all()) await expect(box).toHaveAttribute("tabindex", "0");
   await context.close();
 });
 
-test("E2-S3-1: advisory lists three offers and makes no certification claim", async ({ page }) => {
+test("E2-S3-1: advisory lists four offers and makes no certification claim", async ({ page }) => {
   await open(page);
   await expect(page.locator("#advisory .services h3")).toHaveText([
     "AI readiness assessment",
     "Transformation",
     "Strategy and governance",
+    "AsChecked hand review",
   ]);
   const text = await page.locator("body").innerText();
   expect(text).not.toMatch(/\b(certified|compliant|secure)\b/i);
@@ -636,30 +597,31 @@ test("E3-S1-1: the logo is in the header and is the browser icon, with a text al
 test("E5-S1-1: the main page keeps its title and description", async ({ page }) => {
   await open(page);
   await expect(page).toHaveTitle("Hevelius AI Group");
-  await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /AsBuild.*Agile Dev Team/);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /AsBuild.*AsChecked/);
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", "https://heveliusai.com/img/share.png");
 });
 
-// N2 (owner, 13 Nov 2026): the mission, the descriptions and the contact text name both products, AsBuild first.
-// The opening sentence under the headline stays as it is.
-test("N2: the main page's mission, descriptions and contact text cover both products", async ({ page }) => {
+// N2, rewritten for CR-3 (22 Nov 2026): the mission, the descriptions and the contact text name AsBuild and AsChecked.
+// The headline stays as it is (owner text).
+test("N2: the main page's mission, descriptions and contact text cover both tools", async ({ page }) => {
   await open(page);
-  await expect(page.locator(".hero .lede")).toHaveText("We build tools that make AI prove its work. We help organizations adopt AI with structure, governance and evidence.");
+  await expect(page.locator(".hero .lede")).toHaveText("We build free tools that check AI-built work. We help organizations adopt AI with structure, governance and evidence.");
   const mission = (await page.locator("#mission .prose").innerText()).replace(/\s+/g, " ");
-  expect(mission).toContain('And it cannot vouch for its own work: "the tests passed" means nothing until a program has checked it and recorded the result.');
-  expect(mission).toContain("Hevelius closes both gaps. AsBuild, free and open source, checks each change an AI agent makes against the tests you approved, and records the result on the pull request. Agile Dev Team, in development, gives AI agents the roles, the order and the controls of a professional delivery team, and records evidence at every step.");
+  expect(mission).toContain('AI can now write good code, fast. What it cannot do is vouch for its own work, or tell you what you did not know to ask for. "All tests pass", from the agent that wrote the code, is a claim, not evidence.');
+  expect(mission).toContain("So you keep your own AI builder and add two checks from outside it. AsBuild checks each change against tests you approved, before you merge. AsChecked reads the whole project and lists what a professional would fix first. The rules we build by are published as the Hevelius playbook.");
   expect(mission).not.toMatch(/records proof|until a program proves it/);
-  await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", "Hevelius AI Group builds AsBuild, a free check for AI-written code, and Agile Dev Team, a Claude Code delivery team in development, and helps organizations adopt AI with structure, governance and evidence.");
-  await expect(page.locator('meta[property="og:description"]')).toHaveAttribute("content", "AI you can trust, because you can verify it. AsBuild and Agile Dev Team, tools that check what AI builds and keep the record, and advisory on AI adoption.");
-  await expect(page.locator("#contact")).toContainText("Write to us about AsBuild, for early access to Agile Dev Team, or to discuss an assessment or advisory work.");
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", "Hevelius AI Group builds AsBuild and AsChecked, free tools that check AI-built work, and helps organizations adopt AI with structure, governance and evidence.");
+  await expect(page.locator('meta[property="og:description"]')).toHaveAttribute("content", "AI you can trust, because you can verify it. AsBuild and AsChecked, free tools that check what AI builds, and advisory on AI adoption.");
+  await expect(page.locator("#contact")).toContainText("Write to us about AsBuild, AsChecked or advisory work. Tell us about your team and what you want to achieve. We reply by email.");
 });
 
-// ---------------------------------------------------------------- the three new pages (CR-1)
+// ---------------------------------------------------------------- the pages beside the main one (CR-1 to CR-3)
 
-test("E5-S2-1: each new page has its own title, main heading, description and share image", async ({ page }) => {
+test("E5-S2-1: each page beside the main one has its own title, main heading, description and share image", async ({ page }) => {
   const pages = {
-    "/agile-dev-team": ["Agile Dev Team: a software delivery team of AI agents, in one Claude Code plugin | Hevelius AI Group", "Agile Dev Team", "share-agile-dev-team.png"],
     "/asbuild": ["AsBuild: AI-written code, checked against tests you approved | Hevelius AI Group", "AsBuild", "share-asbuild.png"],
+    "/aschecked": ["AsChecked: a read-only review of what you built with AI | Hevelius AI Group", "AsChecked", "share-aschecked.png"],
+    "/playbook": ["The Hevelius playbook: nine rules for building with AI agents | Hevelius AI Group", "The Hevelius playbook", "share-playbook.png"],
     "/advisory": ["AI readiness, transformation and governance advisory | Hevelius AI Group, Naples FL", "AI adoption, from first assessment to working practice.", "share-advisory.png"],
     "/about": ["About Christopher Zaczek and Hevelius AI Group", "Who you work with", "share-about.png"],
   };
@@ -671,100 +633,90 @@ test("E5-S2-1: each new page has its own title, main heading, description and sh
   }
 });
 
-test("E5-S2-5: the product page shows no released version, release code or install command; planned roles name their release", async ({ page }) => {
-  await open(page, "/agile-dev-team");
-  // The page's own content; the shared footer names WCAG 2.2. Planned roles name their release (owner, 28 Oct 2026),
-  // and the requirements name Python 3.11; nothing else carries a version.
-  const text = await page.locator("main").textContent();
-  expect(text.replace(/Planned, 0\.[23]/g, "").replace(/Python 3\.11/g, "")).not.toMatch(/\b\d+\.\d+(\.\d+)?\b/);
-  expect(text).not.toMatch(/\/dev:|install|marketplace add|\bv\d/i);
-  await expect(page.locator(".opening .eyebrow")).toHaveText("In development · early access on request");
-  // FRD section 9, settled by the owner on 28 Oct 2026.
-  expect(text.replace(/\s+/g, " ")).toContain("The practices come from how regulated financial institutions and top consulting firms manage change and transformation: nobody checks their own work, tests come before code, and every change leaves a record. The plugin applies them for you.");
-});
+// The site's four pictures (CR-3): the two-check ring on the main page, the AsBuild ring, the twelve areas on
+// /aschecked and the three-phase moon path on /playbook. Each has a wide drawing and a phone drawing, shown from `wide`
+// pixels up: 720 for the rings, 1024 for the two CR-3 pictures (V1, owner, 22 Nov 2026).
+const PICTURES = [
+  { path: "/", figure: "#fit figure.diagram", wide: 720, name: /^Two checks from outside your AI builder A ring of four stops/ },
+  { path: "/asbuild", figure: "figure.diagram-orbit", wide: 720, name: /^How a change travels through AsBuild A ring of three stops/ },
+  { path: "/aschecked", figure: "figure.diagram-read", wide: 1024, name: /^What AsChecked reads, and what comes out A ring of twelve areas/ },
+  { path: "/playbook", figure: "figure.diagram-read", wide: 1024, name: /^The playbook in three phases A rising path of five moons/ },
+];
 
-test("E5-S2-6: the orbit's text alternative and the six steps give the same steps in the same order", async ({ page }) => {
-  await open(page, "/agile-dev-team");
-  const desc = await page.locator(".diagram-orbit svg desc").textContent();
-  const steps = await page.locator(".steps-2 > li > strong").allTextContents();
-  expect(steps).toHaveLength(6);
-  // One word per step, found in both, in order.
-  const keys = ["user story", "plan", "build", "check", "audit", "pull request"];
-  const order = (s) => keys.map((k) => s.toLowerCase().indexOf(k));
-  const inDesc = order(desc);
-  for (let i = 1; i < inDesc.length; i++) expect(inDesc[i], keys[i]).toBeGreaterThan(inDesc[i - 1]);
-  const stepText = await page.locator(".steps-2 > li").allInnerTexts();
-  stepText.forEach((s, i) => expect(s.toLowerCase(), `step ${i + 1}`).toContain(keys[i]));
-  await expect(page.locator(".diagram-orbit svg")).toHaveAttribute("role", "img");
-  await expect(page.locator(".diagram-orbit svg")).toHaveAccessibleName(/^How a change travels through Agile Dev Team A ring of six stops/);
-});
-
-test("E5-S2-7: every role in the full-release picture is in the eight-role table with the same status", async ({ page }) => {
-  await open(page, "/agile-dev-team");
-  const rows = Object.fromEntries(await page.locator("table.roles tbody tr").evaluateAll((trs) =>
-    trs.map((tr) => [tr.querySelector("th").textContent.trim(), tr.querySelector("td.when").textContent.trim()])));
-  expect(Object.keys(rows)).toHaveLength(8);
-  const drawn = await page.locator(".diagram-wide svg").textContent();
-  // The words the picture uses, and the table row each one is.
-  const roles = {
-    Analyst: "Analyst", Architect: "Solution architect", Manager: "Manager", Tester: "Tester",
-    "Senior and junior developers": ["Senior developer", "Junior developer"],
-    "Security expert": "Cybersecurity and governance expert", "Governance expert": "Cybersecurity and governance expert",
-  };
-  for (const [word, row] of Object.entries(roles)) {
-    expect(drawn, word).toContain(word);
-    for (const r of [row].flat()) expect(rows[r], r).toBeDefined();
-  }
-  // The picture says early access has the manager and the developers; the table says the same.
-  expect(drawn).toContain("In early access today: the manager and the developers");
-  expect(rows).toEqual(RELEASE);
-  // The phone picture carries the same words as the wide one.
-  const tall = await page.locator(".diagram-tall svg").textContent();
-  for (const word of Object.keys(roles)) expect(tall, word).toContain(word);
-});
-
-test("E5-S2-6: each picture fits the screen and swaps to its phone drawing under 720px", async ({ page }) => {
-  for (const [width, shown, hidden] of [[1280, ".diagram-wide", ".diagram-tall"], [390, ".diagram-tall", ".diagram-wide"]]) {
-    await page.setViewportSize({ width, height: 900 });
-    await open(page, "/agile-dev-team");
-    await expect(page.locator(`${shown} svg`)).toBeVisible();
-    await expect(page.locator(`${hidden} svg`)).toBeHidden();
-    await expect(page.locator(`${shown} svg`)).toHaveAccessibleName(/^Agile Dev Team at full release: three phases A rising path of five moons/);
-    await expect(page.locator(".diagram-orbit svg")).toBeVisible();
-    for (const svg of await page.locator(".diagram svg:visible").all()) {
+test("E5-S2-6: each picture fits the screen and swaps to its phone drawing under its breakpoint", async ({ page }) => {
+  for (const pic of PICTURES) {
+    for (const [width, shown, hidden] of [[1280, ".diagram-wide", ".diagram-tall"], [pic.wide, ".diagram-wide", ".diagram-tall"], [pic.wide - 1, ".diagram-tall", ".diagram-wide"], [390, ".diagram-tall", ".diagram-wide"]]) {
+      await page.setViewportSize({ width, height: 900 });
+      await open(page, pic.path);
+      const svg = page.locator(`${pic.figure} ${shown} svg`);
+      await expect(svg, `${pic.path} at ${width}`).toBeVisible();
+      await expect(page.locator(`${pic.figure} ${hidden} svg`)).toBeHidden();
+      await expect(svg).toHaveAttribute("role", "img");
+      await expect(svg).toHaveAccessibleName(pic.name);
       const box = await svg.boundingBox();
-      expect(box.x).toBeGreaterThanOrEqual(0);
-      expect(box.x + box.width).toBeLessThanOrEqual(width);
+      expect(box.x, `${pic.path} at ${width}`).toBeGreaterThanOrEqual(0);
+      expect(box.x + box.width, `${pic.path} at ${width}`).toBeLessThanOrEqual(width);
     }
   }
 });
 
-test("E5-S2-6: the pictures follow the dark theme", async ({ page }) => {
-  await page.emulateMedia({ colorScheme: "dark" });
-  await open(page, "/agile-dev-team");
-  const colors = await page.evaluate(() => ({
-    role: getComputedStyle(document.querySelector(".diagram .dg-role:not(.dg-on)")).fill,
-    halo: getComputedStyle(document.querySelector(".diagram .dg-halo")).stroke,
-    you: getComputedStyle(document.querySelector(".diagram .dg-you")).stroke,
-  }));
-  expect(colors.role).toBe("rgb(242, 244, 247)");
-  expect(colors.halo).toBe("rgb(242, 244, 247)");
-  expect(colors.you).toBe("rgb(192, 198, 207)");
+// Contrast of a colour against the picture's background, by the WCAG formula.
+function textContrastProblems(figureSelector) {
+  const rgb = (s) => s.match(/[\d.]+/g).slice(0, 3).map(Number);
+  const lum = ([r, g, b]) => {
+    const f = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
+    return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+  };
+  const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };
+  const figure = document.querySelector(figureSelector);
+  const bg = rgb(getComputedStyle(figure).backgroundColor);
+  const out = [];
+  let checked = 0;
+  for (const svg of figure.querySelectorAll("svg")) {
+    if (!svg.getClientRects().length) continue;
+    for (const t of svg.querySelectorAll("text")) {
+      // Text drawn on a filled disc (dg-on…) sits on the disc's colour, not on the picture's background.
+      if ([...t.classList].some((c) => c.startsWith("dg-on"))) continue;
+      checked++;
+      const r = ratio(rgb(getComputedStyle(t).fill), bg);
+      if (r < 4.5) out.push(`${t.textContent.trim()}: ${r.toFixed(2)}`);
+    }
+  }
+  return { checked, out, bg: getComputedStyle(figure).backgroundColor };
+}
+
+test("E5-S2-6: the pictures follow the dark theme, and their words stay readable in both themes", async ({ page }) => {
+  for (const scheme of ["light", "dark"]) {
+    await page.emulateMedia({ colorScheme: scheme });
+    for (const width of [1280, 390]) {
+      await page.setViewportSize({ width, height: 900 });
+      for (const pic of PICTURES) {
+        await open(page, pic.path);
+        const r = await page.evaluate(textContrastProblems, pic.figure);
+        const where = `${pic.path} ${scheme} ${width}`;
+        expect(r.bg, where).toBe(scheme === "dark" ? "rgb(11, 31, 58)" : "rgb(245, 246, 248)");
+        expect(r.checked, where).toBeGreaterThan(5);
+        expect(r.out, where).toEqual([]);
+      }
+    }
+  }
 });
 
-// The five moons and the arrows between them sit on one straight line (owner, 28 Oct 2026).
+// The five moons and the arrows between them sit on one straight line (owner, 28 Oct 2026). The playbook's
+// picture reuses that geometry unchanged (CR-3).
 test("E5-S2-6: the moon path's arrows and moon centres lie on one straight line", async ({ page }) => {
-  await open(page, "/agile-dev-team");
+  await open(page, "/playbook");
   const offsets = await page.evaluate(() => {
-    const svg = document.querySelector('.diagram-wide svg[aria-labelledby="moon-t moon-d"]');
+    const svg = document.querySelector('.diagram-wide svg[aria-labelledby="path-t path-d"]');
     const num = (el, a) => Number(el.getAttribute(a));
-    const lines = [...svg.querySelectorAll('line[marker-end="url(#moon-ah)"]')];
+    const lines = [...svg.querySelectorAll('line[marker-end="url(#path-ah)"]')];
     const [ax, ay, bx, by] = [num(lines[0], "x1"), num(lines[0], "y1"), num(lines.at(-1), "x2"), num(lines.at(-1), "y2")];
     const off = (x, y) => Math.abs((bx - ax) * (ay - y) - (ax - x) * (by - ay)) / Math.hypot(bx - ax, by - ay);
     const points = lines.flatMap((l) => [[num(l, "x1"), num(l, "y1")], [num(l, "x2"), num(l, "y2")]]);
     const centres = [...svg.querySelectorAll(".dg-halo")].map((c) => [num(c, "cx"), num(c, "cy")]);
-    return { count: centres.length, worst: Math.max(...[...points, ...centres].map(([x, y]) => off(x, y))) };
+    return { lines: lines.length, count: centres.length, worst: Math.max(...[...points, ...centres].map(([x, y]) => off(x, y))) };
   });
+  expect(offsets.lines).toBe(4);
   expect(offsets.count).toBe(5);
   expect(offsets.worst).toBeLessThan(0.25);
 });
@@ -774,7 +726,7 @@ test("E5-S2-3: the about page carries the founder text, the photo, the company a
   const text = (await page.locator("main").innerText()).replace(/\s+/g, " ");
   expect(text).toContain(FOUNDER);
   expect(text).toContain(NAME_LINE);
-  expect(text).toContain("Hevelius AI Group LLC is an AI advisory and developer-tools company in Naples, Florida, founded in 2026 by Christopher Zaczek. It builds AsBuild and Agile Dev Team, two plugins for Claude Code, and advises organizations on AI readiness, transformation and governance.");
+  expect(text).toContain("Hevelius AI Group LLC is an AI advisory and developer-tools company in Naples, Florida, founded in 2026 by Christopher Zaczek. It builds AsBuild, a Claude Code plugin, and AsChecked, a review method that runs in the AI tool you already use, and publishes the rules it builds by. It advises organizations on AI readiness, transformation and governance.");
   expect(text).toContain("Hevelius AI Group is a company in Naples, Florida, and has no connection to any astronomical institution.");
   const photo = page.getByRole("img", { name: "Christopher Zaczek, founder of Hevelius AI Group" });
   await expect(photo).toBeVisible();
@@ -797,7 +749,7 @@ test("E5-S2-4: the Southwest Florida sentence appears once on the advisory page,
   await open(page, "/advisory");
   const text = await page.locator("main").innerText();
   expect(text.match(/Southwest Florida/g)).toHaveLength(1);
-  await expect(page.locator(".offer h3")).toHaveText(["AI readiness assessment", "Transformation", "Strategy and governance"]);
+  await expect(page.locator(".offer h3")).toHaveText(["AI readiness assessment", "Transformation", "Strategy and governance", "AsChecked hand review"]);
   expect(text).toContain("We have spent fifteen years on those programs with global banks");
   for (const city of ["/southwest-florida", "/naples", "/fort-myers"]) expect((await page.request.get(city)).status(), city).toBe(404);
 });
@@ -828,7 +780,7 @@ test("E5-S3-1: robots.txt names the search crawlers and the sitemap", async ({ p
   expect(robots.trim().endsWith("Sitemap: https://heveliusai.com/sitemap.xml")).toBe(true);
 });
 
-test("E5-S3-2: the sitemap lists exactly the five pages, each with a date", async ({ page }) => {
+test("E5-S3-2: the sitemap lists exactly the six pages, in the header's order, each with a date", async ({ page }) => {
   const sitemap = await (await page.request.get("/sitemap.xml")).text();
   const urls = [...sitemap.matchAll(/<url>\s*<loc>([^<]+)<\/loc>\s*<lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>\s*<\/url>/g)];
   expect(urls.map((m) => m[1])).toEqual(PAGES.map((p) => `https://heveliusai.com${p}`));
@@ -865,9 +817,7 @@ function lookOfEveryElement() {
   add("list item", outsideBands(q("main .points li, main .facts li")));
   add("table header", q("main thead th"));
   add("table role", q("main tbody th"));
-  add("table text", q("main tbody td:not(.when)"));
-  add("chip, early access", q("main .chip-now"));
-  add("chip, planned", q("main .chip-soon"));
+  add("table text", q("main tbody td"));
   add("primary button", q("main .btn-primary"));
   add("arrow link", q("main .arrow"));
   add("contact heading", q("main .band h2"));
@@ -951,6 +901,7 @@ test.describe("Consistency: one look across all pages", () => {
 
 const REPO = "https://github.com/hevelius-ai/asbuild";
 const DEMO = "https://github.com/hevelius-ai/asbuild-demo";
+const DEMO_TS = "https://github.com/hevelius-ai/asbuild-demo-ts";
 
 // The AsBuild text: the page's main content and the main page's AsBuild section.
 async function asbuildTexts(page) {
@@ -983,58 +934,55 @@ test("CR2-6: the AsBuild text never says it makes AI prove its work", async ({ p
 });
 
 test("CR2-7: the AsBuild text speaks of what exists today", async ({ page }) => {
-  // The setup line describes the copy-paste setup in the README (owner, 14 Nov 2026); "in development" appears nowhere.
+  // The setup line describes the two ways to set up in the README (CR-3, checked 22 Nov 2026); "in development" appears nowhere.
   for (const [where, [text]] of Object.entries(await asbuildTexts(page))) {
     expect(text, where).not.toMatch(/in development|at release|when it is out|hear when/i);
   }
   await open(page, "/asbuild");
-  await expect(page.locator("main")).toContainText("To set it up, you paste one message from the README into Claude Code. It does each step it can, asks before it installs anything, and stops when it needs you, for example to sign in to GitHub yourself. Setup ends with one pull request for you to merge.");
+  await expect(page.locator("main")).toContainText("To set it up, you add the plugin in Claude Code and run its setup, or paste one message from the README and let Claude Code take you through it. It asks before it installs anything, and stops when it needs you, for example to sign in to GitHub yourself. Setup ends with one pull request for you to merge.");
   await expect(page.locator(".opening .eyebrow")).toHaveText("Free and open source · MIT licence");
   await open(page, "/");
   await expect(page.locator("#asbuild .status")).toHaveText("Free and open source · MIT licence");
 });
 
-test("CR2-8: the GitHub links go to the repository, its install steps, the demo and the four demo pull requests", async ({ page }) => {
+test("CR2-8: the GitHub links go to the repository, its install steps, both demos and their four pull requests", async ({ page }) => {
   const texts = await asbuildTexts(page);
   const github = (links) => links.filter((h) => h.startsWith("https://github.com/"));
   expect(github(texts["main page section"][1])).toEqual([REPO]);
+  const prs = (demo) => [3, 4, 5, 6].map((n) => `${demo}/pull/${n}`);
   expect(new Set(github(texts["/asbuild"][1]))).toEqual(new Set([
-    REPO, `${REPO}#install`, `${DEMO}#readme`, `${DEMO}/pull/3`, `${DEMO}/pull/4`, `${DEMO}/pull/5`, `${DEMO}/pull/6`,
+    REPO, `${REPO}#install`, `${DEMO}#readme`, ...prs(DEMO), `${DEMO_TS}#readme`, ...prs(DEMO_TS),
   ]));
   await open(page, "/asbuild");
   const status = page.locator("section", { has: page.locator("#status-h") });
-  for (const [name, n] of [["PROVEN", 3], ["NOT PROVEN", 4], ["WAITING FOR YOU", 5], ["UNRESOLVED", 6]]) {
-    await expect(status.getByRole("link", { name, exact: true })).toHaveAttribute("href", `${DEMO}/pull/${n}`);
+  for (const demo of [DEMO, DEMO_TS]) {
+    for (const [name, n] of [["PROVEN", 3], ["NOT PROVEN", 4], ["WAITING FOR YOU", 5], ["UNRESOLVED", 6]]) {
+      await expect(status.locator(`a[href="${demo}/pull/${n}"]`)).toHaveText(name);
+    }
   }
+  await expect(status.getByRole("link", { name: "A Python app" })).toHaveAttribute("href", `${DEMO}#readme`);
+  await expect(status.getByRole("link", { name: "A React and TypeScript app" })).toHaveAttribute("href", `${DEMO_TS}#readme`);
   await expect(page.getByRole("link", { name: "Get it on GitHub" })).toHaveAttribute("href", REPO);
   await expect(page.getByRole("link", { name: "See real pull requests" })).toHaveAttribute("href", `${DEMO}#readme`);
 });
 
-test("CR2-9: the AsBuild text names Claude Code as the only agent and Python as the only language today", async ({ page }) => {
+test("CR2-9 and CR3-5: the AsBuild text names Claude Code as the only agent, and both kinds of project", async ({ page }) => {
   for (const [where, [text]] of Object.entries(await asbuildTexts(page))) {
     expect(text, where).not.toMatch(/\b(Cursor|Copilot|Codex|Gemini|Aider|Windsurf|Cline|Devin)\b|another (coding )?agent|any (coding )?agent/i);
-    expect(text, where).not.toMatch(/\b(JavaScript|TypeScript|Java|Go|Rust|Ruby|PHP|Kotlin|Swift|C#|C\+\+|Node)\b/);
-    expect(text, where).toContain("Python");
+    expect(text, where).not.toMatch(/\b(Java|Go|Rust|Ruby|PHP|Kotlin|Swift|C#|C\+\+|Next\.js|Jest)\b/);
     expect(text, where).toContain("Claude Code");
+    expect(text, where).toMatch(/Python (project )?tested with pytest/);
+    expect(text, where).toMatch(/React app made with Vite|app made with React and Vite/);
   }
 });
 
-test("CR2-2 and CR2-10: AsBuild is in the header after Agile Dev Team, and on the main page after the mission", async ({ page }) => {
+test("CR2-10 and CR-3: the main page's order is mission, picture, AsBuild, AsChecked, playbook, our own work, advisory, contact", async ({ page }) => {
   await open(page, "/");
   const sections = await page.locator("main > section").evaluateAll((ss) => ss.map((s) => s.id));
-  expect(sections).toEqual(["mission", "asbuild", "product", "advisory", "contact"]);
+  expect(sections).toEqual(["mission", "fit", "asbuild", "aschecked", "playbook", "proof", "advisory", "contact"]);
   await page.locator("#asbuild").getByRole("link", { name: /^How AsBuild works/ }).click();
   await expect(page).toHaveURL(/\/asbuild$/);
   await expect(page.locator("h1")).toHaveText("AsBuild");
-});
-
-test("T1: the early-access request link and button are gone; the status lines stay", async ({ page }) => {
-  for (const path of ["/", "/agile-dev-team"]) {
-    await open(page, path);
-    await expect(page.getByText("Request early access")).toHaveCount(0);
-  }
-  await expect(page.locator(".opening .eyebrow")).toHaveText("In development · early access on request");
-  await expect(page.locator(".opening .actions")).toHaveCount(0);
 });
 
 test("CR2-4: the orbit's text alternative and the four steps give the same stops in the same order", async ({ page }) => {
@@ -1126,18 +1074,20 @@ test("Off-site links open in a new tab; links within the site and the email addr
 
 // ---------------------------------------------------------------- 14 Nov 2026: About and Advisory name AsBuild; the 404 page
 
-test("About and Advisory name AsBuild beside Agile Dev Team (owner, 14 Nov 2026)", async ({ page }) => {
+test("CR-3: About names AsBuild, AsChecked and the playbook; Advisory's approach names all three", async ({ page }) => {
   await open(page, "/about");
-  await expect(page.locator("#do-h")).toHaveText("Two products, one practice");
+  await expect(page.locator("#do-h")).toHaveText("Two tools, a playbook, one practice");
   const products = page.locator("section", { has: page.locator("#do-h") });
-  await expect(products.locator("h3")).toHaveText(["AsBuild", "Agile Dev Team", "Advisory"]);
+  await expect(products.locator("h3")).toHaveText(["AsBuild", "AsChecked", "The playbook", "Advisory"]);
   await expect(products.getByRole("link", { name: /^Read about AsBuild/ })).toHaveAttribute("href", "/asbuild");
-  await expect(products.getByRole("link", { name: /^Read about Agile Dev Team/ })).toHaveAttribute("href", "/agile-dev-team");
-  await expect(page.locator("#contact")).toContainText("About AsBuild, for early access to Agile Dev Team, or to talk about an assessment or advisory work.");
+  await expect(products.getByRole("link", { name: /^Read about AsChecked/ })).toHaveAttribute("href", "/aschecked");
+  await expect(products.getByRole("link", { name: /^Read the nine rules/ })).toHaveAttribute("href", "/playbook");
+  await expect(page.locator("#contact")).toContainText("About AsBuild, AsChecked, or to talk about an assessment or advisory work.");
   // The structured data carries the same company sentence as the page.
-  expect(await page.locator('script[type="application/ld+json"]').textContent()).toContain("It builds AsBuild and Agile Dev Team, two plugins for Claude Code");
+  expect(await page.locator('script[type="application/ld+json"]').textContent()).toContain("It builds AsBuild, a Claude Code plugin, and AsChecked, a review method that runs in the AI tool you already use, and publishes the rules it builds by.");
   await open(page, "/advisory");
-  await expect(page.locator("main")).toContainText("The principles behind AsBuild and Agile Dev Team apply to any process where AI does part of the work.");
+  await expect(page.locator("main")).toContainText("The principles behind AsBuild, AsChecked and our playbook apply to any process where AI does part of the work.");
+  await expect(page.locator("main").getByRole("link", { name: "our playbook" })).toHaveAttribute("href", "/playbook");
 });
 
 test("404: a mistyped address shows the site's own page, with the header, a way home and status 404", async ({ page }) => {
@@ -1150,7 +1100,7 @@ test("404: a mistyped address shows the site's own page, with the header, a way 
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex");
     // Served at any depth, it still finds its stylesheet: the page is laid out, not bare.
     expect(await page.evaluate(() => getComputedStyle(document.body).fontFamily)).toContain("IBM Plex Sans");
-    await expect(page.getByRole("navigation", { name: "Main" }).getByRole("link")).toHaveText(["Main", "Agile Dev Team", "AsBuild", "Advisory", "About", "Contact"]);
+    await expect(page.getByRole("navigation", { name: "Main" }).getByRole("link")).toHaveText(NAV_TEXT);
   }
   await page.getByRole("link", { name: "Go to the main page" }).click();
   await expect(page).toHaveURL(/\/$/);
@@ -1187,4 +1137,387 @@ test("AsBuild text never calls merging safe, and names what is not protected (ow
   }
   await open(page, "/asbuild");
   await expect(page.locator("main")).toContainText("Only the tests you approved are protected: a test the AI deleted or skipped is not noticed, and a test that already fails on main counts as broken, so get main passing first.");
+});
+
+// ---------------------------------------------------------------- CR-3 (22 Nov 2026): AsChecked and the playbook
+// Codes CR3-1 to CR3-10 refer to section 12 of "Website change request CR-3"; the owner's decisions are in
+// docs/cr-3-build-plan.md. CR3-4 and CR3-8 also need the outside links opened by hand on the merge day (build plan,
+// sections 3 and 5): these checks hold the site's side of them. CR3-10 is every check in this file.
+
+const AC_REPO = "https://github.com/hevelius-ai/aschecked";
+const SITE_DIR = new URL("../site/", import.meta.url);
+
+// Every published file under site/, as paths relative to it.
+function publishedFiles(dir = SITE_DIR, prefix = "") {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
+    e.isDirectory() ? publishedFiles(new URL(`${e.name}/`, dir), `${prefix}${e.name}/`) : [`${prefix}${e.name}`]);
+}
+
+test("CR3-1: no published file names Agile Dev Team, and its old address is not found", async ({ page }) => {
+  const files = publishedFiles();
+  expect(files.length).toBeGreaterThan(20);
+  for (const f of files) {
+    expect(f, "file name").not.toMatch(/agile/i);
+    if (/\.(html|css|js|xml|txt|webmanifest|svg)$/.test(f)) {
+      // Pages, head tags, alt text and structured data are all in these files.
+      expect(readFileSync(new URL(f, SITE_DIR), "utf8"), f).not.toMatch(/agile dev team|agile-dev-team|agile_dev_team/i);
+    }
+  }
+  for (const address of ["/agile-dev-team", "/agile-dev-team.html", "/img/share-agile-dev-team.png"]) {
+    expect((await page.request.get(address)).status(), address).toBe(404);
+  }
+});
+
+// The AsChecked text (CR3-3): the page's content, the main page's section and the hand-review offer, each with the
+// lines that may name the limit words (they deny them) taken out.
+async function ascheckedTexts(page) {
+  const clean = (s) => s.replace(/\s+/g, " ").trim();
+  await open(page, "/aschecked");
+  const full = clean(await page.locator("main").innerText());
+  const allowed = clean(await page.locator("section", { has: page.locator("#not-h") }).locator("ul").innerText());
+  await open(page, "/");
+  const section = clean(await page.locator("#aschecked").innerText());
+  await open(page, "/advisory");
+  const offer = clean(await page.locator("#hand-review").innerText());
+  const limits = "It is not an audit, a certificate or a security scan, and it does not say a project is safe: it lists the problems found in what was checked.";
+  return {
+    "/aschecked": [full, full.replace(allowed, "")],
+    "main page section": [section, section],
+    "hand-review offer": [offer, offer.replace(limits, "")],
+  };
+}
+
+test("CR3-3: the AsChecked text names its limits only to deny them, and never claims more", async ({ page }) => {
+  const texts = await ascheckedTexts(page);
+  expect(texts["/aschecked"][1].length, "the limits list was found and taken out").toBeLessThan(texts["/aschecked"][0].length);
+  expect(texts["hand-review offer"][1].length, "the limits line was found and taken out").toBeLessThan(texts["hand-review offer"][0].length);
+  for (const [where, [full, rest]] of Object.entries(texts)) {
+    expect(rest, where).not.toMatch(/\b(audits?|certificates?|security scans?|safe(ly|ty)?)\b/i);
+    expect(full, where).not.toMatch(/\b(certified|compliant|secure)\b/i);
+    expect(full, where).not.toMatch(/\b(AsChecked|It|it|The review|the review)( also)? (verifies|proves|guarantees|certifies)\b/);
+  }
+  // The "What AsChecked is not" list says what CR-3 section 6 says, in that order.
+  await open(page, "/aschecked");
+  const not = await page.locator("section", { has: page.locator("#not-h") }).locator("li").allInnerTexts();
+  expect(not[0]).toBe("It is not an audit, a certificate or a security scan.");
+  expect(not[1]).toBe("It never says your project is safe. It lists the problems it found in what it checked.");
+});
+
+test("CR3-3: the AsChecked lines say what the release says: T1, T2 as shortened by R1, T3, T4, H1, H2, M2, R2 (owner, 22 and 25 Nov 2026)", async ({ page }) => {
+  await open(page, "/aschecked");
+  const main = (await page.locator("main").innerText()).replace(/\s+/g, " ");
+  expect(main).toContain("Tested in Claude Code. It also runs in a claude.ai chat, not yet proven to give the same results.");
+  expect(main).toContain("AsChecked is written only to read: it is told to install nothing, run none of your code and change no file.");
+  // R1 (owner, 25 Nov 2026): the released README runs it in Auto mode, so the page names no mode.
+  expect(main).not.toMatch(/plan mode/i);
+  expect(main).toContain("the tools page says what we tried in each and what happened");
+  // R2 (owner's own wording, 25 Nov 2026): both tests, undated, in the testing page's words; never "the released version".
+  // The last sentence ties cost and time to the benchmark, the one test that shows them (owner, option B).
+  expect(main).toContain("In a benchmark we ran AsChecked on four real projects in which earlier hand reviews had found 19 problems, with 13 model and effort settings, and scored every report without knowing which setting wrote it. We also ran AsChecked on 24 sample apps we built, 19 of them with problems planted on purpose. The testing page has every result, with each benchmark setting's score, cost and time.");
+  await expect(page.getByRole("link", { name: "The testing page has every result, with each benchmark setting's score, cost and time" })).toHaveAttribute("href", `${AC_REPO}/blob/main/docs/how-we-tested.md`);
+  expect(main).not.toContain("the released version");
+  expect(main).toContain("Hevelius runs AsChecked reviews by hand, and a person checks every finding against your code before the report reaches you.");
+  expect(main).not.toContain("Tested in Claude Code and in a claude.ai chat");
+  await open(page, "/");
+  const section = (await page.locator("#aschecked").innerText()).replace(/\s+/g, " ");
+  expect(section).toContain("It is written only to read your project.");
+  expect(section).toContain("Tested in Claude Code. It also runs in a claude.ai chat, not yet proven to give the same results.");
+  await open(page, "/advisory");
+  const offer = (await page.locator("#hand-review").innerText()).replace(/\s+/g, " ");
+  expect(offer).toContain("A person checks every finding against your code before the report reaches you.");
+  // M2 (owner, 22 Nov 2026): the offer says why nothing in the project changes.
+  expect(offer).toContain("We review a copy of your project, so nothing in your project is changed.");
+  expect(offer).not.toContain("The review only reads");
+  expect(offer).toContain("with the Anthropic model that scored best in AsChecked's published tests; as of November 2026, that is Claude Fable 5.2.");
+  await open(page, "/asbuild");
+  await expect(page.locator("main")).toContainText("On your computer: Git, the GitHub command-line tool and Python, and Node.js for a TypeScript or JavaScript app.");
+});
+
+test("CR3-4: every AsChecked link on the site goes to its repository, its README or one of its two docs pages", async ({ page }) => {
+  const allowed = new Set([AC_REPO, `${AC_REPO}#readme`, `${AC_REPO}/blob/main/docs/how-we-tested.md`, `${AC_REPO}/blob/main/docs/other-tools.md`]);
+  for (const path of PAGES) {
+    await open(page, path);
+    const links = await page.locator("a[href*='hevelius-ai/aschecked']").evaluateAll((as) => as.map((a) => a.getAttribute("href")));
+    for (const href of links) expect(allowed.has(href), `${path} ${href}`).toBe(true);
+  }
+  // "Ask for a hand review" and "See the hand review" land on the offer.
+  await open(page, "/aschecked");
+  for (const name of ["Ask for a hand review", "See the hand review"]) {
+    await expect(page.getByRole("link", { name })).toHaveAttribute("href", "/advisory#hand-review");
+  }
+  await page.getByRole("link", { name: "See the hand review" }).click();
+  await expect(page.locator("#hand-review h3")).toHaveText("AsChecked hand review");
+  await expect(page.locator("#hand-review")).toBeInViewport();
+});
+
+test("CR3-5: /asbuild says nothing more is planned until a user asks, and points to AsChecked for whole projects", async ({ page }) => {
+  await open(page, "/asbuild");
+  const main = page.locator("main");
+  await expect(main).toContainText("AsBuild is complete as it stands. More is built when a real user asks for it: write to contact@heveliusai.com to say what you need.");
+  // "not what was planned" (the story of the name) is the one "planned" left on the page.
+  expect(await main.innerText()).not.toMatch(/\b(is|are) planned\b|planned for|coming soon|roadmap|More languages/i);
+  await expect(main).toContainText("So far AsBuild has been used on those two demos and on one private project.");
+  const line = page.locator("li", { hasText: "It does not review a whole project." });
+  await expect(line).toHaveText("It does not review a whole project. AsChecked does that.");
+  await expect(line.getByRole("link", { name: "AsChecked" })).toHaveAttribute("href", "/aschecked");
+});
+
+// The three articles the playbook cites, with the title, publisher and date each link gives (read 22 Nov 2026).
+const ARTICLES = {
+  "https://www.anthropic.com/engineering/harness-design-long-running-apps": 'Anthropic, "Harness design for long-running application development", 24 Mar 2026',
+  "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents": 'Anthropic, "Effective harnesses for long-running agents", 26 Nov 2025',
+  "https://code.claude.com/docs/en/best-practices": 'Claude Code documentation, "Best practices for Claude Code"',
+};
+
+test("CR3-6: the playbook claims no standing it does not have, and each rule names where the idea is published", async ({ page }) => {
+  await open(page, "/playbook");
+  const clean = (s) => s.replace(/\s+/g, " ").trim();
+  const main = clean(await page.locator("main").innerText());
+  const claim = clean(await page.locator("section", { has: page.locator("#claim-h") }).innerText());
+  expect(claim).toContain("These are our working rules, not a standard, and nobody outside Hevelius has reviewed or endorsed them. The links show where the same ideas are published by others; read those too.");
+  expect(main.replace(claim, "")).not.toMatch(/\blatest\b|best practice(?!s for Claude Code)|industry standard|endorse/i);
+  expect(main).not.toMatch(/\bcertified\b/i);
+  // Nine rules in three groups, in the order of CR-3 section 7.
+  const rules = page.locator("#rules ol.steps > li");
+  await expect(rules).toHaveCount(9);
+  await expect(page.locator("#rules h3")).toHaveText(["Before building", "While building", "Before release, and after"]);
+  await expect(rules.locator("> strong")).toHaveText([
+    'Agree "done" before anything is built.', "Decide once, and keep the decision.", "Tests first, then locked.",
+    "Programs check; agents do not vouch.", "Nobody reviews their own work.", "One file holds the current state.",
+    "The person decides.", "A first-time user tests the release.", "The rules get shorter.",
+  ]);
+  // The list numbers run on from 01 to 09 across the three groups: the second and third lists start their count at
+  // 3 and 6, and every item draws its number from that count.
+  const lists = await page.locator("#rules ol.steps").evaluateAll((ols) => ols.map((ol) => getComputedStyle(ol).counterReset));
+  expect(lists).toEqual(["step 0", "step 3", "step 6"]);
+  const marks = await rules.evaluateAll((lis) => lis.map((li) => getComputedStyle(li, "::before").content));
+  for (const m of marks) expect(m).toMatch(/^counter\(step/);
+  // Each rule has its "Why", and either an "Also published" line whose link is one of the three articles with its
+  // title, or (rule 7) "Ours".
+  for (let i = 0; i < 9; i++) {
+    const rule = rules.nth(i);
+    await expect(rule, `rule ${i + 1}`).toContainText("Why:");
+    if (i === 6) {
+      await expect(rule).toContainText("Ours: this is maker-checker and segregation of duties, the controls banks use, applied to an AI builder.");
+      await expect(rule.locator("a")).toHaveCount(0);
+      continue;
+    }
+    await expect(rule, `rule ${i + 1}`).toContainText("Also published:");
+    const link = rule.locator("a");
+    await expect(link).toHaveCount(1);
+    const href = await link.getAttribute("href");
+    expect(Object.keys(ARTICLES), `rule ${i + 1}`).toContain(href);
+    await expect(link, `rule ${i + 1}`).toHaveText(ARTICLES[href]);
+  }
+  // The footer's line that Hevelius is not affiliated with Anthropic stays on this page too.
+  await expect(page.getByRole("contentinfo")).toContainText("is not affiliated with Anthropic");
+});
+
+test("CR3-7: the whole site drops the old wording", async ({ page }) => {
+  for (const path of [...PAGES, "/no-such-page"]) {
+    await page.goto(path);
+    const html = (await page.content()).replace(/\s+/g, " ").toLowerCase();
+    for (const phrase of ["two claude code plugins", "make ai prove its work", "three offers", "early access", "the team works"]) {
+      expect(html, `${path}: "${phrase}"`).not.toContain(phrase);
+    }
+  }
+});
+
+test("CR3-8: the off-site links are exactly the reviewed list (each is opened by hand before the merge)", async ({ page }) => {
+  const found = new Set();
+  for (const path of [...PAGES, "/no-such-page"]) {
+    await page.goto(path);
+    for (const href of await page.locator("a[href^='http']").evaluateAll((as) => as.map((a) => a.getAttribute("href")))) found.add(href);
+  }
+  expect([...found].sort()).toEqual([
+    "https://code.claude.com/docs/en/best-practices",
+    "https://github.com/hevelius-ai/asbuild",
+    "https://github.com/hevelius-ai/asbuild#install",
+    "https://github.com/hevelius-ai/asbuild-demo#readme",
+    "https://github.com/hevelius-ai/asbuild-demo-ts#readme",
+    "https://github.com/hevelius-ai/asbuild-demo-ts/pull/3",
+    "https://github.com/hevelius-ai/asbuild-demo-ts/pull/4",
+    "https://github.com/hevelius-ai/asbuild-demo-ts/pull/5",
+    "https://github.com/hevelius-ai/asbuild-demo-ts/pull/6",
+    "https://github.com/hevelius-ai/asbuild-demo/pull/3",
+    "https://github.com/hevelius-ai/asbuild-demo/pull/4",
+    "https://github.com/hevelius-ai/asbuild-demo/pull/5",
+    "https://github.com/hevelius-ai/asbuild-demo/pull/6",
+    "https://github.com/hevelius-ai/asbuild/blob/main/docs/KNOWN-ISSUES.md",
+    "https://github.com/hevelius-ai/aschecked",
+    "https://github.com/hevelius-ai/aschecked#readme",
+    "https://github.com/hevelius-ai/aschecked/blob/main/docs/how-we-tested.md",
+    "https://github.com/hevelius-ai/aschecked/blob/main/docs/other-tools.md",
+    "https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents",
+    "https://www.anthropic.com/engineering/harness-design-long-running-apps",
+    "https://www.linkedin.com/in/christopher-zaczek-34b95375/",
+  ]);
+});
+
+// CR3-9: the three new pictures. For each, the items its text alternative names, in the drawing's order; every key
+// must be found in that order in the text alternative and in each drawing's words.
+const NEW_PICTURES = [
+  {
+    path: "/", figure: "#fit figure.diagram",
+    keys: ["say what you want", "builds the change", "checks each change", "lists what to fix"],
+    roles: ["You", "Your AI builder", "AsBuild", "AsChecked"],
+  },
+  {
+    path: "/aschecked", figure: "figure.diagram-read",
+    keys: ["what your project promises", "who can see or change what", "keys, input and outside code", "ai keys, spend, made-up output",
+      "data and money at risk", "how updates reach users", "permissions on the device", "errors, bad input, no network",
+      "fit for the people who use it", "tests, updates, upkeep", "legal basics, others' terms", "running cost with no cap"],
+    middle: "at most five findings, most harmful first",
+  },
+  {
+    path: "/playbook", figure: "figure.diagram-read",
+    // P4 (owner, 22 Nov 2026): the text alternative stays as drafted. It names each phase and its three rules, but not
+    // the drawn phase titles ("Agreed finish line", "Checked from outside", "Released on evidence"), so they are not keys.
+    keys: ["what you want", "before building", "agree what done means", "decide once", "tests first, then locked",
+      "while building", "programs check, not agents", "reviews", "one file holds the state",
+      "before release", "the person decides", "a first-time user tests it", "the rules get shorter", "the record"],
+    // A path, not a ring: the words are read as drawn, left to right on the wide drawing, top to bottom on the phone.
+    byPosition: true,
+  },
+];
+
+test.describe("CR3-9: each new picture's text alternative gives the same items in the same order as the drawing", () => {
+  for (const pic of NEW_PICTURES) {
+    test(pic.path, async ({ page }) => {
+      await open(page, pic.path);
+      const norm = (s) => s.replace(/\s+/g, " ").toLowerCase();
+      const inOrder = (text, where) => {
+        let at = -1;
+        for (const k of pic.keys) {
+          const i = text.indexOf(k, at + 1);
+          expect(i, `${where}: "${k}" after the one before`).toBeGreaterThan(at);
+          at = i;
+        }
+      };
+      for (const part of [".diagram-wide", ".diagram-tall"]) {
+        const svg = page.locator(`${pic.figure} ${part} svg`);
+        const desc = norm(await svg.locator("desc").textContent());
+        inOrder(desc, `${part} text alternative`);
+        // The drawn words, each text element joined by a space: in document order around a ring, or for a path in
+        // reading order by position (x then y on the wide drawing, y then x on the phone drawing).
+        const words = await svg.locator("text").evaluateAll((ts, [byPosition, wide]) => {
+          const at = ts.map((t) => ({ text: t.textContent, x: Number(t.getAttribute("x")), y: Number(t.getAttribute("y")) }));
+          if (byPosition) at.sort((a, b) => (wide ? a.x - b.x || a.y - b.y : a.y - b.y || a.x - b.x));
+          return at.map((w) => w.text);
+        }, [!!pic.byPosition, part === ".diagram-wide"]);
+        const drawn = norm(words.join(" "));
+        inOrder(drawn, `${part} drawing`);
+        if (pic.middle) { expect(desc).toContain(pic.middle); expect(drawn).toContain(pic.middle); }
+        if (pic.roles && part === ".diagram-wide") expect(await svg.locator(".dg-role").allTextContents()).toEqual(pic.roles);
+      }
+    });
+  }
+});
+
+test("CR3-9 and V1: the new pictures' phone drawings keep every word at 13px or more, at 360px and wherever they show", async ({ page }) => {
+  // 360: a small phone. 1023: the widest screen that shows the column drawing on /aschecked and /playbook (V1).
+  for (const [pic, width] of [...NEW_PICTURES.map((p) => [p, 360]), ...NEW_PICTURES.filter((p) => p.path !== "/").map((p) => [p, 1023])]) {
+    await page.setViewportSize({ width, height: 800 });
+    await open(page, pic.path);
+    await expect(page.locator(`${pic.figure} .diagram-tall svg`), `${pic.path} at ${width}`).toBeVisible();
+    const r = await page.evaluate((sel) => {
+      const svg = document.querySelector(`${sel} .diagram-tall svg`);
+      const scale = svg.getBoundingClientRect().width / svg.viewBox.baseVal.width;
+      const texts = [...svg.querySelectorAll("text")].map((t) => [t.textContent.trim(), parseFloat(getComputedStyle(t).fontSize) * scale]);
+      return { count: texts.length, small: texts.filter(([, px]) => Math.round(px * 10) / 10 < 13).map(([t, px]) => `${t}: ${px.toFixed(1)}px`) };
+    }, pic.figure);
+    expect(r.count, pic.path).toBeGreaterThan(10);
+    expect(r.small, pic.path).toEqual([]);
+  }
+});
+
+test("CR-3: the pictures on /aschecked and /playbook carry the owner's late wording (22 Nov 2026)", async ({ page }) => {
+  await open(page, "/aschecked");
+  const areas = page.locator("section", { has: page.locator("figure.diagram-read") });
+  await expect(areas.locator("h2")).toHaveText("Your project checks");
+  const labels = await page.locator("figure.diagram-read .diagram-wide svg .dg-li").allTextContents();
+  expect(labels[0]).toBe("What your project promises");
+  await expect(areas.locator("figcaption")).toHaveText("AsChecked looks at up to twelve areas, takes the ones that apply to your project, and keeps the findings that matter most.");
+  await open(page, "/playbook");
+  await expect(page.locator("figure.diagram-read figcaption")).toHaveCount(0);
+});
+
+// CR3-3 and CR3-6 on the raw files: head tags, structured data, text alternatives and the hidden drawing are searched
+// too, not only the text a visitor sees (review round 1, M4).
+const rawPage = (name) => readFileSync(new URL(name, SITE_DIR), "utf8").replace(/\s+/g, " ");
+
+test("CR3-3 and CR3-6: the raw page files carry no claim words either", async () => {
+  // Never allowed: on the three CR-3 places, and anywhere on the main page's AsChecked section or the hand-review offer.
+  const aschecked = rawPage("aschecked.html");
+  const playbook = rawPage("playbook.html");
+  const index = rawPage("index.html");
+  const advisory = rawPage("advisory.html");
+  const section = index.match(/<section id="aschecked".*?<\/section>/)[0];
+  const offer = advisory.match(/<li class="offer" id="hand-review">.*?<\/li>/)[0];
+  for (const [where, text] of Object.entries({ "/aschecked": aschecked, "/playbook": playbook, "main page section": section, "hand-review offer": offer })) {
+    expect(text, where).not.toMatch(/\b(certified|compliant|secure)\b/i);
+    expect(text, where).not.toMatch(/\b(AsChecked|It|The review)( also)? (verifies|proves|guarantees|certifies)\b/);
+  }
+  // The limit words only in the lines that deny them.
+  const denied = [
+    '<li data-test="limits">It is not an audit, a certificate or a security scan.</li>',
+    "<li>It never says your project is safe. It lists the problems it found in what it checked.</li>",
+  ];
+  let rest = aschecked;
+  for (const line of denied) { expect(rest).toContain(line); rest = rest.replace(line, ""); }
+  expect(rest, "/aschecked").not.toMatch(/\b(audits?|certificates?|security scans?|safe(ly|ty)?)\b/i);
+  const limits = "It is not an audit, a certificate or a security scan, and it does not say a project is safe: it lists the problems found in what was checked.";
+  expect(offer).toContain(limits);
+  expect(offer.replace(limits, ""), "hand-review offer").not.toMatch(/\b(audits?|certificates?|security scans?|safe(ly|ty)?)\b/i);
+  expect(section, "main page section").not.toMatch(/\b(audits?|certificates?|security scans?|safe(ly|ty)?)\b/i);
+  // The playbook's standing words only in "What this page does not claim" (the article title is the one exception).
+  const claim = playbook.match(/<section aria-labelledby="claim-h">.*?<\/section>/)[0];
+  expect(playbook.replace(claim, ""), "/playbook").not.toMatch(/\blatest\b|best practice(?!s for Claude Code)|industry standard|endorse/i);
+});
+
+test("CR3-2: the seven-link header stays tappable and unbroken from 640 to 1024px", async ({ page }) => {
+  for (const width of [640, 700, 768, 800, 1024]) {
+    await page.setViewportSize({ width, height: 800 });
+    await open(page, "/aschecked");
+    const m = await page.evaluate(() => {
+      const links = [...document.querySelectorAll(".site-nav a")].filter((a) => a.getClientRects().length);
+      const boxes = links.map((a) => a.getBoundingClientRect());
+      const overlaps = [];
+      for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
+        const [a, b] = [boxes[i], boxes[j]];
+        if (a.left < b.right - 0.5 && b.left < a.right - 0.5 && a.top < b.bottom - 0.5 && b.top < a.bottom - 0.5) overlaps.push(`${links[i].textContent} / ${links[j].textContent}`);
+      }
+      return { shown: links.length, minHeight: Math.min(...boxes.map((b) => b.height)), minWidth: Math.min(...boxes.map((b) => b.width)), overlaps,
+        inside: boxes.every((b) => b.left >= 0 && b.right <= document.documentElement.clientWidth) };
+    });
+    expect(m.shown, `${width}px: all seven links on screen, no Menu button`).toBe(7);
+    expect(m.minHeight, `${width}px`).toBeGreaterThanOrEqual(44);
+    expect(m.minWidth, `${width}px`).toBeGreaterThanOrEqual(24);
+    expect(m.overlaps, `${width}px`).toEqual([]);
+    expect(m.inside, `${width}px`).toBe(true);
+  }
+});
+
+// M3 (owner, 22 Nov 2026): the new pictures stay as drawn. Their two drawings carry the same words, apart from the
+// differences recorded here: the phone drawings are shorter in three places, and the /aschecked phone drawing has a
+// heading of its own. (The main-page ring's text alternative is CR-3's own wording and names the four stops.)
+const DRAWING_DIFFERENCES = {
+  "/": { wideOnly: ["in your own setup", "you read the receipt and merge"], tallOnly: [] },
+  "/aschecked": { wideOnly: [], tallOnly: ["It reads up to twelve areas"] },
+  "/playbook": { wideOnly: ["and after"], tallOnly: [] },
+};
+
+test("CR3-9 and M3: each new picture's two drawings carry the same words, apart from the recorded differences", async ({ page }) => {
+  const words = (s) => s.toLowerCase().match(/[a-z0-9'’-]+/g) || [];
+  const count = (list) => list.reduce((m, w) => m.set(w, (m.get(w) || 0) + 1), new Map());
+  const minus = (a, b) => { const out = new Map(a); for (const [w, n] of b) out.set(w, (out.get(w) || 0) - n); return [...out].filter(([, n]) => n > 0).flatMap(([w, n]) => Array(n).fill(w)).sort(); };
+  for (const pic of NEW_PICTURES) {
+    await open(page, pic.path);
+    const drawn = async (part) => words((await page.locator(`${pic.figure} ${part} svg text`).allTextContents()).join(" "));
+    const wide = count(await drawn(".diagram-wide"));
+    const tall = count(await drawn(".diagram-tall"));
+    const diff = DRAWING_DIFFERENCES[pic.path];
+    expect(minus(wide, tall), `${pic.path}: words only in the wide drawing`).toEqual(words(diff.wideOnly.join(" ")).sort());
+    expect(minus(tall, wide), `${pic.path}: words only in the phone drawing`).toEqual(words(diff.tallOnly.join(" ")).sort());
+  }
 });
