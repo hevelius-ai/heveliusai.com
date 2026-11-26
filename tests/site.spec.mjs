@@ -1203,13 +1203,17 @@ test("CR3-3: the AsChecked text names its limits only to deny them, and never cl
   expect(not[1]).toBe("It never says your project is safe. It lists the problems it found in what it checked.");
 });
 
-test("CR3-3 and H1, H2, T1 to T5: the AsChecked lines say what the release says (owner, 22 Nov 2026)", async ({ page }) => {
+test("CR3-3 and H1, H2, T1 to T5, R1, R2: the AsChecked lines say what the release says (owner, 22 and 25 Nov 2026)", async ({ page }) => {
   await open(page, "/aschecked");
   const main = (await page.locator("main").innerText()).replace(/\s+/g, " ");
   expect(main).toContain("Tested in Claude Code. It also runs in a claude.ai chat, not yet proven to give the same results.");
-  expect(main).toContain("AsChecked is written only to read: it is told to install nothing, run none of your code and change no file, and in Claude Code it runs in plan mode.");
+  expect(main).toContain("AsChecked is written only to read: it is told to install nothing, run none of your code and change no file.");
+  // R1 (owner, 25 Nov 2026): the released README runs it in Auto mode, so the page names no mode.
+  expect(main).not.toMatch(/plan mode/i);
   expect(main).toContain("the tools page says what we tried in each and what happened");
-  expect(main).toContain("On 22 Nov 2026 we also tested the released version on eight apps we wrote for the test, six of them with problems planted on purpose; the testing page says what that test can and cannot show.");
+  // R2 (owner, 25 Nov 2026): the newest test on the testing page, without calling it the released version.
+  expect(main).toContain("On 24 and 25 Nov 2026 we also ran AsChecked on 24 apps we wrote for the test, 19 of them with problems planted on purpose; the testing page says what that test can and cannot show.");
+  expect(main).not.toContain("the released version");
   expect(main).toContain("Hevelius runs AsChecked reviews by hand, and a person checks every finding against your code before the report reaches you.");
   expect(main).not.toContain("Tested in Claude Code and in a claude.ai chat");
   await open(page, "/");

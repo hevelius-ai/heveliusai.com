@@ -229,3 +229,25 @@ pages with curl (view source) and wrote three small scripts on the browser libra
 
 ⚠️ QUALITY RISK: F2 was settled by the builder's comparison with the draft, not by the walker; the merge-day re-check
 repeats only the F1 rows.
+
+## 11. Merge-day check (25 Nov 2026, US Eastern)
+
+- **AsChecked:** tag `v1.0.0` (`a642f78`), release "AsChecked v1.0.0"; `main` at `8709629`; the README no longer opens with
+  "In development"; `docs/how-we-tested.md` and `docs/other-tools.md` are on `main`. The repository's one-line description
+  on GitHub still ends "In development." (the owner's setting).
+- **The site's AsChecked lines against the released text:** the twelve areas, the read-only rules, the three questions, the
+  report's parts, the licences, the benchmark sentence, the chat line, the other-tools line and the hand review's model
+  still hold. Two did not, and the owner decided:
+
+| Code | Was | Why | Decision (owner, 25 Nov 2026) |
+| --- | --- | --- | --- |
+| R1 | "…and change no file, and in Claude Code it runs in plan mode." | The released README runs it in Claude Code's Auto mode; plan mode also works | 1A: "AsChecked is written only to read: it is told to install nothing, run none of your code and change no file." |
+| R2 | "On 22 Nov 2026 we also tested the released version on eight apps…" | The tag is newer than the version that test ran; the testing page has a newer, larger test | 2A: "On 24 and 25 Nov 2026 we also ran AsChecked on 24 apps we wrote for the test, 19 of them with problems planted on purpose; the testing page says what that test can and cannot show." |
+
+- **Outside links:** all 21 open (anonymous), the two AsChecked `docs/` pages among them; the eight demo pull requests show
+  their verdicts; rows K5 and K6 are in AsBuild's known issues; AsBuild is at `v0.4.2`.
+- **Skills:** not published (no public repository in `hevelius-ai`), so "to be published" stays true.
+- **Website `main`:** still `4cdfeb6`. **Sitemap:** every `lastmod` 2026-11-25.
+- **Walkthrough re-check** (a fresh walker in a new folder, the build at `87ea8b5`): F1 not reproduced; rows CR3-4a, b, c
+  and CR3-8 PASS; one new LOW, the repository description above. Over both runs no row fails; the rows a visitor cannot
+  check (Done-3, CR3-6c, CR3-10) and the F2 rows settled by the builder stay as recorded in section 10.
