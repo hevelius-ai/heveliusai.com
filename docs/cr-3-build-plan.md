@@ -263,6 +263,16 @@ for word, with one full stop in place of a semicolon before "Every":
 > sample apps we built, 19 of them with problems planted on purpose. Every setting's score, cost and time is on the
 > testing page.
 
-This drops the benchmark's date, which CR-3 (B1) had asked for: the owner's wording wins. The testing page shows cost and
+This drops the benchmark's date, which CR-3 had asked for (its open decision B1, in the table of section 1, and its sections 2 and 6): the owner's wording wins. The testing page shows cost and
 time for the benchmark only, so the owner then chose (option B) to tie the last sentence to it. The paragraph now ends:
 "The testing page has every result, with each benchmark setting's score, cost and time."
+
+**README re-read** (25 Nov 2026, evening, at the owner's request): AsChecked's `main` moved to `401a03e`, nine commits
+past the tag. The README lost its "Version 1" banner and gained a "Choose how to run it" list, a terminal mention and a
+"Project on GitHub? Use a cloud session" route (tried once, on one project); the testing page gained a "Cloud session
+(26 Nov 2026)" section. The method file and the other docs pages are unchanged since the tag. Every AsChecked sentence on
+the site was compared again: all still hold, and no page text changed because of it.
+
+**Confirm-only re-check** (Claude Fable 5.2 at high effort, fresh headless session, read-only, on `0275b82`): **APPROVE**.
+Findings 1 to 4 closed; three LOW notes: "Every setting's … cost and time" (settled by the owner's option B), the B1
+reference (now names where B1 sits) and this README re-read (recorded here).
