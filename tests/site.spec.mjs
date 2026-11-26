@@ -1211,8 +1211,8 @@ test("CR3-3: the AsChecked lines say what the release says: T1, T2 as shortened 
   // R1 (owner, 25 Nov 2026): the released README runs it in Auto mode, so the page names no mode.
   expect(main).not.toMatch(/plan mode/i);
   expect(main).toContain("the tools page says what we tried in each and what happened");
-  // R2 (owner, 25 Nov 2026): the newest test on the testing page, without calling it the released version.
-  expect(main).toContain("On 24 and 25 Nov 2026 we also ran AsChecked on 24 apps we wrote for the test, 19 of them with problems planted on purpose; the testing page says what that test can and cannot show.");
+  // R2 (owner's own wording, 25 Nov 2026): both tests, undated, in the testing page's words; never "the released version".
+  expect(main).toContain("In a benchmark we ran AsChecked on four real projects in which earlier hand reviews had found 19 problems, with 13 model and effort settings, and scored every report without knowing which setting wrote it. We also ran AsChecked on 24 sample apps we built, 19 of them with problems planted on purpose. Every setting's score, cost and time is on the testing page.");
   expect(main).not.toContain("the released version");
   expect(main).toContain("Hevelius runs AsChecked reviews by hand, and a person checks every finding against your code before the report reaches you.");
   expect(main).not.toContain("Tested in Claude Code and in a claude.ai chat");

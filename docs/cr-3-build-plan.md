@@ -242,7 +242,7 @@ repeats only the F1 rows.
 | Code | Was | Why | Decision (owner, 25 Nov 2026) |
 | --- | --- | --- | --- |
 | R1 | "…and change no file, and in Claude Code it runs in plan mode." | The released README runs it in Claude Code's Auto mode; plan mode also works | 1A: "AsChecked is written only to read: it is told to install nothing, run none of your code and change no file." |
-| R2 | "On 22 Nov 2026 we also tested the released version on eight apps…" | The tag is newer than the version that test ran; the testing page has a newer, larger test | 2A: "On 24 and 25 Nov 2026 we also ran AsChecked on 24 apps we wrote for the test, 19 of them with problems planted on purpose; the testing page says what that test can and cannot show." |
+| R2 | "On 22 Nov 2026 we also tested the released version on eight apps…" | The tag is newer than the version that test ran; the testing page has a newer, larger test | 2A: "On 24 and 25 Nov 2026 we also ran AsChecked on 24 apps we wrote for the test, 19 of them with problems planted on purpose; the testing page says what that test can and cannot show." Then replaced by the owner's own wording (below). |
 
 - **Outside links:** all 21 open (anonymous), the two AsChecked `docs/` pages among them; the eight demo pull requests show
   their verdicts; rows K5 and K6 are in AsBuild's known issues; AsBuild is at `v0.4.2`.
@@ -251,3 +251,16 @@ repeats only the F1 rows.
 - **Walkthrough re-check** (a fresh walker in a new folder, the build at `87ea8b5`): F1 not reproduced; rows CR3-4a, b, c
   and CR3-8 PASS; one new LOW, the repository description above. Over both runs no row fails; the rows a visitor cannot
   check (Done-3, CR3-6c, CR3-10) and the F2 rows settled by the builder stay as recorded in section 10.
+
+**Re-check of R1 and R2** (25 Nov 2026, Claude Fable 5.2 at high effort, a fresh headless session, read-only, on `6e2401b`):
+CHANGES NEEDED, no HIGH, two MEDIUM, two LOW. R1 true against v1.0.0. Finding 1: "24 apps we wrote for the test" did
+not match the testing page ("we built the 24 apps … (16 for this test, 8 for the sandbox test above)"). Findings 2 to 4
+(records) fixed in `4851881`. For finding 1 the owner wrote the paragraph himself (25 Nov 2026); it is on the page word
+for word, with one full stop in place of a semicolon before "Every":
+
+> In a benchmark we ran AsChecked on four real projects in which earlier hand reviews had found 19 problems, with 13
+> model and effort settings, and scored every report without knowing which setting wrote it. We also ran AsChecked on 24
+> sample apps we built, 19 of them with problems planted on purpose. Every setting's score, cost and time is on the
+> testing page.
+
+This drops the benchmark's date, which CR-3 (B1) had asked for: the owner's wording wins.
