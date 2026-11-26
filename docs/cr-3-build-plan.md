@@ -157,7 +157,7 @@ IndexNow for the six addresses and `/agile-dev-team` once as removed.
 - **The verdicts table** turns into cards under 640 px, so it never needs a keyboard stop on a phone. The E2-S2-4 checks now
   hold that, and test the keyboard stop by making the table wider than its box.
 - **`site.js`:** one comment reworded (it named the removed evidence example and roles table).
-- **`sitemap.xml`** lists the six pages in the header's order; every `lastmod` reads 2026-11-23, the expected merge day; it is set to the actual merge day before merging.
+- **`sitemap.xml`** lists the six pages in the header's order; every `lastmod` reads 2026-11-25, the merge-day check's date; if the merge falls on a later day, it is set to that day.
 - **`/advisory` structured data** gains the fourth `Service`, the hand review, with the offer's "What it answers" line.
 - **Share images** `share-aschecked.png` ("AsChecked") and `share-playbook.png` ("The Hevelius playbook"), 1200 by 630, made
   with `npm run images`; the other images were left as they were.
