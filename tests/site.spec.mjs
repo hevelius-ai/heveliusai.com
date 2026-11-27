@@ -1269,7 +1269,7 @@ const ARTICLES = {
   "https://code.claude.com/docs/en/best-practices": 'Claude Code documentation, "Best practices for Claude Code"',
 };
 
-test("CR3-6: the playbook claims no standing it does not have, and each rule names where the idea is published", async ({ page }) => {
+test("CR3-6: the playbook claims no standing it does not have, and one paragraph after the rules names where each idea is published", async ({ page }) => {
   await open(page, "/playbook");
   const clean = (s) => s.replace(/\s+/g, " ").trim();
   const main = clean(await page.locator("main").innerText());
@@ -1292,23 +1292,31 @@ test("CR3-6: the playbook claims no standing it does not have, and each rule nam
   expect(lists).toEqual(["step 0", "step 3", "step 6"]);
   const marks = await rules.evaluateAll((lis) => lis.map((li) => getComputedStyle(li, "::before").content));
   for (const m of marks) expect(m).toMatch(/^counter\(step/);
-  // Each rule has its "Why", and either an "Also published" line whose link is one of the three articles with its
-  // title, or (rule 7) "Ours".
+  // Each rule has its "Why" and no link of its own; rule 7 is "Ours" (owner, 27 Nov 2026: one sources paragraph
+  // after the rules in place of an "Also published" line under each; reframed as "Where the rules come from", option B).
   for (let i = 0; i < 9; i++) {
     const rule = rules.nth(i);
     await expect(rule, `rule ${i + 1}`).toContainText("Why:");
-    if (i === 6) {
-      await expect(rule).toContainText("Ours: this is maker-checker and segregation of duties, the controls banks use, applied to an AI builder.");
-      await expect(rule.locator("a")).toHaveCount(0);
-      continue;
-    }
-    await expect(rule, `rule ${i + 1}`).toContainText("Also published:");
-    const link = rule.locator("a");
-    await expect(link).toHaveCount(1);
-    const href = await link.getAttribute("href");
-    expect(Object.keys(ARTICLES), `rule ${i + 1}`).toContain(href);
-    await expect(link, `rule ${i + 1}`).toHaveText(ARTICLES[href]);
+    await expect(rule, `rule ${i + 1}`).not.toContainText("Also published");
+    await expect(rule.locator("a"), `rule ${i + 1}`).toHaveCount(0);
   }
+  await expect(rules.nth(6)).toContainText("Ours: this is maker-checker and segregation of duties, the controls banks use, applied to an AI builder.");
+  await expect(page.locator("#rules .muted").first()).toHaveText("Each rule says why it is there. Where the rules come from, and who else has published the same ideas, is set out after the rules.");
+  // One paragraph after the three groups says the rules are our own, drawn from our projects and other sources, then
+  // cites each of the three articles once, with its title, publisher and date, and names every rule but 7.
+  const sources = page.locator("#rules > .wrap > p", { hasText: "Where the rules come from:" });
+  await expect(sources).toHaveCount(1);
+  const links = sources.locator("a");
+  await expect(links).toHaveCount(3);
+  const hrefs = await links.evaluateAll((as) => as.map((a) => a.getAttribute("href")));
+  expect([...hrefs].sort()).toEqual(Object.keys(ARTICLES).sort());
+  for (let i = 0; i < 3; i++) await expect(links.nth(i)).toHaveText(ARTICLES[hrefs[i]]);
+  const cited = clean(await sources.innerText());
+  for (const n of [1, 2, 3, 4, 5, 6, 8, 9]) expect(cited, `rule ${n}`).toContain(`(rule ${n})`);
+  expect(cited).not.toContain("(rule 7)");
+  expect(cited).toContain("Where the rules come from: these rules come from what we learned building several projects with AI agents, including the ones that did not work, combined with articles, documentation and other people's experience, and shaped into three skills. Some of the same ideas have also been published by others, and their write-ups are worth reading.");
+  for (const t of Object.values(ARTICLES)) expect(cited, t).toContain(`${t} also `);
+  expect(await page.locator("main").innerText()).not.toContain("Also published");
   // The footer's line that Hevelius is not affiliated with Anthropic stays on this page too.
   await expect(page.getByRole("contentinfo")).toContainText("is not affiliated with Anthropic");
 });

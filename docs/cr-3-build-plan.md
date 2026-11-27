@@ -288,3 +288,18 @@ The owner rewrote the AsChecked tools sentence on both pages (T1 and T2 in secti
 
 Both sentences drop "not yet proven". The tools page, which the `/aschecked` sentence links to, still says what was
 tried in each tool and that none is yet proven. CR3-3 checks the new wording.
+
+## 13. After the merge: where the playbook rules come from (27 Nov 2026, owner)
+
+The owner asked for the "Also published" line under each of rules 1 to 6, 8 and 9 to go, and for one paragraph after
+the rules that cites the three articles once each, still naming the rules each one matches. A first draft read as if
+the rules were taken from the articles; the owner asked for it to say the rules come from our own projects and other
+sources, and chose option B (mock-up shown before the pull request):
+
+> **Where the rules come from:** these rules come from what we learned building several projects with AI agents,
+> including the ones that did not work, combined with articles, documentation and other people's experience, and
+> shaped into three skills. Some of the same ideas have also been published by others, and their write-ups are worth
+> reading. [three articles, each introduced with "also", with the rules each matches]
+
+The line under the heading became "Each rule says why it is there. Where the rules come from, and who else has published
+the same ideas, is set out after the rules." Rule 7 keeps its "Ours" line. CR3-6 and its requirement were updated.
