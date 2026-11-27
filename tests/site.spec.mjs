@@ -1203,10 +1203,10 @@ test("CR3-3: the AsChecked text names its limits only to deny them, and never cl
   expect(not[1]).toBe("It never says your project is safe. It lists the problems it found in what it checked.");
 });
 
-test("CR3-3: the AsChecked lines say what the release says: T1, T2 as shortened by R1, T3, T4, H1, H2, M2, R2 (owner, 22 and 25 Nov 2026)", async ({ page }) => {
+test("CR3-3: the AsChecked lines say what the release says: T1 and T2 as rewritten by the owner on 27 Nov 2026, T3, T4, H1, H2, M2, R2 (owner, 22, 25 and 27 Nov 2026)", async ({ page }) => {
   await open(page, "/aschecked");
   const main = (await page.locator("main").innerText()).replace(/\s+/g, " ");
-  expect(main).toContain("Tested in Claude Code. It also runs in a claude.ai chat, not yet proven to give the same results.");
+  expect(main).toContain("Tested in Claude Code. It also runs in a claude.ai chat, and other AI tools, such as Codex, Cursor, Lovable and Bolt: the tools page says what we tried in each and what happened.");
   expect(main).toContain("AsChecked is written only to read: it is told to install nothing, run none of your code and change no file.");
   // R1 (owner, 25 Nov 2026): the released README runs it in Auto mode, so the page names no mode.
   expect(main).not.toMatch(/plan mode/i);
@@ -1221,7 +1221,7 @@ test("CR3-3: the AsChecked lines say what the release says: T1, T2 as shortened 
   await open(page, "/");
   const section = (await page.locator("#aschecked").innerText()).replace(/\s+/g, " ");
   expect(section).toContain("It is written only to read your project.");
-  expect(section).toContain("Tested in Claude Code. It also runs in a claude.ai chat, not yet proven to give the same results.");
+  expect(section).toContain("The AI tool you already use. Tested in Claude Code. It also runs in a claude.ai chat, and other AI tools.");
   await open(page, "/advisory");
   const offer = (await page.locator("#hand-review").innerText()).replace(/\s+/g, " ");
   expect(offer).toContain("A person checks every finding against your code before the report reaches you.");

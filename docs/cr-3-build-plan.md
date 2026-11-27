@@ -276,3 +276,15 @@ the site was compared again: all still hold, and no page text changed because of
 **Confirm-only re-check** (Claude Fable 5.2 at high effort, fresh headless session, read-only, on `0275b82`): **APPROVE**.
 Findings 1 to 4 closed; three LOW notes: "Every setting's … cost and time" (settled by the owner's option B), the B1
 reference (now names where B1 sits) and this README re-read (recorded here).
+
+## 12. After the merge: the tools sentences (27 Nov 2026, owner)
+
+The owner rewrote the AsChecked tools sentence on both pages (T1 and T2 in section 6), word for word:
+
+- `/aschecked`: "Tested in Claude Code. It also runs in a claude.ai chat, and other AI tools, such as Codex, Cursor,
+  Lovable and Bolt: the tools page says what we tried in each and what happened." The last part stays the link to
+  AsChecked's `docs/other-tools.md`.
+- Main page: "The AI tool you already use. Tested in Claude Code. It also runs in a claude.ai chat, and other AI tools."
+
+Both sentences drop "not yet proven". The tools page, which the `/aschecked` sentence links to, still says what was
+tried in each tool and that none is yet proven. CR3-3 checks the new wording.
