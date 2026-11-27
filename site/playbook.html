@@ -223,7 +223,7 @@
   <section id="rules" aria-labelledby="rules-h">
     <div class="wrap stack">
       <div class="section-head flush"><p class="label">The rules</p><h2 id="rules-h">The nine rules</h2>
-        <p class="muted">Each rule says why it is there and where the same idea is published by others.</p></div>
+        <p class="muted">Each rule says why it is there. Where the rules come from, and who else has published the same ideas, is set out after the rules.</p></div>
       <div class="block">
         <h3>Before building</h3>
         <ol class="steps">
@@ -231,19 +231,16 @@
           <strong>Agree "done" before anything is built.</strong>
           <p class="muted">"Done" is at most three lines that can be tested, with a budget and a hard stop. Anything "done" does not need goes on a parking list.</p>
           <p class="muted"><small><strong>Why:</strong> a build with no finish line never finishes.</small></p>
-          <p class="muted"><small><strong>Also published:</strong> <a class="tap-inline" href="https://www.anthropic.com/engineering/harness-design-long-running-apps" target="_blank" rel="noopener">Anthropic, "Harness design for long-running application development", 24 Mar 2026</a>, where the builder and the checker agree what done looks like before any code is written.</small></p>
         </li>
         <li>
           <strong>Decide once, and keep the decision.</strong>
           <p class="muted">Every decision goes in a log with its reason and what would reopen it. Only evidence reopens one: a failing test, a measurement, a real user's problem.</p>
           <p class="muted"><small><strong>Why:</strong> ask a model for a fresh opinion and it will always add some ideas and drop others, so more opinions never settle anything.</small></p>
-          <p class="muted"><small><strong>Also published:</strong> <a class="tap-inline" href="https://code.claude.com/docs/en/best-practices" target="_blank" rel="noopener">Claude Code documentation, "Best practices for Claude Code"</a>, which warns that a reviewer asked to find gaps will usually find some, and that chasing every one leads to over-engineering.</small></p>
         </li>
         <li>
           <strong>Tests first, then locked.</strong>
           <p class="muted">Each requirement gets a test that is seen failing before the change. Once the person approves the tests, the builder may not edit them.</p>
           <p class="muted"><small><strong>Why:</strong> the easiest way to make a failing test pass is to weaken the test.</small></p>
-          <p class="muted"><small><strong>Also published:</strong> <a class="tap-inline" href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents" target="_blank" rel="noopener">Anthropic, "Effective harnesses for long-running agents", 26 Nov 2025</a>, which forbids the agent to remove or edit tests.</small></p>
         </li>
         </ol>
       </div>
@@ -254,19 +251,16 @@
           <strong>Programs check; agents do not vouch.</strong>
           <p class="muted">A program at a checkpoint decides whether the work passed, not the agent's own word.</p>
           <p class="muted"><small><strong>Why:</strong> "all tests pass", from the agent that wrote the code, is a claim.</small></p>
-          <p class="muted"><small><strong>Also published:</strong> <a class="tap-inline" href="https://code.claude.com/docs/en/best-practices" target="_blank" rel="noopener">Claude Code documentation, "Best practices for Claude Code"</a>: give the agent a check that returns pass or fail, and have it show evidence instead of saying it succeeded.</small></p>
         </li>
         <li>
           <strong>Nobody reviews their own work.</strong>
           <p class="muted">Every change is reviewed in a fresh session that did not build it, by a different top model where one is available. The reviewer grades each finding; a new idea is parked, not built; three rounds at most.</p>
           <p class="muted"><small><strong>Why:</strong> a builder is kind to its own work.</small></p>
-          <p class="muted"><small><strong>Also published:</strong> <a class="tap-inline" href="https://www.anthropic.com/engineering/harness-design-long-running-apps" target="_blank" rel="noopener">Anthropic, "Harness design for long-running application development", 24 Mar 2026</a>, which found that agents praise their own work and added a separate, sceptical evaluator.</small></p>
         </li>
         <li>
           <strong>One file holds the current state.</strong>
           <p class="muted">A short control file is read first in every session; a log and the decision log sit beside it.</p>
           <p class="muted"><small><strong>Why:</strong> an agent starts every session with no memory of the last.</small></p>
-          <p class="muted"><small><strong>Also published:</strong> <a class="tap-inline" href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents" target="_blank" rel="noopener">Anthropic, "Effective harnesses for long-running agents", 26 Nov 2025</a>, where each new session reads a progress log to pick up the work.</small></p>
         </li>
         </ol>
       </div>
@@ -283,16 +277,15 @@
           <strong>A first-time user tests the release.</strong>
           <p class="muted">A fresh agent with no code and no build history installs the product from its README alone and checks every promise as a user would see it. It reports and never fixes.</p>
           <p class="muted"><small><strong>Why:</strong> the builder knows too much to notice what a newcomer cannot do.</small></p>
-          <p class="muted"><small><strong>Also published:</strong> <a class="tap-inline" href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents" target="_blank" rel="noopener">Anthropic, "Effective harnesses for long-running agents", 26 Nov 2025</a>, which has agents test the way a human user would.</small></p>
         </li>
         <li>
           <strong>The rules get shorter.</strong>
           <p class="muted">At each release and each new model, every rule about agent behaviour is tested again, and a rule the current model no longer needs is removed. The rules name no model.</p>
           <p class="muted"><small><strong>Why:</strong> rules written for last year's model slow down this year's.</small></p>
-          <p class="muted"><small><strong>Also published:</strong> <a class="tap-inline" href="https://www.anthropic.com/engineering/harness-design-long-running-apps" target="_blank" rel="noopener">Anthropic, "Harness design for long-running application development", 24 Mar 2026</a>, which revisits the setup with each new model and removes what is no longer needed.</small></p>
         </li>
         </ol>
       </div>
+      <p class="muted"><small><strong>Where the rules come from:</strong> these rules come from what we learned building several projects with AI agents, including the ones that did not work, combined with articles, documentation and other people's experience, and shaped into three skills. Some of the same ideas have also been published by others, and their write-ups are worth reading. <a class="tap-inline" href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents" target="_blank" rel="noopener">Anthropic, "Effective harnesses for long-running agents", 26 Nov 2025</a> also forbids the agent to remove or edit tests (rule 3), has each new session read a progress log to pick up the work (rule 6) and has agents test the way a human user would (rule 8). <a class="tap-inline" href="https://www.anthropic.com/engineering/harness-design-long-running-apps" target="_blank" rel="noopener">Anthropic, "Harness design for long-running application development", 24 Mar 2026</a> also has the builder and the checker agree what done looks like before any code is written (rule 1), found that agents praise their own work and added a separate, sceptical evaluator (rule 5), and revisits the setup with each new model to remove what is no longer needed (rule 9). <a class="tap-inline" href="https://code.claude.com/docs/en/best-practices" target="_blank" rel="noopener">Claude Code documentation, "Best practices for Claude Code"</a> also warns that a reviewer asked to find gaps will usually find some, and that chasing every one leads to over-engineering (rule 2), and says to give the agent a check that returns pass or fail and to have it show evidence instead of saying it succeeded (rule 4).</small></p>
     </div>
   </section>
 
